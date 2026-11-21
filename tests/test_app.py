@@ -20,3 +20,22 @@ def test_percorre_os_3_passos():
     for _ in range(2):
         next(b for b in at.button if b.label == "Anterior").click().run()
         assert not at.exception
+
+
+def test_bloco_negocio_so_com_valores():
+    f = Path(APP).parent / "negocio.json"
+    orig = f.read_text(encoding="utf-8")
+
+    def ecra3():
+        at = AppTest.from_file(APP, default_timeout=30).run()
+        for _ in range(2):
+            next(b for b in at.button if b.label == "Seguinte").click().run()
+        return at
+
+    try:
+        assert not any("Custo do kit" in t.value.to_string() for t in ecra3().table)
+        f.write_text('{"custo_kit": 1234.5, "preco_a_bosch": null, "opcao_familia": null, "ponto_equilibrio_1_em_M": null}',
+                     encoding="utf-8")
+        assert any("Custo do kit" in t.value.to_string() for t in ecra3().table)
+    finally:
+        f.write_text(orig, encoding="utf-8")

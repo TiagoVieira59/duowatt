@@ -2,6 +2,9 @@
 
 Estado: 21 nov 2026. Nenhum valor inventado. Só estão preenchidas as estimativas já feitas (marcadas).
 
+## Como preencher `negocio.json`
+Na raiz do repositório, `negocio.json` tem os campos a `null` (`custo_kit`, `preco_a_bosch`, `opcao_familia`, `ponto_equilibrio_1_em_M`). A Contabilidade substitui `null` por números em € (ou texto, em `opcao_familia`); sem aspas nos números, ponto como decimal. Cada campo preenchido aparece no ecrã 3, formatado em PT-PT; com todos a `null`, o bloco não aparece. Valores novos levam fonte e classificação neste documento.
+
 ## Modelo
 B2B: a Bosch compra os kits e inclui-os no Tronic ou vende-os como opção na troca do esquentador. A família não precisa de subir a potência.
 
