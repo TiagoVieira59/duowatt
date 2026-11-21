@@ -11,13 +11,14 @@ Prompt da missão: `PROMPT_Equipa_Autonoma_DuoWatt.md`. Fonte de verdade do proj
 - Ciclo 4 (branch `ciclo-4`): Programador a acrescentar os separadores 'Viabilidade' e 'Diferenciação' e a tabela de pressupostos citados (item B2/B3). Depois: Júri com a rubrica oficial, `DEMO_GUIAO.md`, `RELATORIO_FINAL.md`.
 
 ## Rubrica oficial (ver `CRITERIOS_AVALIACAO.md`; escala 1–5; pesos 20/20/15/15/10; a 6 é só a 25 nov)
-| Critério | Peso | Última avaliação do Júri |
+| Critério | Peso | Júri ciclo 4 (1–5) |
 |---|---|---|
-| 1 Clareza do problema e provas do utilizador | 20 % | por avaliar com a nova rubrica (sem dados reais de utilizadores: 1–2 até a equipa recolher) |
-| 2 Impacto mensurável | 20 % | por avaliar |
-| 3 Solução e demonstração | 15 % | por avaliar |
-| 4 Viabilidade técnica, económica e de implementação | 15 % | por avaliar |
-| 5 Originalidade e diferenciação | 10 % | por avaliar |
+| 1 Clareza do problema e provas do utilizador | 20 % | **1** (sem dados reais de utilizadores; só guiões de recolha) |
+| 2 Impacto mensurável | 20 % | 3 (métricas concretas mas simuladas; o CO₂ vem da eletrificação, não do DuoWatt) |
+| 3 Solução e demonstração | 15 % | 3,5 (protótipo navegável limpo; não responde a provas recolhidas) |
+| 4 Viabilidade técnica, económica e de implementação | 15 % | 4 (custos com fontes, equilíbrio, próximos passos; nada validado por eletricista ou Bosch) |
+| 5 Originalidade e diferenciação | 10 % | 3 (adaptação de soluções conhecidas) |
+**Nota ponderada: 2,78 / 5.** O Júri diz que o que mais subiria a nota é a recolha real (inquérito 15–30 respostas + 3 entrevistas, +0,5 na ponderada), depois a validação por eletricista e pela Bosch. Ver `PLANO_RECOLHA_PROVAS.md` e `equipa/juri_ciclo4.md`.
 (Avaliações antigas R1–R7 em `equipa/juri_ciclo0.md` e `equipa/juri_ciclo1.md`: já não se usam.)
 
 ## Prioridades novas (recebidas a 21 nov)
