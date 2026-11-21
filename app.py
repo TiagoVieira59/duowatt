@@ -147,7 +147,7 @@ def ecra3():
     if IMG.exists():
         st.image(str(IMG), caption="Imagem concetual", alt="Imagem concetual do kit DuoWatt")
     st.subheader("Para a Bosch")
-    st.write("O DuoWatt completa o cilindro Tronic, que não sabe o que se passa no resto da casa. "
+    st.write("Pelo que vimos na gama Tronic, o cilindro sabe quando a família precisa de água quente, mas não o que se passa no resto da casa. O DuoWatt completa-o. "
              "Transforma trocas de gás por gás em vendas de cilindro. Garantia sem apagões.")
     neg = [(r, f"{pt(NEG[k], 2) if isinstance(NEG[k], float) else pt(NEG[k]) if isinstance(NEG[k], int) else NEG[k]}{u}")
            for k, r, u in NEG_CAMPOS if NEG.get(k) is not None]
@@ -160,7 +160,7 @@ def ecra3():
         "DuoWatt": ["A Bosch (incluído no cilindro ou opção na troca)", "Na troca do esquentador, pelo mesmo instalador",
                     "Não: 2 peças emparelhadas de fábrica", "Casas com gás em Portugal e Espanha"],
     }).set_index(""))
-    st.caption("Fontes: docs/CONCORRENCIA.md")
+    st.caption("Fontes: sites dos fabricantes (lista no documento de entrega)")
     with st.expander("Para saber mais"):
         st.markdown(f"""
 - **Regras de controlo (pelo conceito):** o cilindro desliga quando a casa chega a 90 % do limite, volta a ligar abaixo de 80 %, e a pausa nunca passa de 30 min seguidos. Se o sensor deixar de comunicar, o cilindro funciona como sem DuoWatt (modo seguro).
@@ -180,5 +180,5 @@ st.progress((st.session_state.passo + 1) / 3)
 a, b = st.columns(2)
 a.button("Anterior", on_click=ir, args=(-1,), disabled=st.session_state.passo == 0, width="stretch")
 b.button("Seguinte", on_click=ir, args=(1,), disabled=st.session_state.passo == 2, width="stretch", type="primary")
-st.html("<style>[data-testid=stCaptionContainer],[data-testid=stCaptionContainer] p{color:#1f2933!important;opacity:1!important}</style>")
+st.html("<style>[data-testid=stCaptionContainer],[data-testid=stCaptionContainer] p{color:#1f2933!important;opacity:1!important}[data-testid=stHeaderActionElements],.stHeadingActionElements{display:none!important}</style>")
 st.caption("Simulação ilustrativa. Valores por validar num piloto.")
