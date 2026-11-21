@@ -16,13 +16,15 @@ def impacto_casa(garrafas_ano, preco_garrafa=37.0, preco_kwh=0.21,
     A mesma energia útil (água quente + cozinha) é entregue por eletricidade.
     Valores de Parametros_Verificados.md: preco_garrafa 37 € (último preço
     anunciado, out 2026; cenário alto 42-43,5 €), preco_kwh 0,21 €/kWh (preço
-    marginal: tarifa regulada 0,171 € com IVA de 23 % acima dos 200 kWh/mês; abaixo
-    desse escalão é ~0,18 €), fator_elet_g_kwh 107 (APA 2023, média anual de
+    marginal: tarifa regulada 0,171 € SEM IVA; com IVA de 23 % acima dos 200 kWh/mês
+    dá ~0,21 €; abaixo desse escalão (IVA 6 %) é ~0,18 €), fator_elet_g_kwh 107 (APA 2023, média anual de
     produção, não marginal; intervalo 40-167), efic_gas 0,82 (esquentador; o
     fogão a gás, ~0,4, tornaria a poupança maior, por isso 0,82 é prudente) e
     efic_eletrica 0,85 (termoacumulador com perdas e indução). Não inclui o custo
     do equipamento nem o termo de potência da fatura.
     """
+    if efic_gas <= 0 or efic_eletrica <= 0:
+        raise ValueError("efic_gas e efic_eletrica têm de ser > 0")
     kwh_gas = garrafas_ano * KG_GARRAFA * KWH_POR_KG_GPL
     kwh_elet = kwh_gas * efic_gas / efic_eletrica
     co2_gas = kwh_gas * KG_CO2_POR_KWH_GPL

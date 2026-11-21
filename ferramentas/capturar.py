@@ -60,6 +60,8 @@ def aplicar(page, cenario):
         elif chave == "inducao":
             page.get_by_text(valor, exact=True).click()
         else:
+            if chave in ("pessoas", "garrafas") and not page.get_by_label(ROTULOS[chave]).is_visible():
+                page.get_by_text("Avançado", exact=True).click()  # campos no expander
             campo = page.get_by_label(ROTULOS[chave])
             campo.fill(str(valor))
             campo.press("Enter")
