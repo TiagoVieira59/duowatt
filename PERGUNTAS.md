@@ -4,3 +4,4 @@
 2. **Base da casa de ~600 W ao serão:** sem fonte. Pedir valor à Mecânica.
 3. **Identidade visual:** o colega de Multimédia tem paleta ou logo para a app seguir?
 4. **Formato exato da entrega** (demo ao vivo, vídeo, slides?): por confirmar.
+5. **Custo e instalação** (equipamento, instalador, relé): a Contabilidade e a Mecânica têm valores verificáveis? O Júri aponta esta lacuna (R2).
