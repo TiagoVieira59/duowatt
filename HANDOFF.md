@@ -12,7 +12,7 @@ Conceito fixo; push autorizado (sem `--force`); 12 garrafas por omissão em tudo
 ## Próximos passos até às 17:30
 1. Executar o script do Forms (`FORMS_INSTRUCOES.md`), pôr o link no `GUIA_EQUIPA.md` e enviar o guia (`.docx`) pelo WhatsApp.
 2. ≥30 respostas + 3 entrevistas; correr o analisador; `dados/entrevistas.json` com citações literais.
-3. Mecânica/Contabilidade/eletricista validam os valores (lista em `RELATORIO_FINAL.md` §3 e `VIABILIDADE.md` §8).
+3. Eng. Mecânica / Contabilidade e Controlo de Gestão / eletricista validam os valores (lista em `RELATORIO_FINAL.md` §3 e `VIABILIDADE.md` §8).
 4. Ensaiar a demo (`DEMO_GUIAO.md`) em telemóvel e projetor. 14:00 congelar; 17:30 entregar.
 
 ## Comandos

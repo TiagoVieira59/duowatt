@@ -41,15 +41,18 @@ O critério 1 só sobe com **dados reais** que nós recolhermos. É a maior alav
 
 **Por validar:** segurança elétrica (eletricista habilitado), se algum Tronic aceita controlo externo (não encontrámos), preços de mão de obra, potência real da placa de indução, consumo de base da casa.
 
-## 5. O que cada pessoa faz hoje
+## 5. A equipa e o que cada pessoa faz hoje
+Somos 4, de áreas diferentes: **Multimédia e Tecnologias de Comunicação**, **Informática** (Tiago), **Engenharia Mecânica** e **Mestrado em Contabilidade e Controlo de Gestão**.
+
 | Perfil | Tarefa | Prazo |
 |---|---|---|
 | Todos | Partilhar o link do inquérito (texto em FORMS_INSTRUCOES.md) em 5 grupos e com 5 pessoas | 12:00 |
-| Mecânica | Confirmar potência da placa de indução (1,8 / 3 kW), consumo de base ao serão e se o termoacumulador pode ser pausado com segurança | 13:00 |
-| Contabilidade | Confirmar custos: garrafa (37 €), mão de obra do eletricista, preço do termo de potência e IVA | 13:00 |
-| Multimédia | Rever a app no telemóvel (cores, legibilidade, texto) e preparar os slides/pitch | 13:30 |
-| Ciência Política | Fazer 3 entrevistas (morador, instalador/loja, eletricista) com os guiões em ENTREVISTAS.md; escrever citações literais | 13:00 |
+| Engenharia Mecânica | Confirmar potência da placa de indução (1,8 / 3 kW), consumo de base ao serão e se o termoacumulador pode ser pausado com segurança; se conseguir, falar com um eletricista ou instalador (guião C/B em ENTREVISTAS.md) | 13:00 |
+| Contabilidade e Controlo de Gestão | Confirmar custos: garrafa (37 €), mão de obra do eletricista, preço do termo de potência e IVA; rever as contas de equilíbrio em VIABILIDADE.md | 13:00 |
+| Multimédia e Tecnologias de Comunicação | Rever a app no telemóvel (cores, legibilidade, texto), fazer 2 entrevistas a moradores com os guiões em ENTREVISTAS.md (citações literais) e preparar os slides/pitch | 13:30 |
 | Informática (Tiago) | Exportar o CSV, correr `analisar_inquerito.py`, colar entrevistas em `dados/entrevistas.json`, rever a app e fazer a entrega | 14:00 congelar; 17:30 entregar |
+
+As 3 entrevistas (morador, instalador/loja, eletricista) repartem-se assim por não termos ninguém de Ciências Sociais: podem trocar entre vocês, o importante é serem feitas e escritas palavra por palavra.
 
 ## 6. Como recolher as provas
 - **Link do Forms:** [o Tiago cola aqui o link depois de executar o script]
