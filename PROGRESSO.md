@@ -3,9 +3,9 @@
 Prompt da missão: `PROMPT_Equipa_Autonoma_DuoWatt.md`. Fonte de verdade do projeto: `CONTEXTO_Projeto_DuoWatt.md`. Entrega: 21 nov 2026, 17:30 (a partir das 14:00, só correções de erros).
 
 ## Estado do `main`
-- Tag `estavel-3` (21 nov, ~00:55). Testes: 36 a passar, 4 xfail justificados. Na app: separadores 'Diagnóstico' e 'Provas do utilizador' (só dados da Bosch rotulados como secundários; a parte da equipa mostra 'Ainda sem dados' até haver `dados/inquerito_resumo.json`).
-- Documentos na pasta: `CRITERIOS_AVALIACAO.md`, `INQUERITO.md`, `ENTREVISTAS.md`, `VIABILIDADE.md`, `DIFERENCIACAO.md`, `PESQUISA.md` (fontes e classificações), `ferramentas/analisar_inquerito.py` (+ testes com CSV sintético, claramente marcado).
-- Para a equipa humana (manhã): criar o Google Forms (`INQUERITO.md`), recolher ≥30 respostas, fazer 3 entrevistas (`ENTREVISTAS.md`), exportar o CSV e correr `.venv/bin/python ferramentas/analisar_inquerito.py respostas.csv` (escreve em `dados/`; a app passa a mostrar os números).
+- Tag `final` (ciclo 6) + commits da noite 2. Testes: 44 a passar, 4 xfail justificados. App: 'Diagnóstico' e 'Provas do utilizador' (só dados Bosch, rotulados, até haver `dados/inquerito_resumo.json`).
+- Noite 2: Fase 1 (Forms: `ferramentas/criar_formulario.gs`, `FORMS_INSTRUCOES.md`) feita; Fase 2 (retoma automática) bloqueada por permissões, ver `PERGUNTAS.md` n.º 7; Fase 3 (formato PT-PT em `formato.py`) feita.
+- Para a equipa humana: criar o Forms, ≥30 respostas, 3 entrevistas, `.venv/bin/python ferramentas/analisar_inquerito.py respostas.csv`.
 
 ## Ciclo atual
 - **Concluído.** `main` na tag `final` (ciclo 6 integrado). Falta o que depende de pessoas: dados reais (`PLANO_RECOLHA_PROVAS.md`), validações da Mecânica/Contabilidade/eletricista/Bosch, formato da entrega (`PERGUNTAS.md`). Para retomar: 'Lê PROGRESSO.md e continua'.
@@ -25,7 +25,7 @@ Prompt da missão: `PROMPT_Equipa_Autonoma_DuoWatt.md`. Fonte de verdade do proj
 A provas do utilizador (INQUERITO.md, ENTREVISTAS.md, `ferramentas/analisar_inquerito.py`, espaço na app só com dados da Bosch enquanto não houver dados reais) · B viabilidade (custos reais, VIABILIDADE.md) · C diferenciação (concorrentes, DIFERENCIACAO.md) · D impacto com pressupostos visíveis e citados · E UI com menos peso · DEMO_GUIAO.md depois.
 
 ## Próximo passo
-Fechar o lote 2 do ciclo 2 (branch `ciclo-2`), integrar se verde e depois A, B, C, D, E (ver acima). Investigador (custos) a correr.
+Noite 2, Fase 4 (`UX_PESQUISA.md`) e Fase 5 (assistente para a família, relatório, modo detalhado; máx. 3 ciclos), depois fecho §8 do `PROMPT_Noite_2_DuoWatt.md`.
 
 ## Decisões pendentes
 Ver `PERGUNTAS.md`.

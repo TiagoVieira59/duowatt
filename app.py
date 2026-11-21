@@ -6,6 +6,7 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
+from formato import pt
 from duowatt import INDUCAO, P_INDUCAO_W, P_TERMO_W, simular, veredicto
 from impacto import (ANOS_COMPARACAO, CASAS_GPL, CUSTO_MATERIAL_DUOWATT_EUR, CUSTO_QUADRO_NOVO_EUR, EFIC_ELETRICA,
                      EFIC_GAS, FATOR_ELET_ADVERSO_G_KWH, FATOR_ELET_G_KWH, IVA_POTENCIA, KG_CO2_POR_KWH_GPL, KG_GARRAFA,
@@ -22,6 +23,7 @@ def _esc(s):
     return re.sub(r"([\\`*_{}\[\]()#+!|~<>$])", r"\\\1", str(s))
 
 
+PT_EIXO = "replace(format(datum.value, ','), ',', '\u00a0')"  # milhares PT-PT no eixo
 KVA = [2.3, 3.45, 6.9, 10.35]
 IND_INTENSO_W = 3000  # pressuposto da equipa (Parametros_Verificados.md)
 
@@ -94,7 +96,7 @@ with tab_diag:
         frase = f"Com gestão deixa de exceder o limite (sem ela passa {sem['minutos_acima']} min acima)."
     else:
         frase = f"Mesmo com gestão excede o limite durante {com['minutos_acima']} min."
-    folga = f"Placa + termoacumulador juntos pedem {pedido_w:,.0f} W; o limite é {limite:,.0f} W.".replace(",", " ")
+    folga = f"Placa + termoacumulador juntos pedem {pt(pedido_w)} W; o limite é {pt(limite)} W."
     if v == "precisa de mais potência":
         cabe = next((f"{k:g}".replace(".", ",") for k in KVA if k * 1000 >= com["pico_w"]), None)
         folga += f" Para caber, precisaria de pelo menos {cabe} kVA: contratar {cabe} kVA." if cabe else " Nem a maior potência da lista chega."
@@ -109,8 +111,8 @@ with tab_diag:
         ev = impacto_casa(garrafas, preco_kwh=preco_kwh, fator_elet_g_kwh=fator)
         co2, co2_ajuda = f"{ev['co2_evitado_kg']:.0f} kg/ano", f"Fator {fator} g/kWh"
     a, b, c, d, e, f = st.columns(6)
-    a.metric("Pico sem gestão", f"{sem['pico_w']:,.0f} W".replace(",", " "))
-    b.metric("Pico com DuoWatt", f"{com['pico_w']:,.0f} W".replace(",", " "))
+    a.metric("Pico sem gestão", f"{pt(sem['pico_w'])} W")
+    b.metric("Pico com DuoWatt", f"{pt(com['pico_w'])} W")
     c.metric("CO2 evitado", co2, help=co2_ajuda)
     if ev:
         d.metric("Poupança" if ev["poupanca_eur"] >= 0 else "Custo extra", f"{abs(ev['poupanca_eur']):.0f} €/ano")
@@ -130,7 +132,7 @@ with tab_diag:
     xs = alt.Scale(domain=[17, 23], zero=False, nice=False)  # mesma escala em todas as camadas (senão volta a incluir 0)
     x = alt.X("Hora:Q", scale=xs, title=None,
               axis=alt.Axis(values=list(range(17, 24)), labelExpr="datum.value + ':00'"))
-    y = alt.Y("W:Q", scale=alt.Scale(domain=[0, topo]), title="Potência (W)")
+    y = alt.Y("W:Q", scale=alt.Scale(domain=[0, topo]), title="Potência (W)", axis=alt.Axis(labelExpr=PT_EIXO))
     serie = alt.Color("Série:N", scale=alt.Scale(domain=["Sem gestão", "Com DuoWatt"], range=["#b3261e", "#0b57a4"]), legend=alt.Legend(title=None, orient="top"))
     traco = alt.StrokeDash("Série:N", scale=alt.Scale(domain=["Sem gestão", "Com DuoWatt"], range=[[8, 5], [1, 0]]), legend=alt.Legend(title=None, orient="top"))
     linha = lambda nome, larg: (alt.Chart(dados).transform_filter(alt.datum["Série"] == nome)
@@ -172,12 +174,12 @@ with tab_diag:
         nacional = extrapolar(ev["co2_evitado_kg"], adocao=adocao / 100)
         st.caption(
             f"Potencial da eletrificação (não atribuído ao DuoWatt), cenário ilustrativo: {adocao} % das 2,2 M de casas a GPL trocam: "
-            f"{nacional:,.0f} t CO2/ano.".replace(",", " ")
+            f"{pt(nacional)} t CO2/ano."
         )
         teto = extrapolar(ev["co2_evitado_kg"], adocao=adocao / 100, casas=int(CASAS_GPL * QUOTA_ATE_3_45_KVA))
         st.caption(
             f"Limite superior do que depende de desbloquear a potência: casas com ≤3,45 kVA (~44 % dos contratos BTN, proxy): "
-            f"{teto:,.0f} t CO2/ano com {adocao} % de adoção.".replace(",", " ")
+            f"{pt(teto)} t CO2/ano com {adocao} % de adoção."
         )
         st.caption(
             "O CO2 só desce se o gás for mesmo substituído, e a troca pode acontecer sem o DuoWatt: "
@@ -196,7 +198,7 @@ with tab_diag:
             "- Não encontrámos controlo externo documentado nos Tronic."
         )
         st.table(pd.DataFrame([
-            ("Potência do Tronic", f"{P_TERMO_W:,} W".replace(",", " "), "Ficha Bosch (Tronic 4001 T de 80 L ou mais)", "confirmado"),
+            ("Potência do Tronic", f"{pt(P_TERMO_W)} W", "Ficha Bosch (Tronic 4001 T de 80 L ou mais)", "confirmado"),
             ("Placa de indução", f"{vir(P_INDUCAO_W / 1000, 1)} kW moderado; {vir(IND_INTENSO_W / 1000, 1)} kW intenso", "Pressuposto da equipa, por confirmar", "hipótese"),
             ("Base da casa", "consumo mensal ÷ 720 h", "Pressuposto (sem medições publicadas)", "hipótese"),
             ("CO2 da eletricidade", f"{FATOR_ELET_G_KWH} g/kWh (cenário adverso: {FATOR_ELET_ADVERSO_G_KWH} g/kWh)", "APA 2023, média anual (167: média de 5 anos)", "confirmado"),
@@ -241,7 +243,7 @@ with tab_viab:
     st.altair_chart(
         alt.Chart(acum).mark_line(strokeWidth=4).encode(
             x=alt.X("Ano:Q", scale=alt.Scale(domain=[0, ANOS_COMPARACAO], nice=False), title="Anos", axis=alt.Axis(values=anos)),
-            y=alt.Y("€:Q", title="Custo acumulado (€)"),
+            y=alt.Y("€:Q", title="Custo acumulado (€)", axis=alt.Axis(labelExpr=PT_EIXO)),
             color=alt.Color("Opção:N", scale=alt.Scale(domain=ordem, range=["#0b57a4", "#b3261e", "#e67e22"]), legend=alt.Legend(title=None, orient="bottom")),
             strokeDash=alt.StrokeDash("Opção:N", scale=alt.Scale(domain=ordem, range=[[1, 0], [8, 5], [2, 3]]), legend=alt.Legend(title=None, orient="bottom")),
         ).properties(height=260)
