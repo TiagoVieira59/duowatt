@@ -1,84 +1,77 @@
-"""DuoWatt: simulador de potência de uma casa durante 24 h (um passo por minuto).
+"""DuoWatt: simulação por minuto de um serão (18:00-21:00) numa casa de 3,45 kVA.
 
-Modelo simples e didático. Valores de partida em Parametros_Simulador.md (a validar).
+Conceito em docs/referencia/PROMPT_Kit_DuoWatt_Final.md. Valores marcados "pressuposto" por validar.
 """
 
-MIN_DIA = 24 * 60
-P_INDUCAO_W = 1800            # placa de indução (valor do documento da equipa)
-P_TERMO_W = 2000              # Tronic 4001 T de 80 L ou mais (ficha Bosch); o 5501i T é de 1 500 W
-INDUCAO = range(19 * 60 + 30, 20 * 60 + 10)       # 19:30-20:10
-DUCHES = {7 * 60 + 30: 0.4, 19 * 60 + 45: 0.6}    # início (min) -> fração da água quente do dia
-DUCHE_MIN = 15
+P_CILINDRO_W = 1500           # Tronic 5501i (ficha Bosch)
+BASE_W = 600                  # pressuposto: base da casa
+LIMITE_W = 3450               # 3,45 kVA tratado como kW (shortcut: fator de potência 1)
+INICIO, FIM = 18 * 60, 21 * 60
+# cenário -> (potência W, início min, fim min); máquina: ~2 kW durante 20 min (pressuposto)
+CENARIOS = {"maquina": (2000, 18 * 60 + 40, 19 * 60), "inducao": (1800, 19 * 60 + 30, 20 * 60 + 10)}
+DUCHE_MIN, DUCHE_INICIO = 15, 19 * 60 + 45
 KWH_LITRO = 50 * 1.163 / 1000                     # reserva: 15 -> 65 °C
 KWH_AQS_PESSOA = 40 * 45 * 1.163 / 1000           # ~2,1 kWh por pessoa e dia
+PAUSA_MAX_MIN = 30
 
 
-def simular(limite_w, consumo_mensal_kwh, pessoas=3, litros=100, gestao=True, pausa_min=5,
-            inducao_w=P_INDUCAO_W):
-    """Devolve a potência de cada minuto e as métricas do dia.
+def simular(cenario="maquina", duowatt=True, limite_w=LIMITE_W, sensor_ok=True, litros=100,
+            pessoas=3, base_w=BASE_W, reserva_inicial=0.5):
+    """Devolve a potência de cada minuto e as métricas do serão.
 
-    shortcut: kVA tratado como kW (fator de potência 1) e base da casa plana
-    (consumo mensal / 720 h); melhorar se houver dados reais ou protótipo.
+    Regras (§1): desliga se a casa com o cilindro passa 90 % do limite; religa quando o consumo
+    medido sem o cilindro desce abaixo de 80 %. Acrescento: só religa se com o cilindro não
+    ultrapassa o limite (senão ligava e desligava a cada minuto); após 30 min de pausa religa à
+    força (prioridade à água quente) e fica ligado até a casa, sem o cilindro, descer de 80 %.
+    sensor_ok=False: modo seguro, cilindro como sem DuoWatt.
     """
-    base_w = consumo_mensal_kwh / 720 * 1000
+    p_maq, ini, fim = CENARIOS[cenario]
     capacidade = litros * KWH_LITRO
-    dia = pessoas * KWH_AQS_PESSOA
-    guardado, ligado, desde = capacidade, False, -pausa_min
-    total, sem_agua = [], 0
+    guardado = capacidade * reserva_inicial        # ao fim da tarde o cilindro está a aquecer
+    pedido = pessoas * KWH_AQS_PESSOA * 0.6 / DUCHE_MIN
+    ligado = forcado = False
+    pausa = max_pausa = 0
+    total, cil, sem_agua = [], [], 0
 
-    for t in range(MIN_DIA):
-        inducao = inducao_w if t in INDUCAO else 0
-
-        for inicio, fracao in DUCHES.items():
-            if inicio <= t < inicio + DUCHE_MIN:
-                pedido = dia * fracao / DUCHE_MIN
-                sem_agua += pedido > guardado + 1e-9
-                guardado = max(0.0, guardado - pedido)
-
+    for t in range(INICIO, FIM):
+        casa = base_w + (p_maq if ini <= t < fim else 0)
+        if DUCHE_INICIO <= t < DUCHE_INICIO + DUCHE_MIN:
+            sem_agua += pedido > guardado + 1e-9
+            guardado = max(0.0, guardado - pedido)
         quer = guardado < capacidade
-        if not gestao:
+        if not (duowatt and sensor_ok):
             ligado = quer
-        else:
-            cabe = base_w + inducao + P_TERMO_W <= limite_w
-            if ligado and not (quer and cabe):          # desligar é sempre imediato
-                ligado, desde = False, t
-            elif not ligado and quer and cabe and t - desde >= pausa_min:
-                ligado, desde = True, t                 # retomar só após o tempo mínimo
-
+        elif not quer:
+            ligado = forcado = False
+        elif ligado and casa + P_CILINDRO_W > 0.9 * limite_w and not forcado:
+            ligado = False
+        elif not ligado and (pausa >= PAUSA_MAX_MIN or
+                             (casa < 0.8 * limite_w and casa + P_CILINDRO_W <= limite_w)):
+            ligado, forcado = True, pausa >= PAUSA_MAX_MIN
+        if forcado and casa < 0.8 * limite_w:
+            forcado = False
+        pausa = 0 if ligado or not quer else pausa + 1
+        max_pausa = max(max_pausa, pausa)
         if ligado:
-            guardado = min(capacidade, guardado + P_TERMO_W / 60 / 1000)
-        total.append(base_w + inducao + (P_TERMO_W if ligado else 0))
+            guardado = min(capacidade, guardado + P_CILINDRO_W / 60 / 1000)
+        cil.append(P_CILINDRO_W if ligado else 0)
+        total.append(casa + cil[-1])
 
     acima = [w > limite_w for w in total]
     return {
         "total_w": total,
+        "cilindro_w": cil,
         "minutos_acima": sum(acima),
         "disparos": sum(1 for i, a in enumerate(acima) if a and (i == 0 or not acima[i - 1])),
         "minutos_sem_agua": int(sem_agua),
+        "max_pausa_min": max_pausa,
         "pico_w": max(total),
     }
 
 
-def veredicto(limite_w, consumo_mensal_kwh, pessoas=3, litros=100, inducao_w=P_INDUCAO_W):
-    """'aguenta', 'aguenta com gestão', 'reserva de água insuficiente' ou 'precisa de mais potência'."""
-    sem = simular(limite_w, consumo_mensal_kwh, pessoas, litros, gestao=False, inducao_w=inducao_w)
-    if sem["minutos_acima"] == 0:
-        return "aguenta" if sem["minutos_sem_agua"] == 0 else "reserva de água insuficiente"
-    com = simular(limite_w, consumo_mensal_kwh, pessoas, litros, gestao=True, inducao_w=inducao_w)
-    if com["minutos_acima"] > 0:
-        return "precisa de mais potência"
-    return "aguenta com gestão" if com["minutos_sem_agua"] == 0 else "reserva de água insuficiente"
-
-
 if __name__ == "__main__":
-    # autoverificação: casa de 200 kWh/mês, 3 pessoas
-    assert veredicto(3450, 200) == "aguenta com gestão"
-    assert veredicto(6900, 200) == "aguenta"
-    assert veredicto(1500, 200) == "precisa de mais potência"
-    sem = simular(3450, 200, gestao=False)
-    com = simular(3450, 200, gestao=True)
-    assert sem["disparos"] >= 1 and com["disparos"] == 0 and com["minutos_sem_agua"] == 0
-    for nome, r in (("sem gestão", sem), ("com DuoWatt", com)):
-        print(f"{nome}: pico {r['pico_w']:.0f} W | minutos acima do limite {r['minutos_acima']} "
-              f"| disparos {r['disparos']} | minutos sem água quente {r['minutos_sem_agua']}")
-    print("Veredicto 3,45 kVA:", veredicto(3450, 200))
+    sem, com = simular(duowatt=False), simular()
+    assert sem["pico_w"] == 4100 and sem["disparos"] == 1 and com["minutos_acima"] == 0
+    for nome, r in (("sem DuoWatt", sem), ("com DuoWatt", com)):
+        print(f"{nome}: pico {r['pico_w']} W | minutos acima {r['minutos_acima']} | disparos "
+              f"{r['disparos']} | sem água quente {r['minutos_sem_agua']} | pausa máx {r['max_pausa_min']} min")
