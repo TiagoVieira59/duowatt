@@ -9,7 +9,9 @@ AQUI = Path(__file__).resolve().parent
 PY = AQUI / ".venv/bin/python"
 CODIGO = """
 from streamlit.testing.v1 import AppTest
-at = AppTest.from_file("app.py", default_timeout=60).run()
+at = AppTest.from_file("app.py", default_timeout=60)
+at.session_state["modo"] = "detalhado"  # as provas estão no modo detalhado
+at.run()
 print("EXC", len(at.exception))
 print("SUB", [s.value for s in at.subheader])
 print("WARN", [w.value for w in at.warning])
