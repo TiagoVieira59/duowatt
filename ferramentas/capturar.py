@@ -101,10 +101,16 @@ def main(ciclo):
                     page.set_viewport_size({"width": largura, "height": ALTURA_PAGINA})
                     page.wait_for_timeout(600)
                     page.screenshot(path=saida / f"{base}_pagina.png")
-                    if nome == "A_tipica":  # separador das provas
-                        page.get_by_role("tab", name="Provas do utilizador").click()
-                        page.wait_for_timeout(800)
-                        page.screenshot(path=saida / f"{base}_provas.png")
+                    if nome == "A_tipica":  # restantes separadores
+                        for tab, sufixo in (("Provas do utilizador", "provas"), ("Viabilidade", "viabilidade"), ("Diferenciação", "diferenciacao")):
+                            page.get_by_role("tab", name=tab).click()
+                            page.wait_for_timeout(800)
+                            page.screenshot(path=saida / f"{base}_{sufixo}.png")
+                            if tab != "Provas do utilizador":
+                                cortados = page.evaluate("""() => [...document.querySelectorAll('[data-testid="stMetricLabel"] p, [data-testid="stMetricValue"] div')]
+                                    .filter(e => e.offsetParent && (e.scrollWidth > e.clientWidth + 1)).map(e => e.innerText)""")
+                                if cortados:
+                                    erros.append(f"[{nome}] {tab} {largura}x{altura}: métricas cortadas: {cortados}")
                     ctx.close()
             navegador.close()
     finally:

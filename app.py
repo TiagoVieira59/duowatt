@@ -6,11 +6,24 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
-from duowatt import INDUCAO, P_TERMO_W, simular, veredicto
-from impacto import CASAS_GPL, QUOTA_ATE_3_45_KVA, custo_subir_potencia, extrapolar, impacto_casa
+from duowatt import INDUCAO, P_INDUCAO_W, P_TERMO_W, simular, veredicto
+from impacto import (ANOS_COMPARACAO, CASAS_GPL, CUSTO_MATERIAL_DUOWATT_EUR, CUSTO_QUADRO_NOVO_EUR, EFIC_ELETRICA,
+                     EFIC_GAS, FATOR_ELET_ADVERSO_G_KWH, FATOR_ELET_G_KWH, IVA_POTENCIA, KG_CO2_POR_KWH_GPL, KG_GARRAFA,
+                     KWH_POR_KG_GPL, MAO_DE_OBRA_EUR, PRECO_GARRAFA_ALTO_EUR, PRECO_GARRAFA_EUR, PRECO_KWH_EUR,
+                     QUOTA_ATE_3_45_KVA, TERMO_POTENCIA_EUR_DIA, anos_equilibrio, custo_duowatt, custo_subir_potencia,
+                     extrapolar, impacto_casa)
 
 DADOS = Path(os.environ.get("DUOWATT_DADOS", Path(__file__).parent / "dados"))  # a variável só serve para testar
 KVA = [2.3, 3.45, 6.9, 10.35]
+IND_INTENSO_W = 3000  # pressuposto da equipa (Parametros_Verificados.md)
+
+
+def vir(x, casas=2):
+    return f"{x:.{casas}f}".replace(".", ",")
+
+
+def faixa(par, unid="€"):
+    return f"{par[0]:.0f}–{par[1]:.0f} {unid}".replace(".", ",")
 st.set_page_config(page_title="DuoWatt", layout="wide")
 # legibilidade em projetor: texto >= 16 px, cinzento só escuro, menos espaço no topo
 st.markdown(
@@ -25,6 +38,7 @@ h1 {font-size: 2rem !important; padding: 0 0 .25rem 0;}
 [data-testid="stSidebar"] input, [data-testid="stSidebar"] [data-baseweb="select"] div,
 [data-testid="stSidebar"] [role="radiogroup"] p {font-size: 16px !important; color: #222 !important;}
 h4 {margin: 0; padding: 0;}
+[data-testid="stTable"] td, [data-testid="stTable"] th {font-size: 16px !important; color: #222 !important;}
 </style>""",
     unsafe_allow_html=True,
 )
@@ -44,7 +58,7 @@ with st.sidebar:
         adocao = st.slider("Casas a GPL que trocam, em % (cenário)", 1, 20, 1)
 
 limite = int(kva * 1000)
-ind_w = 1800 if inducao.startswith("Moderado") else 3000
+ind_w = 1800 if inducao.startswith("Moderado") else IND_INTENSO_W
 sem = simular(limite, consumo, pessoas, litros, gestao=False, inducao_w=ind_w)
 com = simular(limite, consumo, pessoas, litros, gestao=True, inducao_w=ind_w)
 
@@ -55,7 +69,7 @@ cor = {
     "reserva de água insuficiente": st.warning,
     "precisa de mais potência": st.error,
 }[v]
-tab_diag, tab_provas = st.tabs(["Diagnóstico", "Provas do utilizador"])
+tab_diag, tab_viab, tab_dif, tab_provas = st.tabs(["Diagnóstico", "Viabilidade", "Diferenciação", "Provas do utilizador"])
 with tab_diag:
     cor(f"#### Veredicto: {v.capitalize()}")
 
@@ -142,9 +156,9 @@ with tab_diag:
     elif garrafas == 0:
         st.info("Sem gás a substituir: sem impacto de CO2.")
     else:
-        adverso = impacto_casa(garrafas, preco_kwh=preco_kwh, fator_elet_g_kwh=167)
+        adverso = impacto_casa(garrafas, preco_kwh=preco_kwh, fator_elet_g_kwh=FATOR_ELET_ADVERSO_G_KWH)
         st.markdown(f"**CO2:** gás {ev['co2_gas_kg']:.0f} kg/ano → elétrico {ev['co2_eletrico_kg']:.0f} kg/ano → evitado {ev['co2_evitado_kg']:.0f} kg/ano. "
-                    f"No pior cenário (167 g/kWh): {adverso['co2_evitado_kg']:.0f} kg/ano evitados.")
+                    f"No pior cenário ({FATOR_ELET_ADVERSO_G_KWH} g/kWh): {adverso['co2_evitado_kg']:.0f} kg/ano evitados.")
         nacional = extrapolar(ev["co2_evitado_kg"], adocao=adocao / 100)
         st.caption(
             f"Potencial da eletrificação (não atribuído ao DuoWatt), cenário ilustrativo: {adocao} % das 2,2 M de casas a GPL trocam: "
@@ -164,13 +178,120 @@ with tab_diag:
         "**Avisos honestos:** simulação ilustrativa, valores por validar; o cenário é um caso de demonstração. "
         "Não inclui custo do equipamento; gestão de cargas já existe no mercado (Schneider, ABB)."
     )
-    with st.expander("Pressupostos e limites"):
+    with st.expander("Pressupostos e limites: valores, fontes e classificação (clique para abrir)"):
         st.markdown(
             "- Cenário: indução 19:30-20:10 e duche às 19:45, com a base da casa estimada pelo consumo mensal.\n"
             "- Não inclui o termo de potência da fatura.\n"
             "- No INE (2020), 67 % das casas têm esquentador a gás e só 17 % têm termoacumulador: a maioria teria de comprar um aparelho novo (custo não incluído).\n"
             "- Não encontrámos controlo externo documentado nos Tronic."
         )
+        st.table(pd.DataFrame([
+            ("Potência do Tronic", f"{P_TERMO_W:,} W".replace(",", " "), "Ficha Bosch (Tronic 4001 T de 80 L ou mais)", "confirmado"),
+            ("Placa de indução", f"{vir(P_INDUCAO_W / 1000, 1)} kW moderado; {vir(IND_INTENSO_W / 1000, 1)} kW intenso", "Pressuposto da equipa, por confirmar", "hipótese"),
+            ("Base da casa", "consumo mensal ÷ 720 h", "Pressuposto (sem medições publicadas)", "hipótese"),
+            ("CO2 da eletricidade", f"{FATOR_ELET_G_KWH} g/kWh (cenário adverso: {FATOR_ELET_ADVERSO_G_KWH} g/kWh)", "APA 2023, média anual (167: média de 5 anos)", "confirmado"),
+            ("CO2 do GPL", f"{vir(KG_CO2_POR_KWH_GPL * KWH_POR_KG_GPL, 1)} kg/kg", "Fichas DGEG via comercializadores, não reverificado", "provável"),
+            ("Garrafa de butano", f"{PRECO_GARRAFA_EUR:.0f} € (cenário alto {faixa(PRECO_GARRAFA_ALTO_EUR)}); {KG_GARRAFA} kg", "Último preço anunciado, ERSE out 2026", "confirmado"),
+            ("Eletricidade", f"{vir(PRECO_KWH_EUR)} €/kWh marginal", "ERSE 2026, com IVA de 23 % acima de 200 kWh/mês", "derivado"),
+            ("Eficiência do esquentador / elétrica", f"{vir(EFIC_GAS)} / {vir(EFIC_ELETRICA)}", "Parametros_Verificados.md (Energy Star)", "provável"),
+            ("Termo de potência 3,45 / 6,9 kVA", f"{vir(TERMO_POTENCIA_EUR_DIA[3.45], 4)} / {vir(TERMO_POTENCIA_EUR_DIA[6.9], 4)} €/dia, sem IVA", "ERSE, Diretiva 4/2026", "confirmado"),
+            ("Casas com ≤3,45 kVA (proxy)", f"{QUOTA_ATE_3_45_KVA * 100:.0f} %", "E-REDES, dados 2023; inclui não domésticos", "provável (proxy)"),
+        ], columns=["Pressuposto", "Valor", "Fonte", "Classificação"]).set_index("Pressuposto"))
+
+
+with tab_viab:
+    st.subheader("Viabilidade: custo do DuoWatt contra subir a potência")
+    st.caption("Preços de retalho em Portugal (pesquisa web), não cotações oficiais nem resultados de ensaio. Etiquetas: confirmado / provável / derivado / hipótese.")
+    novo = st.radio("Quadro elétrico", ["Adequado", "Precisa de quadro novo"], horizontal=True) == "Precisa de quadro novo"
+    lo, hi = custo_duowatt(novo)
+    medio = (lo + hi) / 2
+    extra = custo_subir_potencia(3.45, 6.9)
+    extra_iva = extra * (1 + IVA_POTENCIA)
+    m = st.columns(3)
+    m[0].metric("DuoWatt instalado", faixa((lo, hi)), help="Derivado: material + mão de obra" + (" + quadro novo" if novo else ""))
+    m[1].metric("Subir 3,45 → 6,9 kVA", f"{extra:.0f}–{extra_iva:.0f} €/ano", help="Derivado: sem IVA e com IVA de 23 % (IVA por verificar)")
+    m[2].metric("DuoWatt compensa ao fim de", f"{anos_equilibrio(lo, extra_iva):.1f}–{anos_equilibrio(hi, extra):.1f} anos".replace(".", ","), help="Derivado: custo único ÷ extra anual")
+    st.table(pd.DataFrame([
+        ("Material sem contactor", f"{CUSTO_MATERIAL_DUOWATT_EUR[0]:.2f} €", "derivado (Shelly Pro EM 50 e Pro 2PM; IVA incluído, confirmado)"),
+        ("Material com contactor", f"{CUSTO_MATERIAL_DUOWATT_EUR[1]:.2f} €", "derivado (contactor Hager: provável, IVA por confirmar)"),
+        ("Mão de obra do eletricista", faixa(MAO_DE_OBRA_EUR), "hipótese (1 a 2 h a ~30 €/h; plataformas, não tarifa oficial)"),
+        ("Quadro novo, se for preciso", faixa(CUSTO_QUADRO_NOVO_EUR), "provável (Zaask, expert-zoom)"),
+        ("Subir a potência: custo único", "não encontrado", "orçamento da E-REDES se houver reforço; sem dado fiável"),
+        ("Subir a potência: por ano", f"{extra:.0f} € sem IVA; {extra_iva:.0f} € com IVA", "derivado; termo de potência confirmado (ERSE), IVA por verificar"),
+    ], columns=["Item", "Valor", "Classificação e fonte"]).set_index("Item"))
+
+    anos = list(range(ANOS_COMPARACAO + 1))
+    acum = pd.DataFrame(
+        [{"Ano": a, "Opção": "DuoWatt (ponto médio)", "€": medio} for a in anos]
+        + [{"Ano": a, "Opção": "Subir a potência, sem IVA", "€": extra * a} for a in anos]
+        + [{"Ano": a, "Opção": "Subir a potência, com IVA", "€": extra_iva * a} for a in anos]
+    )
+    ordem = ["DuoWatt (ponto médio)", "Subir a potência, sem IVA", "Subir a potência, com IVA"]
+    st.altair_chart(
+        alt.Chart(acum).mark_line(strokeWidth=4).encode(
+            x=alt.X("Ano:Q", scale=alt.Scale(domain=[0, ANOS_COMPARACAO], nice=False), title="Anos", axis=alt.Axis(values=anos)),
+            y=alt.Y("€:Q", title="Custo acumulado (€)"),
+            color=alt.Color("Opção:N", scale=alt.Scale(domain=ordem, range=["#0b57a4", "#b3261e", "#e67e22"]), legend=alt.Legend(title=None, orient="top")),
+            strokeDash=alt.StrokeDash("Opção:N", scale=alt.Scale(domain=ordem, range=[[1, 0], [8, 5], [2, 3]]), legend=alt.Legend(title=None, orient="top")),
+        ).properties(height=260)
+        .configure_axis(labelFontSize=14, titleFontSize=16, labelColor="#222", titleColor="#222")
+        .configure_legend(labelFontSize=16, labelColor="#222", symbolStrokeWidth=4, symbolSize=300),
+        width="stretch",
+    )
+    st.caption(f"Custo acumulado em {ANOS_COMPARACAO} anos, preços constantes, sem desconto (derivado). O DuoWatt aparece pelo ponto médio da faixa; não inclui o consumo do controlador, que não estimámos.")
+
+    st.markdown("**Efeito na fatura da família** (derivado, com os valores da barra lateral)")
+    if garrafas == 0:
+        st.info("Sem gás a substituir: sem poupança de combustível para comparar.")
+    else:
+        pg = impacto_casa(garrafas, preco_kwh=preco_kwh)["poupanca_eur"]
+        m = st.columns(3)
+        m[0].metric("Trocar gás por elétrico", f"{pg:+.0f} €/ano".replace("-", "−"), help="Poupança de combustível, sem custo de potência")
+        m[1].metric("Subindo a potência", f"{pg - extra:+.0f} €/ano".replace("-", "−"), help="Poupança menos o termo de potência extra (sem IVA)")
+        m[2].metric(f"Com DuoWatt ({ANOS_COMPARACAO} anos)", f"{pg - medio / ANOS_COMPARACAO:+.0f} €/ano".replace("-", "−"), help="Poupança menos o DuoWatt (ponto médio) amortizado")
+        st.caption("A mensagem honesta é descarbonizar sem custar mais, não poupar dinheiro. O custo do aparelho novo não está incluído em nenhum dos caminhos.")
+
+    st.markdown("**Próximos passos para a Bosch**")
+    st.markdown(
+        "1. Validar a segurança com um eletricista habilitado e com a equipa de produto (contactor, proteções, normas).\n"
+        "2. Perguntar à Bosch se algum Tronic ou a app HomeCom Easy aceita controlo externo; se sim, o hardware pode reduzir-se ao medidor.\n"
+        "3. Ensaio em bancada para medir minutos acima do limite, comutações e água quente.\n"
+        "4. Piloto com 20 a 30 casas de instaladores parceiros, com o diagnóstico no momento da avaria."
+    )
+    st.markdown("**Riscos principais**")
+    st.markdown(
+        "- **Segurança elétrica:** instalação por eletricista habilitado; normas, proteções e anti-legionela por validar.\n"
+        "- **Esquentador contra termoacumulador:** 67 % das casas têm esquentador e só 17 % termoacumulador (INE 2020, confirmado): a maioria teria de comprar um aparelho novo e ter espaço.\n"
+        "- **Valores por confirmar:** IVA da potência, taxa da E-REDES, IVA do contactor, mão de obra e preço de um produto industrial."
+    )
+
+
+with tab_dif:
+    st.subheader("Diferenciação: o que já existe e o que testamos")
+    st.caption("Não encontrado não prova que não exista: parte desta pesquisa assenta em resultados de pesquisa web, não em leitura direta das fontes.")
+    st.table(pd.DataFrame([
+        ("Gestão antidisparo", "Legrand, Schneider", "Cortam cargas para o quadro não disparar; não dizem se a casa deve trocar gás por elétrico."),
+        ("Medidores programáveis", "Shelly, Sonoff", "Medem e comandam; a lógica de corte é do utilizador, não vêm prontos como antidisparo."),
+        ("Gestores de energia", "SMA, my-PV, Bosch Energy Manager", "Pensados para quem tem solar; nenhuma ligação a Tronic encontrada."),
+        ("Simuladores de potência", "ERSE, EDP, Iberdrola", "Só potência e tarifa; não tratam a troca de gás por elétrico."),
+    ], columns=["O que já existe", "Exemplos", "O que não faz para o nosso caso"]).set_index("O que já existe"))
+    st.info(
+        "**O que o DuoWatt acrescenta (hipótese)**\n\n"
+        "1. Um diagnóstico gás → elétrico com quatro veredictos, em vez de só sugerir um escalão de potência.\n"
+        "2. Diagnóstico e gestão no mesmo conceito: o veredicto \"aguenta com gestão\" só existe porque há uma gestão que o torna verdadeiro.\n"
+        "3. O momento e o canal, a testar: o diagnóstico na hora da avaria, por quem vende o aparelho, ligado à venda do termoacumulador Bosch."
+    )
+    st.warning(
+        "**O que não afirmamos**\n\n"
+        "- Que somos pioneiros ou que ninguém faz isto: não está provado.\n"
+        "- Que os Tronic aceitam controlo externo: nada encontrado na documentação portuguesa.\n"
+        "- Que o diagnóstico é melhor do que o das ferramentas oficiais (ERSE, Bosch): não as comparámos por dentro."
+    )
+    st.markdown(
+        "> A gestão de cargas já existe, e os simuladores de potência também. O que não encontrámos foi uma ferramenta que, "
+        "no momento em que o esquentador avaria, diga à família se a casa aguenta passar a elétrico, e que, se for preciso, "
+        "resolva o limite de potência sem subir o contrato. É isso que propomos testar com instaladores da Bosch."
+    )
 
 
 def pc(x):
