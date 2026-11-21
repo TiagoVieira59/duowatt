@@ -337,3 +337,26 @@ with tab_provas:
         for par in range(0, len(graficos), 2):
             for col, img in zip(st.columns(2), graficos[par:par + 2]):
                 col.image(str(img))
+
+    ent = DADOS / "entrevistas.json"
+    if ent.is_file():
+        try:
+            lista = [e for e in json.loads(ent.read_text(encoding="utf-8")) if isinstance(e, dict)]
+        except (OSError, ValueError, TypeError):
+            lista = None
+        if lista is None:
+            st.warning("Ficheiro de entrevistas inválido: ver ferramentas/modelo_entrevistas.json")
+        else:
+            # ignora campos vazios ou por preencher (começam por "[")
+            lista = [{k: str(e[k]).strip() for k in ("perfil", "data", "citacao", "facto") if str(e.get(k, "")).strip() and not str(e[k]).strip().startswith("[")} for e in lista]
+            lista = [e for e in lista if e.get("citacao") or e.get("facto")]
+            if lista:
+                nomes = {"A": "morador com gás de garrafa", "B": "instalador ou loja de esquentadores", "C": "eletricista"}
+                st.subheader(f"Entrevistas da equipa ({len(lista)})")
+                for e in lista:
+                    with st.container(border=True):
+                        st.markdown(f"**Perfil {e.get('perfil', '?')}: {nomes.get(e.get('perfil'), 'sem perfil')}**" + (f" · {e['data']}" if e.get("data") else ""))
+                        if e.get("citacao"):
+                            st.markdown(f"«{e['citacao']}»")
+                        if e.get("facto"):
+                            st.markdown(f"Facto: {e['facto']}")
