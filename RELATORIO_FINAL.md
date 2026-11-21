@@ -7,12 +7,12 @@ Estado: 21 nov 2026, de madrugada. Entrega às 17:30. Este relatório descreve o
 |---|---|---|
 | 1 Clareza do problema e provas do utilizador | 20 % | **1** |
 | 2 Impacto mensurável | 20 % | 3 |
-| 3 Solução e demonstração | 15 % | 3,5 |
+| 3 Solução e demonstração | 15 % | **4** (era 3,5 no ciclo 4) |
 | 4 Viabilidade técnica, económica e de implementação | 15 % | 4 |
 | 5 Originalidade e diferenciação | 10 % | 3 |
-| **Nota ponderada (sábado)** | | **2,78 / 5** |
+| **Nota ponderada (sábado)** | | **2,9 / 5** (era 2,78 no ciclo 4) |
 
-O Júri é um modelo que só viu o enunciado, os screenshots e os documentos; é um guia, não uma previsão. Antes dos critérios oficiais, a rubrica interna dava ao ciclo 0 (linha de base) 3, 2, 3, 2, 3, 4, 3 em R1–R7; **não é comparável** com esta tabela (outros critérios e escala).
+Avaliação final (`equipa/juri_final.md`). O Júri é um modelo que só viu o enunciado, os screenshots e os documentos; é um guia, não uma previsão. Antes dos critérios oficiais, a rubrica interna dava ao ciclo 0 (linha de base) 3, 2, 3, 2, 3, 4, 3 em R1–R7; **não é comparável** com esta tabela (outros critérios e escala).
 **O que mais subiria a nota:** recolha real de dados de utilizadores (inquérito + 3 entrevistas: cerca de +0,5 na nota ponderada), validação por um eletricista e pela Bosch (controlo externo nos Tronic), e entrevistar um instalador. Ver `PLANO_RECOLHA_PROVAS.md`.
 
 ## 2. O que mudou e porquê
@@ -66,3 +66,6 @@ O Júri é um modelo que só viu o enunciado, os screenshots e os documentos; é
 
 ## 7. O que tem de acontecer antes das 17:30 (só a equipa pode)
 Ver `PLANO_RECOLHA_PROVAS.md` e a checklist no fim de `DEMO_GUIAO.md`: criar e partilhar o inquérito, fazer as 3 entrevistas, confirmar valores com a Mecânica e a Contabilidade, e confirmar o formato da entrega (`PERGUNTAS.md`).
+
+## 8. Porque se parou aqui
+O último Júri só subiu o critério 3 (3,5 → 4). O que mais subiria a nota (dados reais de utilizadores, validação por eletricista e pela Bosch, entrevista a um instalador, dado real de casas a GPL por potência) **depende de pessoas**, não de código; qualquer ciclo novo seria polimento de baixo impacto. Estado final: `main` na tag `final`, 43 testes a passar (4 falhas esperadas justificadas), servidor Streamlit desligado, screenshots em `screenshots/final/`.
