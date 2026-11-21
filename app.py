@@ -38,6 +38,8 @@ h1 {font-size: 2rem !important; padding: 0 0 .25rem 0;}
 [data-testid="stSidebar"] input, [data-testid="stSidebar"] [data-baseweb="select"] div,
 [data-testid="stSidebar"] [role="radiogroup"] p {font-size: 16px !important; color: #222 !important;}
 h4 {margin: 0; padding: 0;}
+[data-testid="stMarkdownContainer"] blockquote {border-left: 4px solid #0b57a4;}
+[data-testid="stMarkdownContainer"] blockquote p {font-size: 18px !important; color: #222 !important; font-style: italic;}
 [data-testid="stTable"] td, [data-testid="stTable"] th {font-size: 16px !important; color: #222 !important;}
 </style>""",
     unsafe_allow_html=True,
@@ -133,7 +135,7 @@ with tab_diag:
         (serao + linha("Sem gestão", 8) + linha("Com DuoWatt", 4) + lim + rotulo)
         .properties(height=240)
         .configure_axis(labelFontSize=14, titleFontSize=16, labelColor="#222", titleColor="#222")
-        .configure_legend(labelFontSize=16, labelColor="#222", symbolStrokeWidth=4, symbolSize=300),
+        .configure_legend(labelFontSize=16, labelColor="#222", symbolStrokeWidth=4, symbolSize=300, labelLimit=400),
         width="stretch",
     )
 
@@ -200,6 +202,7 @@ with tab_diag:
 
 
 with tab_viab:
+    st.caption("Os controlos da barra lateral aplicam-se ao separador Diagnóstico (e ao cenário usado nos cálculos de custo).")
     st.subheader("Viabilidade: custo do DuoWatt contra subir a potência")
     st.caption("Preços de retalho em Portugal (pesquisa web), não cotações oficiais nem resultados de ensaio. Etiquetas: confirmado / provável / derivado / hipótese.")
     novo = st.radio("Quadro elétrico", ["Adequado", "Precisa de quadro novo"], horizontal=True) == "Precisa de quadro novo"
@@ -212,8 +215,8 @@ with tab_viab:
     m[1].metric("Subir 3,45 → 6,9 kVA", f"{extra:.0f}–{extra_iva:.0f} €/ano", help="Derivado: sem IVA e com IVA de 23 % (IVA por verificar)")
     m[2].metric("DuoWatt compensa ao fim de", f"{anos_equilibrio(lo, extra_iva):.1f}–{anos_equilibrio(hi, extra):.1f} anos".replace(".", ","), help="Derivado: custo único ÷ extra anual")
     st.table(pd.DataFrame([
-        ("Material sem contactor", f"{CUSTO_MATERIAL_DUOWATT_EUR[0]:.2f} €", "derivado (Shelly Pro EM 50 e Pro 2PM; IVA incluído, confirmado)"),
-        ("Material com contactor", f"{CUSTO_MATERIAL_DUOWATT_EUR[1]:.2f} €", "derivado (contactor Hager: provável, IVA por confirmar)"),
+        ("Material sem contactor", f"{vir(CUSTO_MATERIAL_DUOWATT_EUR[0])} €", "derivado (Shelly Pro EM 50 e Pro 2PM; IVA incluído, confirmado)"),
+        ("Material com contactor", f"{vir(CUSTO_MATERIAL_DUOWATT_EUR[1])} €", "derivado (contactor Hager: provável, IVA por confirmar)"),
         ("Mão de obra do eletricista", faixa(MAO_DE_OBRA_EUR), "hipótese (1 a 2 h a ~30 €/h; plataformas, não tarifa oficial)"),
         ("Quadro novo, se for preciso", faixa(CUSTO_QUADRO_NOVO_EUR), "provável (Zaask, expert-zoom)"),
         ("Subir a potência: custo único", "não encontrado", "orçamento da E-REDES se houver reforço; sem dado fiável"),
@@ -222,20 +225,20 @@ with tab_viab:
 
     anos = list(range(ANOS_COMPARACAO + 1))
     acum = pd.DataFrame(
-        [{"Ano": a, "Opção": "DuoWatt (ponto médio)", "€": medio} for a in anos]
-        + [{"Ano": a, "Opção": "Subir a potência, sem IVA", "€": extra * a} for a in anos]
-        + [{"Ano": a, "Opção": "Subir a potência, com IVA", "€": extra_iva * a} for a in anos]
+        [{"Ano": a, "Opção": "DuoWatt", "€": medio} for a in anos]
+        + [{"Ano": a, "Opção": "Subir potência (sem IVA)", "€": extra * a} for a in anos]
+        + [{"Ano": a, "Opção": "Subir potência (com IVA)", "€": extra_iva * a} for a in anos]
     )
-    ordem = ["DuoWatt (ponto médio)", "Subir a potência, sem IVA", "Subir a potência, com IVA"]
+    ordem = ["DuoWatt", "Subir potência (sem IVA)", "Subir potência (com IVA)"]
     st.altair_chart(
         alt.Chart(acum).mark_line(strokeWidth=4).encode(
             x=alt.X("Ano:Q", scale=alt.Scale(domain=[0, ANOS_COMPARACAO], nice=False), title="Anos", axis=alt.Axis(values=anos)),
             y=alt.Y("€:Q", title="Custo acumulado (€)"),
-            color=alt.Color("Opção:N", scale=alt.Scale(domain=ordem, range=["#0b57a4", "#b3261e", "#e67e22"]), legend=alt.Legend(title=None, orient="top")),
-            strokeDash=alt.StrokeDash("Opção:N", scale=alt.Scale(domain=ordem, range=[[1, 0], [8, 5], [2, 3]]), legend=alt.Legend(title=None, orient="top")),
+            color=alt.Color("Opção:N", scale=alt.Scale(domain=ordem, range=["#0b57a4", "#b3261e", "#e67e22"]), legend=alt.Legend(title=None, orient="bottom")),
+            strokeDash=alt.StrokeDash("Opção:N", scale=alt.Scale(domain=ordem, range=[[1, 0], [8, 5], [2, 3]]), legend=alt.Legend(title=None, orient="bottom")),
         ).properties(height=260)
         .configure_axis(labelFontSize=14, titleFontSize=16, labelColor="#222", titleColor="#222")
-        .configure_legend(labelFontSize=16, labelColor="#222", symbolStrokeWidth=4, symbolSize=300),
+        .configure_legend(labelFontSize=16, labelColor="#222", symbolStrokeWidth=4, symbolSize=300, labelLimit=400),
         width="stretch",
     )
     st.caption(f"Custo acumulado em {ANOS_COMPARACAO} anos, preços constantes, sem desconto (derivado). O DuoWatt aparece pelo ponto médio da faixa; não inclui o consumo do controlador, que não estimámos.")
@@ -267,6 +270,7 @@ with tab_viab:
 
 
 with tab_dif:
+    st.caption("Os controlos da barra lateral aplicam-se ao separador Diagnóstico (e ao cenário usado nos cálculos de custo).")
     st.subheader("Diferenciação: o que já existe e o que testamos")
     st.caption("Não encontrado não prova que não exista: parte desta pesquisa assenta em resultados de pesquisa web, não em leitura direta das fontes.")
     st.table(pd.DataFrame([
@@ -299,6 +303,7 @@ def pc(x):
 
 
 with tab_provas:
+    st.caption("Os controlos da barra lateral aplicam-se ao separador Diagnóstico (e ao cenário usado nos cálculos de custo).")
     st.subheader("Dados da Bosch (enunciado do desafio): dados secundários, não são provas recolhidas por nós")
     cols = st.columns(5)
     for col, (rot, val) in zip(cols, [
