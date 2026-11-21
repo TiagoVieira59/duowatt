@@ -43,7 +43,6 @@ def test_recomendacao_018_exagera_a_poupanca():
     assert impacto_casa(10, preco_kwh=0.18)["poupanca_eur"] == pytest.approx(81.6, abs=0.1)
 
 
-@pytest.mark.xfail(strict=True, reason="PROBLEMA: comentário de impacto.py diz '0,171 € com IVA de 23 %' (0,171 é sem IVA; com 23 % é 0,2105)")
 def test_comentario_impacto_nao_mistura_iva():
     assert "0,171 € com IVA" not in (AQUI / "impacto.py").read_text(encoding="utf-8")
 
@@ -69,11 +68,13 @@ def test_co2_cenario_adverso_e_extrapolacao():
 
 def test_entradas_invalidas_nao_sao_rejeitadas():
     assert impacto_casa(-5)["poupanca_eur"] < 0          # garrafas negativas aceites
-    with pytest.raises(ZeroDivisionError):
+    with pytest.raises(ValueError):
         impacto_casa(10, efic_eletrica=0)
+    with pytest.raises(ValueError):
+        impacto_casa(10, efic_gas=0)
 
 
-@pytest.mark.xfail(strict=True, reason="PROBLEMA: 3 pessoas (simulador) precisam de mais energia útil de água quente (2,3 MWh/ano) do que 10 garrafas dão a TODA a casa (1,6 MWh/ano elétricos); pessoas e garrafas são entradas independentes")
+@pytest.mark.xfail(strict=True, reason="DEPENDE DE DECISÃO (ligar pessoas a garrafas muda a UI/valores): 3 pessoas (simulador) precisam de mais energia útil de água quente (2,3 MWh/ano) do que 10 garrafas dão a TODA a casa (1,6 MWh/ano elétricos); pessoas e garrafas são entradas independentes")
 def test_pessoas_e_garrafas_sao_coerentes():
     aqs_ano = 3 * KWH_AQS_PESSOA * 365
     assert aqs_ano <= impacto_casa(10)["kwh_eletrico"]
@@ -92,7 +93,7 @@ def test_margem_da_casa_media_sem_termo_e_minuscula():
     assert veredicto(3450, 280, inducao_w=3000) == "aguenta com gestão"
 
 
-@pytest.mark.xfail(strict=True, reason="PROBLEMA: base plana (389 W para 280 kWh/mês) subestima o serão (~600 W, pressuposto); com 600 W a casa média + indução 3 kW devia dar 'precisa de mais potência'")
+@pytest.mark.xfail(strict=True, reason="DEPENDE DE DECISÃO (valor sem fonte: base ao serão ~600 W): base plana (389 W para 280 kWh/mês) subestima o serão (~600 W, pressuposto); com 600 W a casa média + indução 3 kW devia dar 'precisa de mais potência'")
 def test_casa_media_com_inducao_forte_ao_serao():
     assert veredicto(3450, 280, inducao_w=3000) == "precisa de mais potência"
 
@@ -129,13 +130,13 @@ def test_balanco_do_deposito_fecha(pessoas, litros):
     assert termo_kwh(r, 200) == pytest.approx(pessoas * KWH_AQS_PESSOA, abs=0.1)
 
 
-@pytest.mark.xfail(strict=True, reason="PROBLEMA: 8 pessoas/200 L acabam o dia 1,5 kWh abaixo do cheio (o aquecimento do serão acaba depois da meia-noite) mas o dia seguinte começaria cheio: o simulador esconde o défice")
+@pytest.mark.xfail(strict=True, reason="DEPENDE DE DECISÃO (muda a lógica do simulador, fora do âmbito): 8 pessoas/200 L acabam o dia 1,5 kWh abaixo do cheio (o aquecimento do serão acaba depois da meia-noite) mas o dia seguinte começaria cheio: o simulador esconde o défice")
 def test_dia_fecha_em_regime_estacionario_8_pessoas():
     r = simular(6900, 200, 8, 200, gestao=False)
     assert termo_kwh(r, 200) == pytest.approx(8 * KWH_AQS_PESSOA, abs=0.1)
 
 
-@pytest.mark.xfail(strict=True, reason="PROBLEMA: sem perdas térmicas em repouso (Parametros_Verificados.md: ~1,5 kWh/24 h para 80 L); impacto.py usa 85 % mas o simulador usa 100 %")
+@pytest.mark.xfail(strict=True, reason="DEPENDE DE DECISÃO (valor de perdas muda o simulador): sem perdas térmicas em repouso (Parametros_Verificados.md: ~1,5 kWh/24 h para 80 L); impacto.py usa 85 % mas o simulador usa 100 %")
 def test_perdas_em_repouso_modeladas():
     r = simular(6900, 200, 3, 100, gestao=False)
     assert termo_kwh(r, 200) >= 3 * KWH_AQS_PESSOA + 1.0
