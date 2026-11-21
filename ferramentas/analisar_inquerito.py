@@ -1,4 +1,4 @@
-"""Analisa o CSV exportado do Google Forms (ver INQUERITO.md).
+"""Analisa o CSV exportado do Google Forms (ver docs/provas/INQUERITO.md).
 
 Uso: .venv/bin/python ferramentas/analisar_inquerito.py <respostas.csv> [--saida dados/]
 Gera inquerito_resumo.json, inquerito_resumo.md e graficos/P<n>.png na pasta de saída.
@@ -20,7 +20,7 @@ RAIZ = Path(__file__).resolve().parent.parent
 AMOSTRA_MIN = 30
 CHECKBOX = {"P1", "P6"}
 TEXTO_LIVRE = "P11"
-# opções do INQUERITO.md (ordem de apresentação); o que não constar agrupa-se em "Outra" nas caixas de verificação
+# opções de docs/provas/INQUERITO.md (ordem de apresentação); o que não constar agrupa-se em "Outra" nas caixas de verificação
 OPCOES = {
     "P1": ["Esquentador (água quente)", "Fogão ou placa a gás", "Forno a gás", "Aquecedor a gás",
            "Nenhum (só gás natural ou eletricidade)"],

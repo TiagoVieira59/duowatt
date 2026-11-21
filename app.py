@@ -26,7 +26,7 @@ def _esc(s):
 
 PT_EIXO = "replace(format(datum.value, ','), ',', '\u00a0')"  # milhares PT-PT no eixo
 KVA = [2.3, 3.45, 6.9, 10.35]
-IND_INTENSO_W = 3000  # pressuposto da equipa (Parametros_Verificados.md)
+IND_INTENSO_W = 3000  # pressuposto da equipa (docs/PARAMETROS.md)
 
 
 def vir(x, casas=2):
@@ -194,7 +194,7 @@ with tab_diag:
         _linhas, _base = tabela_adocao({"ev": ev})
         st.table(pd.DataFrame(_linhas, columns=COLUNAS_ADOCAO).set_index("Adoção"))
         st.caption(f"CO₂ {_base}; só casas com o limite de potência como bloqueio (até 44 %, proxy). 870 kton e 60 M€/ano: enunciado Bosch (confirmado); "
-                   "a parte do mercado é proporcional ao nº de casas (hipótese). Adoção 1/5/10 %: cenários ilustrativos, sem dado. Sensibilidade completa em IMPACTO.md.")
+                   "a parte do mercado é proporcional ao nº de casas (hipótese). Adoção 1/5/10 %: cenários ilustrativos, sem dado. Sensibilidade completa em docs/IMPACTO.md.")
         st.caption(
             "O CO2 só desce se o gás for mesmo substituído, e a troca pode acontecer sem o DuoWatt: "
             "o que o DuoWatt faz é tirar o bloqueio da potência. O fator é uma média anual, não marginal."
@@ -219,7 +219,7 @@ with tab_diag:
             ("CO2 do GPL", f"{vir(KG_CO2_POR_KWH_GPL * KWH_POR_KG_GPL, 1)} kg/kg", "Fichas DGEG via comercializadores, não reverificado", "provável"),
             ("Garrafa de butano", f"{PRECO_GARRAFA_EUR:.0f} € (cenário alto {faixa(PRECO_GARRAFA_ALTO_EUR)}); {KG_GARRAFA} kg", "Último preço anunciado, ERSE out 2026", "confirmado"),
             ("Eletricidade", f"{vir(PRECO_KWH_EUR)} €/kWh marginal", "ERSE 2026, com IVA de 23 % acima de 200 kWh/mês", "derivado"),
-            ("Eficiência do esquentador / elétrica", f"{vir(EFIC_GAS)} / {vir(EFIC_ELETRICA)}", "Parametros_Verificados.md (Energy Star)", "provável"),
+            ("Eficiência do esquentador / elétrica", f"{vir(EFIC_GAS)} / {vir(EFIC_ELETRICA)}", "docs/PARAMETROS.md (Energy Star)", "provável"),
             ("Termo de potência 3,45 / 6,9 kVA", f"{vir(TERMO_POTENCIA_EUR_DIA[3.45], 4)} / {vir(TERMO_POTENCIA_EUR_DIA[6.9], 4)} €/dia, sem IVA", "ERSE, Diretiva 4/2026", "confirmado"),
             ("Casas com ≤3,45 kVA (proxy)", f"{QUOTA_ATE_3_45_KVA * 100:.0f} %", "E-REDES, dados 2023; inclui não domésticos", "provável (proxy)"),
         ], columns=["Pressuposto", "Valor", "Fonte", "Classificação"]).set_index("Pressuposto"))
@@ -285,7 +285,7 @@ with tab_viab:
         "3. Ensaio em bancada para medir minutos acima do limite, comutações e água quente.\n"
         "4. Piloto com 20 a 30 casas de instaladores parceiros, com o diagnóstico no momento da avaria."
     )
-    st.markdown("**Plano por fases para a Bosch** (estimativas e prazos por validar; ver VIABILIDADE.md §8)")
+    st.markdown("**Plano por fases para a Bosch** (estimativas e prazos por validar; ver docs/NEGOCIO.md)")
     st.table(pd.DataFrame([
         ("1. Piloto", "20–30 casas com instaladores parceiros, 3 meses", "Relés e medidores de retalho (~200–280 € por casa) + horas de instalador", "Disparos evitados, minutos sem água, satisfação do instalador"),
         ("2. Certificação", "Controlador/relé em conformidade com as normas de baixa tensão; ensaio anti-legionela", "Laboratório e engenharia: sem estimativa fiável", "Parecer positivo do laboratório e de um eletricista habilitado"),
@@ -380,7 +380,7 @@ with tab_provas:
     except (OSError, ValueError):
         r = None
     if r is None:
-        st.info("Ainda sem dados: inquérito e entrevistas em recolha (ver INQUERITO.md e ENTREVISTAS.md)")
+        st.info("Ainda sem dados: inquérito e entrevistas em recolha (ver docs/provas/)")
     else:
         ind = r.get("indicadores", {})
         st.markdown(f"**Inquérito: n = {r['n_respostas']} respostas.**" + (" Amostra pequena: percentagens indicativas." if r["n_respostas"] < 30 else ""))

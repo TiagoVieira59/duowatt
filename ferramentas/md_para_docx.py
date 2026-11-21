@@ -1,4 +1,4 @@
-"""Converte o subconjunto de Markdown do GUIA_EQUIPA.md (#, ##, -, tabelas, **negrito**) para .docx. Uso: md_para_docx.py in.md out.docx"""
+"""Converte o subconjunto de Markdown do docs/GUIA_EQUIPA.md (#, ##, -, tabelas, **negrito**) para .docx. Uso: md_para_docx.py in.md out.docx"""
 import re
 import sys
 

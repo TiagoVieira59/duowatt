@@ -1,6 +1,6 @@
 """DuoWatt: CO2 e custo anuais de uma casa, gás (GPL) contra elétrico.
 
-Valores marcados 'a validar' estão em Parametros_Simulador.md / Parametros_Verificados.md.
+Valores marcados 'a validar' estão em docs/PARAMETROS.md.
 """
 
 KG_GARRAFA = 13                    # butano T3
@@ -8,12 +8,12 @@ KWH_POR_KG_GPL = 46 / 3.6          # PCI 46 MJ/kg -> ~12,8 kWh/kg
 KG_CO2_POR_KWH_GPL = 0.063 * 3.6   # 63 tCO2/TJ -> ~0,227 kg/kWh
 CASAS_GPL = 2_200_000              # enunciado Bosch
 # Termo de potência (€/dia, sem IVA): ERSE, Diretiva 4/2026, em vigor desde 1 out 2026,
-# comercializador de último recurso (PESQUISA.md, secção 4).
+# comercializador de último recurso (docs/PARAMETROS.md).
 TERMO_POTENCIA_EUR_DIA = {3.45: 0.1917, 6.9: 0.3659}
 # PROXY: <3,45 kVA = 44,1 % dos contratos BTN (E-REDES, perfis 2025, dados 2023);
 # inclui não domésticos e não é específico das casas a GPL.
 QUOTA_ATE_3_45_KVA = 0.44
-# Valores por omissão de impacto_casa (Parametros_Verificados.md), expostos para a app os citar.
+# Valores por omissão de impacto_casa (docs/PARAMETROS.md), expostos para a app os citar.
 PRECO_GARRAFA_EUR = 37.0                # confirmado: último preço anunciado (ERSE, out 2026)
 PRECO_GARRAFA_ALTO_EUR = (42.0, 43.55)  # confirmado: cenário alto
 PRECO_KWH_EUR = 0.21                    # derivado: marginal com IVA 23 % (tarifa regulada ERSE 2026)
@@ -21,7 +21,7 @@ FATOR_ELET_G_KWH = 107                  # confirmado: APA 2023, média anual
 FATOR_ELET_ADVERSO_G_KWH = 167          # confirmado: APA, média de 5 anos (cenário adverso)
 EFIC_GAS = 0.82                         # provável: esquentador
 EFIC_ELETRICA = 0.85                    # provável: termoacumulador/indução (Energy Star)
-# Custo do DuoWatt (VIABILIDADE.md §2; preços de retalho PT, não cotações oficiais).
+# Custo do DuoWatt (docs/NEGOCIO.md; preços de retalho PT, não cotações oficiais).
 CUSTO_MATERIAL_DUOWATT_EUR = (171.87, 221.65)  # derivado: sem / com contactor (Shelly Pro EM 50 + Pro 2PM [+ Hager ESC225]); IVA do contactor por confirmar
 MAO_DE_OBRA_EUR = (30, 60)                     # hipótese: 1 a 2 h a ~30 €/h (plataformas, não tarifa oficial)
 CUSTO_QUADRO_NOVO_EUR = (150, 400)             # provável: Zaask, expert-zoom
@@ -34,7 +34,7 @@ def impacto_casa(garrafas_ano, preco_garrafa=PRECO_GARRAFA_EUR, preco_kwh=PRECO_
     """CO2 (kg/ano) e custo (€/ano) de uma casa, antes (GPL) e depois (elétrico).
 
     A mesma energia útil (água quente + cozinha) é entregue por eletricidade.
-    Valores de Parametros_Verificados.md: preco_garrafa 37 € (último preço
+    Valores de docs/PARAMETROS.md: preco_garrafa 37 € (último preço
     anunciado, out 2026; cenário alto 42-43,5 €), preco_kwh 0,21 €/kWh (preço
     marginal: tarifa regulada 0,171 € SEM IVA; com IVA de 23 % acima dos 200 kWh/mês
     dá ~0,21 €; abaixo desse escalão (IVA 6 %) é ~0,18 €), fator_elet_g_kwh 107 (APA 2023, média anual de

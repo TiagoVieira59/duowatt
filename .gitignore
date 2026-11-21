@@ -3,5 +3,7 @@ __pycache__/
 .pytest_cache/
 screenshots/*/*.tmp
 /respostas*.csv
+/*.csv
+ferramentas/retomar.log
 .agents/
 .claude/

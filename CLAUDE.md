@@ -3,18 +3,16 @@
 Projeto DuoWatt, Hackathon@ShiftE 2026, desafio Bosch. Responde sempre em **português europeu (PT-PT)**.
 
 ## Começa por aqui
-0. Lê primeiro `HANDOFF.md`.
-1. Lê `PROGRESSO.md` (estado, notas do Júri, próximo passo).
-2. Lê `CONTEXTO_Projeto_DuoWatt.md` e `CRITERIOS_AVALIACAO.md`.
-3. Para retomar o trabalho: "Lê PROGRESSO.md e continua".
+1. Lê `HANDOFF.md` (estado, decisões, comandos, mapa da pasta).
+2. Lê `PROGRESSO.md` e `docs/PRODUTO.md` (conceito) e `docs/CRITERIOS_AVALIACAO.md`.
 
 ## Conceito fixo
-DuoWatt = diagnóstico gás → elétrico + gestão de potência que pausa o termoacumulador (casas de 3,45 kVA). Só software/simulação. Não mudar de conceito; ideias alternativas vão para `ALTERNATIVAS.md`, nunca para o código.
+DuoWatt = kit de 2 peças (sensor no quadro + módulo de controlo do cilindro) que completa os cilindros elétricos Bosch: pausa o cilindro antes de a luz ir abaixo (desliga a ~90 %, religa a <80 %, pausa máx. 30 min, modo seguro sem sensor). Só software/simulação, nada de hardware. A fonte de verdade é `docs/referencia/PROMPT_Kit_DuoWatt_Final.md`.
 
 ## Regras (não negociáveis)
-- **Nunca inventar dados de utilizadores**, citações nem resultados de inquérito. Os dados reais só entram em `dados/`.
-- Nunca escrever "somos os primeiros", "sem eletricista", "sem obras", nem que os Tronic se ligam a um gestor de energia.
-- Todo o número novo leva fonte e classificação (confirmado / provável / derivado / hipótese). Valores por omissão alterados registam-se em `DECISOES.md`.
-- O Tiago decide e o Claude escreve o código; perguntas curtas, em texto, sem escolha múltipla.
-- `main` fica sempre demonstrável: testes verdes e app a arrancar sem erros (ver `README.md`).
-- Não editar os PDFs nem os .docx da equipa. Entrega 21 nov 17:30; a partir das 14:00 só correções de erros.
+- **Nunca inventar dados de utilizadores**, citações, resultados de inquérito, preços ou números de negócio (`[a preencher pela Contabilidade]`). Dados reais só em `dados/`.
+- Nunca "somos os primeiros", "sem eletricista", "sem obras", nem que os Tronic se ligam a um gestor de energia. Nunca "a Bosch não tem": usar "pelo que vimos na gama Tronic".
+- Todo o número novo leva fonte e classificação (confirmado / provável / derivado / pressuposto).
+- Sem logótipo, cores ou tipografia da Bosch.
+- `main` fica sempre demonstrável: testes verdes e app a arrancar sem erros.
+- Não editar os PDFs nem os .docx da equipa (em `docs/referencia/`).

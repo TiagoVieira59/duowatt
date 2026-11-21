@@ -8,3 +8,6 @@
 6. **Recolha de provas (critério 1, 20 %):** quem da equipa cria o Google Forms (`INQUERITO.md`) e faz as entrevistas (`ENTREVISTAS.md`)? Sem dados reais de utilizadores, a nota deste critério fica em 1 ou 2. Meta: 30 respostas e 3 entrevistas (1 por perfil). O script `ferramentas/analisar_inquerito.py` trata do CSV.
 
 7. **Retoma automática (noite 2, Fase 2) NÃO criada:** o classificador de permissões do Claude Code bloqueou a criação de `ferramentas/retomar.sh` + cron (agente a relançar-se com ferramentas pré-autorizadas). Não contornei. Se a sessão parar no limite, retoma manualmente: "Lê PROGRESSO.md e continua". Para ativar, o Tiago tem de autorizar essa ação (regra de permissão Bash) e pedir de novo.
+
+## Fase A (kit)
+- `ferramentas/criar_formulario.gs` e `docs/provas/INQUERITO.md` não foram alterados (regra do prompt). O comentário do .gs aponta para caminhos antigos (`INQUERITO.md`, `FORMS_INSTRUCOES.md`, agora em `docs/provas/`). Algumas perguntas do inquérito (ex.: assistente, relatório) podem já não fazer sentido com o conceito novo: rever com a equipa. Escolha prudente: manter.
