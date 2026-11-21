@@ -16,6 +16,8 @@ h1 {font-size: 2rem !important; padding: 0 0 .25rem 0;}
 [data-testid="stCaptionContainer"] p {color: #333 !important;}
 [data-testid="stMetricValue"] {font-size: 2rem;}
 [data-testid="stAlert"] p {font-size: 16px;}
+[data-testid="stSidebar"] input, [data-testid="stSidebar"] [data-baseweb="select"] div,
+[data-testid="stSidebar"] [role="radiogroup"] p {font-size: 16px !important; color: #222 !important;}
 h4 {margin: 0; padding: 0;}
 </style>""",
     unsafe_allow_html=True,
@@ -57,7 +59,8 @@ elif com["minutos_acima"] == 0:
     frase = f"Com gestão deixa de exceder o limite (sem ela passa {sem['minutos_acima']} min acima)."
 else:
     frase = f"Mesmo com gestão excede o limite durante {com['minutos_acima']} min."
-st.markdown(f"**{frase}** Margem ao serão (limite menos base menos indução): {margem:,.0f} W.".replace(",", " "))
+folga = f"Folga com a placa ligada: {margem:,.0f} W." if margem >= 0 else f"Faltam {-margem:,.0f} W para a placa ligada caber."
+st.markdown(f"**{frase}** {folga}".replace(",", " "))
 
 if v == "precisa de mais potência":
     co2 = "n/d"
@@ -70,7 +73,7 @@ else:
 a, b, c = st.columns(3)
 a.metric("Pico sem gestão", f"{sem['pico_w']:,.0f} W".replace(",", " "))
 b.metric("Pico com DuoWatt", f"{com['pico_w']:,.0f} W".replace(",", " "))
-c.metric("CO2 evitado por casa", co2, help=co2_ajuda)
+c.metric(f"CO2 evitado por casa ({fator} g/kWh)", co2, help=co2_ajuda)
 
 # gráfico só do serão (17:00-23:00); domínios explícitos evitam avisos "Infinite extent"
 ini, fim = 17 * 60, 23 * 60
@@ -80,22 +83,23 @@ dados = pd.DataFrame(
      for m, w in enumerate(r["total_w"]) if ini <= m <= fim]
 )
 topo = max(limite, sem["pico_w"], com["pico_w"]) * 1.15
-x = alt.X("Hora:Q", scale=alt.Scale(domain=[17, 23]), title=None,
+xs = alt.Scale(domain=[17, 23], zero=False, nice=False)  # mesma escala em todas as camadas (senão volta a incluir 0)
+x = alt.X("Hora:Q", scale=xs, title=None,
           axis=alt.Axis(values=list(range(17, 24)), labelExpr="datum.value + ':00'"))
 y = alt.Y("W:Q", scale=alt.Scale(domain=[0, topo]), title="Potência (W)")
 serie = alt.Color("Série:N", scale=alt.Scale(domain=["Sem gestão", "Com DuoWatt"], range=["#b3261e", "#0b57a4"]), legend=alt.Legend(title=None, orient="top"))
 traco = alt.StrokeDash("Série:N", scale=alt.Scale(domain=["Sem gestão", "Com DuoWatt"], range=[[8, 5], [1, 0]]), legend=alt.Legend(title=None, orient="top"))
 linha = lambda nome, larg: (alt.Chart(dados).transform_filter(alt.datum["Série"] == nome)
                             .mark_line(strokeWidth=larg, interpolate="step-after").encode(x=x, y=y, color=serie, strokeDash=traco))
-serao = alt.Chart(pd.DataFrame({"a": [INDUCAO[0] / 60], "b": [(INDUCAO[-1] + 1) / 60]})).mark_rect(color="#f5c542", opacity=0.3).encode(x="a:Q", x2="b:Q")
+serao = alt.Chart(pd.DataFrame({"a": [INDUCAO[0] / 60], "b": [(INDUCAO[-1] + 1) / 60]})).mark_rect(color="#f5c542", opacity=0.3).encode(x=alt.X("a:Q", scale=xs), x2="b:Q")
 lim = alt.Chart(pd.DataFrame({"W": [limite]})).mark_rule(color="#111", strokeWidth=4).encode(y="W:Q")
-rotulo = alt.Chart(pd.DataFrame({"Hora": [17.05], "W": [limite], "t": [f"Limite {kva:g} kW".replace(".", ",")]})).mark_text(
-    align="left", baseline="bottom", dy=-6, fontSize=16, fontWeight="bold", color="#111").encode(x="Hora:Q", y="W:Q", text="t:N")
+rotulo = alt.Chart(pd.DataFrame({"Hora": [22.95], "W": [limite], "t": [f"Limite {kva:g} kW".replace(".", ",")]})).mark_text(
+    align="right", baseline="bottom", dy=-6, fontSize=16, fontWeight="bold", color="#111").encode(x=alt.X("Hora:Q", scale=xs), y="W:Q", text="t:N")
 st.altair_chart(
-    (serao + linha("Sem gestão", 3) + linha("Com DuoWatt", 5) + lim + rotulo)
+    (serao + linha("Sem gestão", 8) + linha("Com DuoWatt", 4) + lim + rotulo)
     .properties(height=300)
     .configure_axis(labelFontSize=14, titleFontSize=16, labelColor="#222", titleColor="#222")
-    .configure_legend(labelFontSize=16, symbolStrokeWidth=4, symbolSize=300),
+    .configure_legend(labelFontSize=16, labelColor="#222", symbolStrokeWidth=4, symbolSize=300),
     width="stretch",
 )
 
@@ -123,12 +127,12 @@ elif garrafas == 0:
 else:
     adverso = impacto_casa(garrafas, preco_kwh=preco_kwh, fator_elet_g_kwh=167)
     a, b = st.columns(2)
-    a.metric("Cenário adverso (167 g/kWh)", f"{adverso['co2_evitado_kg']:.0f} kg/ano")
+    a.metric("No pior cenário (167 g/kWh)", f"{adverso['co2_evitado_kg']:.0f} kg/ano")
     b.metric("Poupança de custo" if ev["poupanca_eur"] >= 0 else "Custo extra", f"{abs(ev['poupanca_eur']):.0f} €/ano")
     nacional = extrapolar(ev["co2_evitado_kg"], adocao=adocao / 100)
-    st.metric(
-        f"Potencial da eletrificação (não atribuído ao DuoWatt), cenário ilustrativo: {adocao} % das 2,2 M de casas a GPL trocam",
-        f"{nacional:,.0f} t CO2/ano".replace(",", " "),
+    st.caption(
+        f"Potencial da eletrificação (não atribuído ao DuoWatt), cenário ilustrativo: {adocao} % das 2,2 M de casas a GPL trocam: "
+        f"{nacional:,.0f} t CO2/ano.".replace(",", " ")
     )
     st.caption(
         "O CO2 só desce se o gás for mesmo substituído, e a troca pode acontecer sem o DuoWatt: "
