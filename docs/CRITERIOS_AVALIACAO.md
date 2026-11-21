@@ -2,7 +2,7 @@
 
 Recebidos a 21 nov 2026. **Substituem a rubrica R1–R7** do prompt da equipa. Escala de 1 a 5 em cada critério.
 
-## Avaliado na entrega de sábado, 21 nov, 17:30
+## Avaliado na entrega de sábado, 21 nov, 18:30
 | # | Critério | Peso | 1 | 3 | 5 |
 |---|---|---|---|---|---|
 | 1 | Clareza do problema e provas do utilizador | 20 % | Problema assumido pela equipa, sem contacto com utilizadores | Algumas entrevistas ou inquérito, com conclusões genéricas | Dados reais de utilizadores (entrevistas, inquérito, observação) que sustentam claramente o problema e quem o sente |

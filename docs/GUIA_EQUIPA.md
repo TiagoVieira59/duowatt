@@ -1,76 +1,50 @@
 # Guia da equipa DuoWatt (para ler no telemóvel)
 
-Entrega: **sábado 21 nov, 17:30**. Às **14:00** a app congela: depois disso só se corrigem erros. Pitch a 25 nov.
+Entrega: **sábado 21 nov, 18:30** (tudo no GitHub às 18:00). Pitch a 25 nov.
 
-## 1. O DuoWatt numa frase e num parágrafo
-**Numa frase:** uma ferramenta que, no dia em que o esquentador a gás avaria, diz à família se a casa aguenta passar a elétrico sem aumentar a potência contratada.
+## 1. O DuoWatt em 1 parágrafo
+O DuoWatt é um kit que completa os cilindros elétricos Bosch: pausa o cilindro sozinho antes de a luz ir abaixo, para que as casas com esquentador a gás passem para elétrico sem medo e sem aumentar a potência. São 2 peças emparelhadas: um sensor no quadro e um módulo no cilindro, a falar localmente, sem internet. É só software e simulação: não há protótipo físico. Slogan: **"Garantia sem apagões"**.
 
-**Num parágrafo:** muitas casas têm 3,45 kVA. Se ligarem ao mesmo tempo a placa de indução e o termoacumulador, o quadro dispara. O DuoWatt faz duas coisas: (1) diagnostica a casa em 5 perguntas simples e dá um veredicto; (2) propõe uma gestão de potência que pausa o termoacumulador quando a casa está no limite, para não ser preciso subir o contrato. No fim, a família descarrega um relatório de uma página para levar ao instalador. É só software e simulação: não há protótipo físico nem nada validado por um eletricista.
+## 2. As 2 user stories
+- **US1, a família:** quero passar para um cilindro elétrico sem que a luz vá abaixo, para deixar o gás sem pagar mais pela potência. (Evita ~64–78 €/ano de subir a potência; estimativa.)
+- **US2, a Bosch e o instalador:** numa troca urgente de esquentador, quero oferecer um cilindro com garantia sem apagões, para vender um cilindro em vez de outro esquentador a gás.
 
-## 2. O desafio da Bosch e os critérios
-Desafio: ajudar os portugueses a trocar o gás por elétrico (2,2 milhões de casas ainda usam gás de garrafa).
+## 3. Como é a demo (3 ecrãs, 2–3 min)
+1. **O problema:** cilindro a aquecer e máquina da roupa a ligar; a barra passa o limite e "a luz foi abaixo".
+2. **Com DuoWatt:** o cilindro pausa, "a luz mantém-se", ninguém fica sem água quente; evita ~64–78 €/ano.
+3. **O que muda:** CO₂ por casa/ano (~246 kg; 131 kg no cenário adverso), 1 % das casas a gás (~5 400 t/ano), como funciona, concorrência, "para a Bosch".
+Guião completo em `docs/DEMO_GUIAO.md`; produto em `docs/PRODUTO.md`.
 
-| # | Critério | Peso |
-|---|---|---|
-| 1 | Clareza do problema e provas do utilizador | 20 % |
-| 2 | Impacto mensurável | 20 % |
-| 3 | Solução e demonstração | 15 % |
-| 4 | Viabilidade técnica, económica e de implementação | 15 % |
-| 5 | Originalidade e diferenciação | 10 % |
-| 6 | Pitch e perguntas (só a 25 nov) | 20 % |
-
-O critério 1 só sobe com **dados reais** que nós recolhermos. É a maior alavanca que temos.
-
-## 3. O que está feito
-- App em Streamlit: assistente de 5 perguntas, página de resultado com veredicto, 3 números e tabela de impacto (casas desbloqueadas, CO₂, % das 870 kton), relatório para o instalador, e um «modo detalhado» com gráficos, custos, diferenciação e provas.
-- Inquérito pronto (Google Forms) e guiões de 3 entrevistas.
-- Documentos de impacto (IMPACTO.md), custos e plano por fases (VIABILIDADE.md) e concorrentes (DIFERENCIACAO.md), cada número com fonte.
-- Screenshots: pasta `screenshots/final/` (resultado no telemóvel e no portátil).
-
-## 4. Números principais e o que falta validar
+## 4. Números principais
 | Número | Valor | Estado |
 |---|---|---|
 | Casas a gás de garrafa | 2,2 milhões | Enunciado Bosch |
-| CO₂ evitado por casa | ~246 kg/ano (pior cenário ~131; 12 garrafas por ano) | Derivado (APA 2023); vem da eletrificação, não só do DuoWatt |
-| Subir de 3,45 para 6,9 kVA | 64–78 €/ano | Derivado (ERSE); IVA por verificar |
-| DuoWatt instalado | ~202–282 € | Derivado; mão de obra é hipótese |
-| Tempo até compensar | ~3–4 anos | Derivado |
-| Casas com ≤3,45 kVA | ~44 % | Proxy (E-REDES), inclui não domésticos |
-| Impacto atribuível com 1 / 5 / 10 % de adoção | ~2 400 / ~11 900 / ~23 800 t CO₂/ano (0,3 / 1,4 / 2,7 % das 870 kton) | Derivado; adoção é hipótese (ver IMPACTO.md) |
-| Mercado da Bosch | 60 M€/ano (enunciado); 0,3 / 1,3 / 2,6 M€ proporcionais | Hipótese de proporcionalidade |
+| Trocas urgentes "gás por gás" | 85 % | Enunciado Bosch |
+| CO₂ evitado por casa/ano | ~246 kg (adverso ~131; 12 garrafas) | Derivado (APA 2023) |
+| Cenário nacional 1 % | ~5 419 t/ano (adverso ~2 881) | Derivado; adoção é pressuposto |
+| Subir de 3,45 para 6,9 kVA | 64–78 €/ano | Estimativa (ERSE); IVA por verificar |
+| Cenário da demo | cilindro 1,5 kW + máquina 2 kW + base 0,6 kW ≈ 4,1 kW | Pressupostos |
+| Regras de controlo | desligar a 90 %, religar a 80 %, pausa máx. 30 min | Pressupostos |
 
-**Por validar:** segurança elétrica (eletricista habilitado), se algum Tronic aceita controlo externo (não encontrámos), preços de mão de obra, potência real da placa de indução, consumo de base da casa.
-
-## 5. A equipa e o que cada pessoa faz hoje
+## 5. O que falta e quem faz
 Somos 4, de áreas diferentes: **Multimédia e Tecnologias de Comunicação**, **Informática** (Tiago), **Engenharia Mecânica** e **Mestrado em Contabilidade e Controlo de Gestão**.
 
 | Perfil | Tarefa | Prazo |
 |---|---|---|
-| Todos | Partilhar o link do inquérito (texto em FORMS_INSTRUCOES.md) em 5 grupos e com 5 pessoas | 12:00 |
-| Engenharia Mecânica | Confirmar potência da placa de indução (1,8 / 3 kW), consumo de base ao serão e se o termoacumulador pode ser pausado com segurança; se conseguir, falar com um eletricista ou instalador (guião C/B em ENTREVISTAS.md) | 13:00 |
-| Contabilidade e Controlo de Gestão | Confirmar custos: garrafa (37 €), mão de obra do eletricista, preço do termo de potência e IVA; rever as contas de equilíbrio em VIABILIDADE.md | 13:00 |
-| Multimédia e Tecnologias de Comunicação | Rever a app no telemóvel (cores, legibilidade, texto), fazer 2 entrevistas a moradores com os guiões em ENTREVISTAS.md (citações literais) e preparar os slides/pitch | 13:30 |
-| Informática (Tiago) | Exportar o CSV, correr `analisar_inquerito.py`, colar entrevistas em `dados/entrevistas.json`, rever a app e fazer a entrega | 14:00 congelar; 17:30 entregar |
+| Contabilidade e Controlo de Gestão | Negócio: preencher `docs/NEGOCIO.md` (custo do kit, preço à Bosch, conta de equilíbrio). Nada de inventar: onde não houver fonte, deixar `[a preencher]` | 13:00 |
+| Multimédia e Tecnologias de Comunicação | Deck do pitch (a partir dos 3 ecrãs e de `docs/PRODUTO.md`); rever a demo no telemóvel | 14:00 |
+| Engenharia Mecânica | Validar os pressupostos: potência da máquina da roupa, base da casa, cilindro 1,5 kW, segurança de pausar o cilindro | 13:00 |
+| Informática (Tiago) | Demo, imagem 3D concetual e publicação da app | 18:00 tudo no GitHub; 18:30 entregar |
+| Todos | Provas no fim: se houver respostas ou entrevistas reais, entram em `dados/`; nunca inventar | até à entrega |
 
-As 3 entrevistas (morador, instalador/loja, eletricista) repartem-se assim por não termos ninguém de Ciências Sociais: podem trocar entre vocês, o importante é serem feitas e escritas palavra por palavra.
+## 6. O que nunca dizer
+"Somos os primeiros"; "sem eletricista"; "sem obras"; "a Bosch não tem" (dizer "pelo que vimos na gama Tronic"); que os Tronic se ligam a um gestor de energia; preços que ninguém calculou; dados de utilizadores que não sejam reais.
 
-## 6. Como recolher as provas
-- **Link do Forms:** [o Tiago cola aqui o link depois de executar o script]
-- **Meta:** 30 respostas (mínimo útil: 15) e 3 entrevistas (morador, instalador ou loja, eletricista).
-- **Guiões das entrevistas:** em `ENTREVISTAS.md`. Escrever o que a pessoa disse, palavra por palavra. Nunca inventar nem «arredondar» respostas.
-
-## 7. O que nunca dizer, e as 5 perguntas prováveis
-**Nunca dizer:** «somos os primeiros»; «ninguém faz isto»; «sem eletricista»; «sem obras»; que os Tronic se ligam a um gestor de energia; que o DuoWatt poupa muito dinheiro (a mensagem é descarbonizar sem custar mais); dados de utilizadores que não sejam reais.
-
+## 7. As 5 perguntas prováveis do júri
 | Pergunta | Resposta honesta |
 |---|---|
-| Quanto CO₂ é do DuoWatt? | A redução vem de trocar gás por elétrico. O DuoWatt retira o bloqueio da potência, que afeta no máximo ~44 % das casas (limite superior). |
-| Quanto custa e quem instala? | ~202–282 €, instalado por eletricista habilitado. São preços de retalho, não uma cotação. |
-| Isto já existe? | A gestão antidisparo existe (Legrand, Schneider). Não encontrámos um diagnóstico gás → elétrico no momento da avaria, mas não encontrar não prova que não exista. |
-| E o espaço e o esquentador? | 67 % das casas têm esquentador e só 17 % termoacumulador; muitas não têm espaço. O DuoWatt resolve a potência, não o espaço. |
-| Onde estão as provas? | [N] respostas e [N] entrevistas da equipa; os dados da Bosch são secundários. Se ainda não houver, dizê-lo. |
-
-## 8. Perguntas em aberto para decidir
-1. Qual é o formato exato da entrega das 17:30 (documento, link, vídeo, protótipo)? E o que se apresenta a 25 nov?
-2. Quem confirma os custos e a segurança elétrica antes das 14:00?
-3. Há paleta ou logo da equipa para a app? (Não pode imitar a marca Bosch.)
+| O 5501i já tem programação; não chega? | A programação usa horas fixas; a máquina da roupa pode ligar a qualquer hora. O DuoWatt reage ao que está a acontecer. |
+| Isto já existe? | Pelo que vimos, existe gestão antidisparo (Schneider, Legrand, Delta Dore, Shelly), mas com hub, em França ou para entusiastas. Nós propomos um par emparelhado, pago pela Bosch, vendido na avaria. |
+| Quanto custa e quem paga? | A Bosch (B2B). Preços: `[a preencher pela Contabilidade]`. A família evita ~64–78 €/ano. |
+| E se a casa passar o limite sem o cilindro? | Não resolvemos. A promessa é que o cilindro nunca é a causa do apagão. |
+| Quanto CO₂ é do DuoWatt? | O CO₂ desce porque a casa sai do gás; o DuoWatt tira a barreira. ~246 kg por casa/ano; 1 % das casas: ~5 419 t/ano (cenário, não previsão). |

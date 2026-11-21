@@ -123,3 +123,20 @@ Consequência para o desafio: o DuoWatt cobre uma lacuna que o Advisor não abor
 8. Potência de 2 000 W do Tronic 4000 T de 80 L (não reabri a ficha). Está confirmada para o Tronic 4001 T.
 9. Rendimento oficial (ADENE) do esquentador: o site da ADENE não respondeu. Usei valores de fichas da Bosch.
 10. Dados de 2020 (INE) para consumo de eletricidade e GPL: podem estar desatualizados em 2026.
+
+---
+
+## 9. Pressupostos do kit (conceito atual, 21 nov 2026)
+
+Todos classificados como **PRESSUPOSTO** (sem fonte de medição; a validar num piloto com a Bosch), exceto o que é dito.
+
+| Item | Valor | Classificação | Nota |
+|---|---|---|---|
+| Consumo base da casa | 0,6 kW | PRESSUPOSTO | Média real ~0,39 kW (INE 2020); 0,6 kW é ao fim da tarde, sem medições publicadas |
+| Máquina da roupa | 2 kW durante ~20 min (fase de aquecimento) | PRESSUPOSTO | Sem fonte de medição |
+| Cilindro Tronic 5501i | 1,5 kW | CONFIRMADO (ficha Bosch PT, ver §5) | Total do cenário ≈ 4,1 kW > 3,45 kVA |
+| Desligar o cilindro | consumo ≥ ~90 % do limite | PRESSUPOSTO | Regra de controlo escolhida |
+| Religar o cilindro | consumo < ~80 % do limite | PRESSUPOSTO | Histerese |
+| Pausa máxima | 30 min seguidos | PRESSUPOSTO | Prioridade à água quente |
+| Perda de sinal do sensor | > 5 s: volta a `NORMAL` | PRESSUPOSTO | Modo seguro |
+| Tempo de reação do contador inteligente | não conhecido | PRESSUPOSTO | A medir no piloto; EN 60898 dá segundos a minutos de tolerância |
