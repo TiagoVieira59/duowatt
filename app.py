@@ -1,4 +1,5 @@
 """DuoWatt: demo de 3 ecrãs (Hackathon@ShiftE). Conceito em docs/referencia/PROMPT_Kit_DuoWatt_Final.md."""
+import base64
 from pathlib import Path
 
 import altair as alt
@@ -42,16 +43,18 @@ def cena(luz, pausa, maquina):
     cil = "#9bb8bd" if pausa else "#d9822b"
     nota = "em pausa" if pausa else "a aquecer"
     maq = "#0b5c6b" if maquina else "#9aa5ab"
-    st.html(f'''<svg viewBox="0 0 360 200" width="100%" role="img"
-      aria-label="Casa com cilindro {nota}, máquina da roupa e lâmpada {'acesa' if luz else 'apagada'}">
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 218" width="360" height="218">
       <polygon points="10,80 180,10 350,80" fill="{TEAL}"/>
       <rect x="30" y="80" width="300" height="110" fill="{fundo}" stroke="{TEAL}" stroke-width="3"/>
       <line x1="180" y1="80" x2="180" y2="105" stroke="#555" stroke-width="3"/>
       <circle cx="180" cy="115" r="14" fill="{lamp}"/>
       <rect x="55" y="105" width="60" height="75" rx="14" fill="{cil}"/>
-      <text x="85" y="198" font-size="14" text-anchor="middle" fill="#1f2933">{nota}</text>
+      <text x="85" y="212" font-size="20" text-anchor="middle" fill="#1f2933">{nota}</text>
       <rect x="245" y="115" width="65" height="65" rx="6" fill="{maq}"/>
-      <circle cx="277" cy="150" r="20" fill="#fff" opacity=".85"/></svg>''')
+      <circle cx="277" cy="150" r="20" fill="#fff" opacity=".85"/></svg>'''
+    # o st.html remove <svg> inline; vai como imagem data-URI
+    st.html('<img style="width:100%%" alt="Casa com cilindro %s, máquina da roupa e lâmpada %s" src="data:image/svg+xml;base64,%s">'
+            % (nota, 'acesa' if luz else 'apagada', base64.b64encode(svg.encode()).decode()))
 
 
 def medidor(pct, limite=100):
