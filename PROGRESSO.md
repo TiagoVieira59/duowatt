@@ -11,16 +11,16 @@ Prompt da missão: `PROMPT_Equipa_Autonoma_DuoWatt.md`. Fonte de verdade do proj
 ## Rubrica (0–5)
 | Critério | Ciclo 0 | Atual |
 |---|---|---|
-| R1 impacto CO₂ | – | – |
-| R2 viabilidade | – | – |
-| R3 clareza da demo | – | – |
-| R4 UI/UX | – | – |
-| R5 correção técnica | – | – |
-| R6 honestidade | – | – |
-| R7 robustez | – | – |
+| R1 impacto CO₂ | 3 | 3 |
+| R2 viabilidade | 2 | 2 |
+| R3 clareza da demo | 3 | 3 |
+| R4 UI/UX | 2 | 2 |
+| R5 correção técnica | 3 | 3 |
+| R6 honestidade | 4 | 4 |
+| R7 robustez | 3 | 3 |
 
 ## Próximo passo
-Testar `capturar.py`, gerar os screenshots do ciclo 0 e pedir a primeira avaliação ao Júri.
+Ciclo 1: Auditor UX + Modelador em paralelo, depois triar `BACKLOG.md`. Júri do ciclo 0 em `equipa/juri_ciclo0.md` (objeção n.º 1: o CO₂ mostrado é da eletrificação, não do produto).
 
 ## Decisões pendentes
 Ver `PERGUNTAS.md`.
