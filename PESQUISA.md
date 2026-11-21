@@ -94,3 +94,58 @@ A percentagem de contratos domésticos com ≤3,45 kVA não foi encontrada de fo
 3. Termo de potência de **acesso** (TAR) para 3,45 e 6,9 kVA: não encontrado; só o CUR.
 4. Quadros Excel do ICESD 2020 não consultados.
 5. O relatório de perfis E-REDES usa população 2023; a data de referência do relatório ERSE 2026 não está explícita.
+
+
+## Custos para a viabilidade do DuoWatt
+
+Data da pesquisa: 21 nov 2026. Preços em € com IVA quando a fonte o indica. Nenhuma página indica a sua data de publicação; a "data" de cada valor é a data de consulta (21 nov 2026). Os valores vêm de resultados de pesquisa; o WebFetch à Leroy Merlin devolveu 403, por isso as páginas não foram lidas na íntegra.
+
+### 1. Contactor bipolar 25 A para o termoacumulador
+- **Hager ESC225** (25 A, 2 NA, 230 V, 1 módulo): **49,78 €**. Fonte: https://hager.com/pt/catalogo/produto/esc225-contactor-25a-2na-230v-1m . Classificação: **provável** (preço de catálogo do fabricante; a pesquisa não confirma se inclui IVA).
+- Leroy Merlin PT e Worten: **não encontrado** (a Leroy Merlin só mostrou fichas sem preço nos resultados; a Worten não devolveu resultados).
+- Referência fora de Portugal, não usar como preço PT: Legrand 2F 25 A a 78,90 € na Castorama FR (https://www.castorama.fr/contacteur-de-puissance-bipolaire-2f-25a-230v-legrand/3245060927028_CAFR.prd).
+
+### 2. Medidor de energia com pinça (CT) para o quadro
+- **Shelly Pro EM 50** (monofásico, calha DIN, Wi-Fi, 2 canais de 50 A): **101,88 €** com IVA, Domadoo (versão PT). Fonte: https://www.domadoo.fr/pt/domotica-energia/6804-contador-de-energia-monofasico-em-calha-din-shelly-pro-em-50a-wi-fi-shelly-3800235268148.html . Classificação: **confirmado** (preço com IVA indicado na página).
+- PcComponentes PT: **104,43 €**. Fonte: https://www.pccomponentes.pt/rele-wi-fi-shelly-pro-em-50a-monitorizacao-de-energia-controle-din . Classificação: **provável** (IVA não explícito).
+- Smartify.pt (101,00 com símbolo de dólar): não usado, moeda não confirmada.
+- Shelly EM, Eastron e outras marcas: não pesquisados.
+
+### 3. Controlador com Wi-Fi (Shelly Pro 2PM)
+- **Shelly Pro 2PM** (2 canais, relé 16 A, medição de energia, calha DIN, Wi-Fi): **69,99 €** com IVA, Powerplanet PT (PVP recomendado indicado: 89,99 €). Fonte: https://www.powerplanetonline.com/pt/shelly-pro-2pm-preto . Classificação: **confirmado** (a página indica IVA incluído).
+- PcComponentes PT: **82,99 €**. Fonte: https://www.pccomponentes.pt/rele-wi-fi-shelly-pro-2pm-controle-de-persianas-e-iluminacao-monitorizacao-de-energia-embutido-din . Classificação: **provável** (IVA não explícito).
+- Nota (derivado): 2 kW a 230 V dá cerca de 8,7 A, dentro dos 16 A do relé do Shelly.
+- ESP32: não pesquisado.
+
+### 4. Eletricista certificado (2026)
+- Hora de mão de obra: **~30 €/h** (Habitissimo; a Zaask indica 10 a 40 €/h). Fontes: https://www.habitissimo.pt/orcamentos/instalar-quadro-eletrico e https://www.zaask.pt/quanto-custa/electricistas . Classificação: **provável** (estimativas de plataformas de orçamentos, não tarifas oficiais).
+- Substituição ou instalação de quadro: **150 a 400 €** (Zaask, https://www.zaask.pt/quanto-custa/substituir-um-quadro-electrico); **250 a 600 €** (expert-zoom, https://expert-zoom.com/pt/revista/servicos-para-casa/eletricista-residencial ); média de 250 € (Habitissimo). Classificação: **provável**.
+- Materiais não incluídos no preço do serviço (Worten, https://www.worten.pt/servicos-worten-resolve/servicos-para-casa/eletricidade/instalacao-eletrica ).
+- Certificação do eletricista (registo DGEG): não pesquisado.
+
+### 5. Aumento de potência 3,45 para 6,9 kVA
+- Diferença do termo de potência (CUR, tarifa de venda, Continente): 0,1917 para 0,3659 €/dia (valores já registados acima, **confirmado**). Diferença de 0,1742 €/dia = **63,58 €/ano sem IVA** (**derivado**). Com IVA de 23%: **~78,2 €/ano** (**derivado**; a taxa de IVA aplicável ao termo de potência não foi verificada).
+- Termo de acesso (TAR, ERSE): **não encontrado** (lacuna já registada).
+- Taxa da E-REDES pelo pedido de alteração: **não encontrado**. Não há tabela oficial nos resultados.
+- Se a instalação já suportar 6,9 kVA, a alteração pedida ao comercializador costuma ser sem custos (fonte de terceiros, https://lojaluz.com/gestoes/alterar-potencia/mudar-potencia-contratada ). Classificação: **provável**.
+- Se for preciso reforço do ramal: o custo depende do orçamento da E-REDES, **não encontrado**. Há um relato isolado de cerca de 1 000 € (https://portaldaqueixa.com/brands/e-redes/complaints/e-redes-pedido-de-aumento-de-potencia-sem-resolucao-e-com-despesas-acumuladas-162586126 ). Anedótico; não usar como média.
+- ERSE: um resumo de pesquisa (PDF não lido) indica poupança de 20 a 30 €/ano por escalão de potência descido, em documento de jan. 2025 (https://www.erse.pt/media/o5admnus/custo-pot%C3%AAncia-contratada_jan2025.pdf ). Classificação: **provável** (2025, não verificado no PDF). Simulador de preços: https://simulador.precos.erse.pt/ .
+
+### 6. Termoacumulador Bosch Tronic 4000 T 80 L
+- Existência: o modelo de 80 L existe em PT (50, 80 e 100 L). Fonte: catálogo Bosch abr. 2026, https://www.bosch-homecomfort.com/pt/media/country_pool/documentos/catalogo_cons_termoacumuladores_abr2026_web.pdf . Classificação: **confirmado**.
+- **Leroy Merlin PT: 245 €**. Fonte: https://www.leroymerlin.pt/produtos/termoacumulador-bosch-tronic-tr-4000t-80l-84801328.html . Classificação: **provável** (a ficha indica 75 L no campo capacidade e 80 L no título; IVA não indicado).
+- PcComponentes PT: **255,07 €** (80 L, 2000 W, vertical; desconto de 17% sobre 307,73 €). Fonte: https://www.pccomponentes.pt/termoacumulador-eletrico-bosch-80-l-2000-w-vertical . Classificação: **provável** (modelo exato 4000 T não confirmado).
+- Worten: **não encontrado** (a categoria de 80 L não devolveu resultados).
+
+### Resumo derivado (com IVA, valores das lojas)
+- Material do controlo: contactor 49,78 + Shelly Pro 2PM 69,99 + Shelly Pro EM 50 101,88 = **221,65 €** (**derivado**).
+- Com instalação de pequeno quadro (150 a 400 €, Zaask): **~372 a 622 €** (**derivado**), sem termoacumulador.
+- Custo anual evitado do aumento de potência: **~78 €/ano** (**derivado**), sem TAR nem taxa E-REDES.
+
+### Lacunas
+1. Preço do contactor na Leroy Merlin PT e na Worten: não encontrado.
+2. IVA não confirmado nos preços da Hager e da PcComponentes.
+3. Taxa da E-REDES para alteração de potência e orçamento de reforço: não encontrado.
+4. Termo de acesso (TAR) para 3,45 e 6,9 kVA: não encontrado (lacuna já registada).
+5. Não pesquisados: ESP32, Shelly EM, Eastron e certificação do eletricista (DGEG).
+6. Nenhuma fonte de preço indica a data de publicação.
