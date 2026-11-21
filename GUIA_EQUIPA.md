@@ -56,7 +56,7 @@ As 3 entrevistas (morador, instalador/loja, eletricista) repartem-se assim por n
 
 ## 6. Como recolher as provas
 - **Link do Forms:** [o Tiago cola aqui o link depois de executar o script]
-- **Meta:** 30 respostas (mínimo útil: 15) e 3 entrevistas (1 por perfil).
+- **Meta:** 30 respostas (mínimo útil: 15) e 3 entrevistas (morador, instalador ou loja, eletricista).
 - **Guiões das entrevistas:** em `ENTREVISTAS.md`. Escrever o que a pessoa disse, palavra por palavra. Nunca inventar nem «arredondar» respostas.
 
 ## 7. O que nunca dizer, e as 5 perguntas prováveis
