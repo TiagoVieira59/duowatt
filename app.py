@@ -49,7 +49,7 @@ def cena(luz, pausa, maquina):
       <line x1="180" y1="80" x2="180" y2="105" stroke="#555" stroke-width="3"/>
       <circle cx="180" cy="115" r="14" fill="{lamp}"/>
       <rect x="55" y="105" width="60" height="75" rx="14" fill="{cil}"/>
-      <text x="85" y="212" font-size="20" text-anchor="middle" fill="#1f2933">{nota}</text>
+      <text x="85" y="212" font-family="sans-serif" font-size="20" text-anchor="middle" fill="#1f2933">{nota}</text>
       <rect x="245" y="115" width="65" height="65" rx="6" fill="{maq}"/>
       <circle cx="277" cy="150" r="20" fill="#fff" opacity=".85"/></svg>'''
     # o st.html remove <svg> inline; vai como imagem data-URI
@@ -78,7 +78,7 @@ def grafico():
     linhas = alt.Chart(df).mark_line(strokeWidth=3).encode(
         x=alt.X("hora:Q", axis=eixo, scale=alt.Scale(domain=[18, 21])),
         y=alt.Y("% do limite:Q", scale=alt.Scale(domain=[0, 130]),
-                axis=alt.Axis(values=[0, 50, 100], title="Consumo (% do limite)", labelFontSize=16, titleFontSize=16)),
+                axis=alt.Axis(values=[0, 50, 100], labelExpr="datum.value + ' %'", title="Consumo (% do limite)", labelFontSize=16, titleFontSize=16)),
         color=alt.Color("Cenário:N", scale=alt.Scale(domain=["Sem DuoWatt", "Com DuoWatt"], range=[VERMELHO, VERDE]),
                         legend=alt.Legend(orient="bottom", labelFontSize=16, title=None)))
     lim = alt.Chart(pd.DataFrame({"y": [100]})).mark_rule(color="#1f2933", strokeDash=[6, 4], strokeWidth=2).encode(y="y:Q")
@@ -153,4 +153,5 @@ st.progress((st.session_state.passo + 1) / 3)
 a, b = st.columns(2)
 a.button("Anterior", on_click=ir, args=(-1,), disabled=st.session_state.passo == 0, width="stretch")
 b.button("Seguinte", on_click=ir, args=(1,), disabled=st.session_state.passo == 2, width="stretch", type="primary")
+st.html("<style>[data-testid=stCaptionContainer],[data-testid=stCaptionContainer] p{color:#1f2933!important;opacity:1!important}</style>")
 st.caption("Simulação ilustrativa. Valores por validar num piloto.")
