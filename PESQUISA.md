@@ -149,3 +149,61 @@ Data da pesquisa: 21 nov 2026. Preços em € com IVA quando a fonte o indica. N
 4. Termo de acesso (TAR) para 3,45 e 6,9 kVA: não encontrado (lacuna já registada).
 5. Não pesquisados: ESP32, Shelly EM, Eastron e certificação do eletricista (DGEG).
 6. Nenhuma fonte de preço indica a data de publicação.
+
+## Concorrentes e alternativas existentes
+
+Data de consulta: 21 nov 2026 (todas as linhas). Não foi lida nenhuma página com data de publicação visível; a data indicada é a de consulta. Classificação: **confirmado** (lido na fonte), **provável** (resultado de pesquisa, texto de terceiros ou fonte não aberta), **não encontrado**. Preços em € com IVA só quando a fonte o indica.
+
+### (a) Limitadores e gestores de carga antidisparo para casas
+
+| Nome | O que faz | Preço | Atua no termoacumulador | Exige instalador | Diagnóstico antes da troca | Fonte | Classificação |
+|---|---|---|---|---|---|---|---|
+| Schneider Wiser (Micromódulo de Potência Wiser; sistema Wiser Home Iberic) | Comuta cargas resistivas até 3 000 W (o manual descreve o caso de depósito de água) e tem uma secção "Gestão Anti-disparo". Um distribuidor PT indica que regula o consumo em função da potência contratada. | não encontrado | provável (manual PT, 03/2025) | não encontrado | não encontrado | https://www.productinfo.schneider-electric.com/wiser_home/wiser-power-micromodule_wh_device_user_guide/Portuguese/Wiser%20Power%20Micromodule_WH_Device%20user%20guide_pt_DD00557629.pdf ; https://www.nortecnica.pt/uploads/downloads/Schneider_Wiser-Home.pdf | provável (função anti-disparo referida, secção não lida: o PDF devolveu 403 ao WebFetch) |
+| ABB Smart EMS (free@home) | Gestão de cargas que equilibra oferta e procura, com priorização personalizável. Para carro elétrico, limita a corrente de carga. A fonte não fala de disparo do quadro. | não encontrado | não encontrado | não encontrado | não encontrado | https://new.abb.com/low-voltage/products/building-automation/product-range/abb-smart-ems | provável (gestão de cargas); antidisparo não confirmado |
+| Hager Domovea | Monitorização de energia (dados de produtos KNX enviados ao servidor Domovea). Limitação de carga não encontrada no Domovea. O XEM470 (controlador de gestão de energia, sobretudo com FV e carregamento de VE) é um produto distinto. | não encontrado | não encontrado | não encontrado | não encontrado | https://hager.com/pt/solucoes/gestao-de-energia ; https://hager.com/pt/catalogo/produto/xem470-flow-controlador-gestao-energia | confirmado (monitorização); limitação não encontrada |
+| Legrand Drivia with Netatmo (délesteur connecté) | Mede a potência instantânea e, acima de um limiar, corta por etapas as tomadas, saídas de cabo ou contactores ligados. Serve para o disjuntor de branchement não disparar. Exige o pack "with Netatmo" e um transformador de corrente. O limiar não está nos resultados. | 146,54 € TTC (PVP francês, ref. 1 991 20, com TC; não é preço PT) | provável (atua via contactor ligado; não há caso específico de termoacumulador) | provável (quadro elétrico com TC) | não | https://www.legrand.fr/pro/nouveautes-produits/delesteur-connecte-driviatm-with-netatmo ; https://www.legrand.fr/catalogue/tableau-electrique-connecte/delesteur-connecte-drivia-with-netatmo-livre-avec-1-transformateur-de-courant-1-module | confirmado (função e preço FR) |
+| Shelly Pro EM 50 (+ lógica própria) | Medidor de energia com pinça; o relé é de contacto seco, por isso para cargas pesadas usa-se um contactor. Não é um produto pronto de antidisparo: a lógica de corte fica por conta de scripts ou automações. | 101,88 € com IVA (Domadoo PT, ver §2 acima) | provável (via contactor, não produto pronto) | provável (quadro elétrico) | não | https://www.shelly.com/es/blogs/use-cases/heavy-load-control-with-contactors ; https://shelly-api-docs.shelly.cloud/gen2/Devices/Gen2/ShellyProEM | confirmado (medição e contacto seco); preço confirmado (ver §2) |
+| Sonoff POWR3 / POW Elite / POWCT | POWR3 (25 A, ~5 500 W): monitorização com proteção contra sobrecarga, indicado para aquecedores de água. POWCT: saída seca de 2 A para contactor externo. Corte por potência contratada não encontrado. | não encontrado (há revendedor PT, sem preço nos resultados) | provável (POWR3 indicado para aquecedores de água) | não encontrado | não | https://sonoff.tech/pt-pt/products/sonoff-powr3-high-power-smart-switch ; https://sonoff.tech/pt-pt/blogs/news/smart-din-rail-switch-for-high-power-loads-control | provável |
+| Gewiss P-Comfort KNX (fora da lista pedida) | Controlo de cargas no BUS KNX, medição de energia e até cinco níveis de limiar de absorção. | não encontrado | não encontrado | não encontrado | não | https://www.gewiss.com/content/dam/gwdam/FILE/ZMN/70201702.pdf | provável (resultado de pesquisa, PDF não aberto) |
+
+### (b) Gestores de energia que controlam termoacumuladores ou bombas de calor
+
+| Nome | O que faz | Preço | Atua no termoacumulador | Exige instalador | Diagnóstico antes da troca | Fonte | Classificação |
+|---|---|---|---|---|---|---|---|
+| SMA Sunny Home Manager 2.0 | Controla resistências de aquecimento através de tomada, relé ou Modbus, ou diretamente via SEMP (myPV). Pede a potência média da resistência na placa do fabricante. Previsão a 48 h para gerir cargas. Foco em excedentes solares e tarifas dinâmicas. | não encontrado | confirmado para resistências de aquecimento; termoacumulador doméstico específico não confirmado | provável (relé ou contactor) | não | https://manuals.sma.de/HM-20/en-US/7659372811.html ; https://manuals.sma.de/HM-20/en-US/1053993483.html | confirmado (função); preço e disponibilidade em PT não encontrados |
+| Bosch Energy Manager (SmartHome Controller) | Gestão modulada da energia por software no controlador SmartHome. Comunicado Bosch de 2023 fala em poupança de até 60% na eletricidade. | não encontrado | não encontrado (nenhuma ligação a termoacumulador encontrada) | não encontrado | não | https://www.bosch-homecomfort.com/de/media/country_pool/dokumente/pressemitteilungen/20230213_pi_bosch.pdf | provável (produto existe; ligação a termoacumulador não encontrada) |
+| my-PV AC-THOR | Controlador de potência que comanda resistências de aquecimento num depósito de água, sobretudo para excedentes solares. A resistência não vem incluída. | 799 (moeda não indicada na página) | confirmado (depósito de água) | provável | não | https://pvundso.de/en/product/my-pv-ac-thor-power-manager-hot-water-heating/ | provável (preço sem moeda; mercado alemão) |
+
+### (c) Carregadores de VE com gestão dinâmica de carga (só termo de comparação)
+
+| Nome | O que faz | Preço | Atua no termoacumulador | Exige instalador | Diagnóstico antes da troca | Fonte | Classificação |
+|---|---|---|---|---|---|---|---|
+| Integração Shelly + carregador Trydan (V2C) | Pinça na fase principal; o carregador ajusta a potência dinamicamente para não exceder o total da casa. | não encontrado | não (carregador de VE) | provável | não | https://v2charge.com/pt-pt/suporte/controlo-potencia/dinamico/medidor-shelly/ | provável |
+
+### (d) Diagnóstico e simulação de potência contratada ou eletrificação para famílias em Portugal
+
+| Nome | O que faz | Preço | Atua no termoacumulador | Exige instalador | Diagnóstico antes da troca | Fonte | Classificação |
+|---|---|---|---|---|---|---|---|
+| Simulador de potência da ERSE (simulador.precos.erse.pt) | Propõe o escalão recomendado (3,45; 4,6; 5,75; 6,9; 10,35 kVA), a partir de equipamentos usados em simultâneo, e mostra o impacto na fatura de subir ou descer. Não cobre eletrificação nem termoacumulador. | não encontrado (aparentemente gratuito) | não | não | parcial: só potência contratada, não avalia gás → elétrico | https://simulador.precos.erse.pt/ (página não abriu: ECONNREFUSED; descrição vinda de resultados de pesquisa) | provável |
+| E-REDES (Balcão Digital, diagramas de carga a 15 min) | Dá o histograma de carga do contador inteligente, útil para escolher o escalão. A alteração de potência é pedida ao comercializador e feita remotamente em até 24 h (contadores inteligentes). | não encontrado (sem taxa nos resultados) | não | não | não | https://www.e-redes.pt/sites/eredes/files/2023-08/ContadorInteligente.pdf (informação sobre o balcão vem de guias de terceiros) | provável |
+| Simulador da EDP | Simulador próprio. Segundo um comparador, cobre equipamentos em simultâneo só entre 3,45 e 10,35 kVA. | não encontrado | não | não | parcial | https://lojaluz.com/fornecedores/edp/gestoes/potencia (terceiro; site da EDP não aberto) | provável |
+| Simulador da Iberdrola | Estima a potência contratada na página de Portugal (a página consultada é a espanhola; a PT só aparece no snippet). | não encontrado | não | não | parcial | https://www.iberdrola.es/luz/calcular-potencia-electrica | provável |
+| Endesa (Portugal) | Simulador de potência não encontrado. | não encontrado | não encontrado | não encontrado | não encontrado | não aplicável | não encontrado |
+| Bosch Heatpump Advisor | Página oficial não encontrada; não se sabe se pergunta a potência contratada. Nos resultados aparece um checker "heat pump ready" da Worcester Bosch (Reino Unido), que não é a mesma ferramenta. | não encontrado | não (bomba de calor, não termoacumulador) | não encontrado | sim para bomba de calor, não confirmado para este caso | não há URL oficial encontrada (resultados de pesquisa, worcester-bosch.co.uk) | não encontrado (página oficial) |
+| Ferramentas de elegibilidade de bomba de calor fora de PT (DESNZ, UBA/ifeu) | Verificação de adequação do edifício a bomba de calor (Reino Unido e Alemanha). Não são para Portugal. | não encontrado | não | não | sim (para bomba de calor) | https://www.gov.uk/algorithmic-transparency-records/desnz-heat-pump-suitability-tool ; https://www.ifeu.de/en/publication/building-check-is-my-house-ready-for-a-heat-pump | provável (fora de PT) |
+
+### O que NÃO se encontrou
+
+- **Ferramenta de diagnóstico no momento da avaria ligada à venda de termoacumulador por instaladores: não encontrado.** Nas pesquisas só apareceram queixas (Ariston: diagnóstico por fotos enviadas por WhatsApp e exigência de inspeção presencial para apurar a avaria) e modelos Wi-Fi com app de controlo remoto. Não encontrado não prova que não exista.
+- **Preço em Portugal** de Schneider Wiser, ABB Smart EMS, Hager Domovea, Sonoff, SMA Home Manager e Bosch Energy Manager: não encontrado.
+- **Ligação de Bosch Energy Manager ou Bosch Tronic a um gestor de energia:** não encontrada (coerente com a regra de honestidade do CONTEXTO §5).
+- **Simulador próprio da E-REDES e da Endesa:** não encontrado.
+- **Bosch Heatpump Advisor:** página oficial não encontrada.
+- **Secção "Gestão Anti-disparo" do manual Wiser:** não lida (PDF devolveu 403). A classificação de Wiser é provável por esse motivo.
+- **Simulador da ERSE:** página não abriu. A descrição vem de resultados de pesquisa, não de leitura direta.
+- **Certificação de instalador (DGEG) e regras de instalação de gestores de carga em PT:** não pesquisadas.
+
+### Leitura honesta (derivada desta tabela)
+
+- Existem gestores de carga antidisparo no mercado (Legrand com délestage; Wiser com "gestão anti-disparo", provável). O DuoWatt não é o primeiro a cortar cargas para proteger a potência contratada. A diferença que resta é o diagnóstico gás → elétrico antes da troca, e isso não apareceu em nenhuma das fontes.
+- Nenhuma das soluções encontradas se apresenta como ferramenta de decisão para trocar o gás por elétrico. Todas são de controlo, medição ou simulação de tarifa.
