@@ -30,7 +30,7 @@ with st.sidebar:
     with st.expander("Avançado"):
         pessoas = st.number_input("Número de pessoas", 1, 8, 3)
         litros = st.number_input("Depósito do termoacumulador (L)", 50, 200, 100, step=10)
-        garrafas = st.number_input("Garrafas de gás por ano", 0, 50, 10)
+        garrafas = st.number_input("Garrafas de gás por ano", 0, 20, 10)
         preco_kwh = st.number_input("Preço marginal da eletricidade (€/kWh)", 0.05, 0.60, 0.21, step=0.005, format="%.3f")
         fator = st.slider("Fator de CO2 da eletricidade (g/kWh)", 40, 167, 107)
         adocao = st.slider("Casas a GPL que trocam, em % (cenário)", 1, 20, 1)
@@ -62,6 +62,8 @@ st.markdown(f"**{frase}** Margem ao serão (limite menos base menos indução): 
 if v == "precisa de mais potência":
     co2 = "n/d"
     co2_ajuda = "Precisa primeiro de aumentar a potência contratada."
+elif garrafas == 0:
+    co2, co2_ajuda = "Sem gás", "Sem gás a substituir: sem impacto de CO2"
 else:
     ev = impacto_casa(garrafas, preco_kwh=preco_kwh, fator_elet_g_kwh=fator)
     co2, co2_ajuda = f"{ev['co2_evitado_kg']:.0f} kg/ano", f"Fator {fator} g/kWh"
@@ -107,8 +109,17 @@ for col, (nome, r) in zip(st.columns(2), [("Sem gestão", sem), ("Com DuoWatt", 
 st.caption("Acima do limite = risco de disparo; o disjuntor real tolera pequenas sobrecargas por pouco tempo.")
 
 st.subheader("Impacto se a casa trocar o gás pela eletricidade")
+st.caption("O CO2 evitado vem da eletrificação (trocar o gás pela eletricidade), não só do DuoWatt; o DuoWatt desbloqueia a troca.")
+if v == "aguenta com gestão":
+    st.info("Sem gestão esta casa teria de aumentar a potência; com o DuoWatt a troca é possível.")
+elif v == "aguenta":
+    st.info("Esta casa já aguenta sem gestão: aqui o DuoWatt não é necessário.")
+elif v == "reserva de água insuficiente":
+    st.warning("Com este depósito falta água quente: aumentar o depósito.")
 if v == "precisa de mais potência":
     st.error("Esta casa teria primeiro de aumentar a potência contratada: o impacto abaixo só se realiza depois disso.")
+elif garrafas == 0:
+    st.info("Sem gás a substituir: sem impacto de CO2.")
 else:
     adverso = impacto_casa(garrafas, preco_kwh=preco_kwh, fator_elet_g_kwh=167)
     a, b = st.columns(2)
@@ -116,7 +127,7 @@ else:
     b.metric("Poupança de custo" if ev["poupanca_eur"] >= 0 else "Custo extra", f"{abs(ev['poupanca_eur']):.0f} €/ano")
     nacional = extrapolar(ev["co2_evitado_kg"], adocao=adocao / 100)
     st.metric(
-        f"Cenário ilustrativo: {adocao} % das 2,2 M de casas a GPL trocam",
+        f"Potencial da eletrificação (não atribuído ao DuoWatt), cenário ilustrativo: {adocao} % das 2,2 M de casas a GPL trocam",
         f"{nacional:,.0f} t CO2/ano".replace(",", " "),
     )
     st.caption(
