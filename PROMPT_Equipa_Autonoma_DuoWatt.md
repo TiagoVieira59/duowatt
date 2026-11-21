@@ -26,21 +26,21 @@ Não leias o `.venv/`, os `.docx` nem o `Parametros_Simulador.md` (desatualizado
 
 ---
 
-## 2. O que é "o melhor produto possível" (rubrica)
+## 2. O que é "o melhor produto possível" (rubrica oficial)
 
-O enunciado diz que o júri avalia **a solução mais viável na vida real** e o **impacto direto e mensurável na descarbonização**. A demo tem 2 a 3 minutos, num projetor. Tudo é avaliado com esta rubrica, de 0 a 5:
+Os critérios oficiais estão em `CRITERIOS_AVALIACAO.md` (**fonte de verdade**; substituem a antiga rubrica R1 a R7). O Júri pontua de 1 a 5 cada critério e calcula a nota ponderada.
 
-| # | Critério | O que significa um 5 |
+| # | Critério | Peso |
 |---|---|---|
-| R1 | Impacto de CO₂ mensurável | Número por casa e nacional claro, com intervalo (cenário adverso) e fonte visível |
-| R2 | Viabilidade real | Pressupostos explícitos; a app mostra também os casos em que o DuoWatt **não** chega |
-| R3 | Clareza da demo | Em menos de 30 s cada, o júri percebe: problema → veredicto → como a gestão resolve → impacto |
-| R4 | UI/UX e legibilidade | Hierarquia clara, contraste WCAG AA, texto legível a 5 m num projetor, bom em 1920×1080 e 1366×768 |
-| R5 | Correção técnica | Modelo coerente, casos limite testados, os mesmos números na UI, no código e nos documentos |
-| R6 | Honestidade | Nenhuma afirmação proibida (§7); limitações visíveis sem cansar |
-| R7 | Robustez | Arranque limpo, sem erros nem avisos, com entradas extremas |
+| 1 | Clareza do problema e provas do utilizador | 20 % |
+| 2 | Impacto mensurável no desafio da empresa | 20 % |
+| 3 | Qualidade e coerência da solução e da demonstração (protótipo navegável) | 15 % |
+| 4 | Viabilidade técnica, económica e de implementação | 15 % |
+| 5 | Originalidade e diferenciação | 10 % |
+| 6 | Pitch e resposta às perguntas (só em 25 nov) | 20 % |
 
-**Meta:** todos os critérios com 4 ou mais na avaliação do Júri, e **R6 sempre a 5**.
+**Prioridades:** critérios 1, 2 e 4 (provas, impacto, viabilidade) e 5 (diferenciação) pesam mais do que o polimento da UI. A honestidade (§7) deixa de ser um critério e passa a ser **condição**: nenhuma afirmação proibida, nunca dados de utilizadores inventados.
+**Meta:** nota ponderada ≥ 4 e nenhum critério abaixo de 3, dentro do que é possível sem dados reais de utilizadores (que só a equipa pode recolher).
 
 ---
 
@@ -54,7 +54,7 @@ Guarda a descrição de cada papel em `equipa/papeis/<papel>.md` (o texto abaixo
 | **Modelador** | sonnet | Revê `duowatt.py` e `impacto.py`: correção física e elétrica, pressupostos, casos limite, coerência dos números. Escreve primeiro **testes que expõem** cada problema, e só depois propõe a correção. | Só testes novos | `equipa/modelo_cicloN.md` |
 | **Programador** | sonnet | Implementa os itens do backlog que o coordenador lhe atribui, num branch próprio, com a skill **ponytail** (a menor alteração que resolve, sem funcionalidades a mais). Corre os testes antes de devolver. | Sim, só no branch do ciclo | código e `equipa/impl_cicloN.md` |
 | **Investigador** | haiku | Pesquisa web dos itens por confirmar (CONTEXTO §6). Cada valor leva fonte, data e classificação (confirmado / provável / não encontrado). Máximo de ~5 pesquisas por item; se não encontrar, diz "não encontrado" e pára. | Não | `PESQUISA.md` |
-| **Júri** | sonnet | **Olhos frescos:** não vê as discussões nem o código. Recebe só o PDF do desafio Bosch, os screenshots finais do ciclo e o `DEMO_GUIAO.md`. Faz de júri da Bosch: pontua a rubrica (§2) e lista as 5 objeções mais prováveis do júri. | Não | `equipa/juri_cicloN.md` |
+| **Júri** | sonnet | **Olhos frescos:** não vê as discussões nem o código. Recebe só o PDF do desafio Bosch, os screenshots finais do ciclo e o `DEMO_GUIAO.md`. Faz de júri da Bosch: pontua os critérios oficiais (§2) e lista as 5 objeções mais prováveis do júri. | Não | `equipa/juri_cicloN.md` |
 
 Regras da equipa:
 - No máximo **2 agentes em paralelo** (por exemplo, Auditor UX + Modelador na fase de diagnóstico; o Investigador pode correr em segundo plano).

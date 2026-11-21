@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 
 from duowatt import INDUCAO, P_TERMO_W, simular, veredicto
-from impacto import extrapolar, impacto_casa
+from impacto import CASAS_GPL, QUOTA_ATE_3_45_KVA, custo_subir_potencia, extrapolar, impacto_casa
 
 KVA = [2.3, 3.45, 6.9, 10.35]
 st.set_page_config(page_title="DuoWatt", layout="wide")
@@ -14,7 +14,7 @@ st.markdown(
 h1 {font-size: 2rem !important; padding: 0 0 .25rem 0;}
 [data-testid="stMetricLabel"] p, [data-testid="stCaptionContainer"] p, [data-testid="stSidebar"] label p,
 [data-testid="stSidebar"] label, [data-testid="stExpander"] p {font-size: 16px !important; color: #222 !important;}
-[data-testid="stCaptionContainer"] p {color: #333 !important;}
+[data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p {font-size: 16px !important; color: #222 !important; opacity: 1 !important;}
 [data-testid="stMetricValue"] {font-size: 1.6rem;}
 [data-testid="stAlert"] p {font-size: 16px;}
 [data-testid="stSidebar"] input, [data-testid="stSidebar"] [data-baseweb="select"] div,
@@ -80,13 +80,13 @@ else:
 a, b, c, d, e, f = st.columns(6)
 a.metric("Pico sem gestão", f"{sem['pico_w']:,.0f} W".replace(",", " "))
 b.metric("Pico com DuoWatt", f"{com['pico_w']:,.0f} W".replace(",", " "))
-c.metric(f"CO2 evitado ({fator} g/kWh)", co2, help=co2_ajuda)
+c.metric("CO2 evitado", co2, help=co2_ajuda)
 if ev:
-    d.metric("Poupança de custo" if ev["poupanca_eur"] >= 0 else "Custo extra", f"{abs(ev['poupanca_eur']):.0f} €/ano")
+    d.metric("Poupança" if ev["poupanca_eur"] >= 0 else "Custo extra", f"{abs(ev['poupanca_eur']):.0f} €/ano")
 else:
-    d.metric("Poupança de custo", "n/d")
-e.metric("Min. acima do limite (sem → com)", f"{sem['minutos_acima']} → {com['minutos_acima']}")
-f.metric("Min. sem água quente (sem → com)", f"{sem['minutos_sem_agua']} → {com['minutos_sem_agua']}")
+    d.metric("Poupança", "n/d")
+e.metric("Min. acima", f"{sem['minutos_acima']} → {com['minutos_acima']}", help="Minutos acima do limite, sem → com DuoWatt")
+f.metric("Min. sem água", f"{sem['minutos_sem_agua']} → {com['minutos_sem_agua']}", help="Minutos sem água quente, sem → com DuoWatt")
 
 # gráfico só do serão (17:00-23:00); domínios explícitos evitam avisos "Infinite extent"
 ini, fim = 17 * 60, 23 * 60
@@ -122,6 +122,10 @@ st.subheader("Impacto se a casa trocar o gás pela eletricidade")
 st.caption("O CO2 evitado vem da eletrificação (trocar o gás pela eletricidade), não só do DuoWatt; o DuoWatt desbloqueia a troca.")
 if v == "aguenta com gestão":
     st.info("Sem gestão esta casa teria de aumentar a potência; com o DuoWatt a troca é possível.")
+    if kva == 3.45:
+        extra = custo_subir_potencia(3.45, 6.9)
+        comp = f", mais do que a poupança do gás ({ev['poupanca_eur']:.0f} €/ano)" if ev and extra > ev["poupanca_eur"] else (f", menos do que a poupança do gás ({ev['poupanca_eur']:.0f} €/ano)" if ev else "")
+        st.caption(f"Sem gestão, a casa teria de subir para 6,9 kVA: +{extra:.0f} €/ano só no termo de potência (sem IVA, ERSE 2026){comp}.")
 elif v == "aguenta":
     st.info("Esta casa já aguenta sem gestão: aqui o DuoWatt não é necessário.")
 elif v == "reserva de água insuficiente":
@@ -139,6 +143,11 @@ else:
         f"Potencial da eletrificação (não atribuído ao DuoWatt), cenário ilustrativo: {adocao} % das 2,2 M de casas a GPL trocam: "
         f"{nacional:,.0f} t CO2/ano.".replace(",", " ")
     )
+    teto = extrapolar(ev["co2_evitado_kg"], adocao=adocao / 100, casas=int(CASAS_GPL * QUOTA_ATE_3_45_KVA))
+    st.caption(
+        f"Limite superior do que depende de desbloquear a potência: casas com ≤3,45 kVA (~44 % dos contratos BTN, proxy): "
+        f"{teto:,.0f} t CO2/ano com {adocao} % de adoção.".replace(",", " ")
+    )
     st.caption(
         "O CO2 só desce se o gás for mesmo substituído, e a troca pode acontecer sem o DuoWatt: "
         "o que o DuoWatt faz é tirar o bloqueio da potência. O fator é uma média anual, não marginal."
@@ -152,5 +161,6 @@ with st.expander("Pressupostos e limites"):
     st.markdown(
         "- Cenário: indução 19:30-20:10 e duche às 19:45, com a base da casa estimada pelo consumo mensal.\n"
         "- Não inclui o termo de potência da fatura.\n"
+        "- No INE (2020), 67 % das casas têm esquentador a gás e só 17 % têm termoacumulador: a maioria teria de comprar um aparelho novo (custo não incluído).\n"
         "- Não encontrámos controlo externo documentado nos Tronic."
     )

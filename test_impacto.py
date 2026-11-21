@@ -1,4 +1,5 @@
-from impacto import impacto_casa, extrapolar
+import pytest
+from impacto import impacto_casa, extrapolar, custo_subir_potencia
 
 
 def test_enunciado_400kg_corresponde_a_cerca_de_10_garrafas():
@@ -18,3 +19,9 @@ def test_eletricidade_limpa_evita_todo_o_co2_do_gas():
 
 def test_extrapolacao_1_por_cento():
     assert round(extrapolar(400)) == 8800   # 22 000 casas x 400 kg
+
+
+def test_subir_3_45_para_6_9():
+    assert custo_subir_potencia(3.45, 6.9) == pytest.approx(63.6, abs=0.1)
+    with pytest.raises(ValueError):
+        custo_subir_potencia(3.45, 10.35)
