@@ -3,12 +3,12 @@
 Prompt da missão: `PROMPT_Equipa_Autonoma_DuoWatt.md`. Fonte de verdade do projeto: `CONTEXTO_Projeto_DuoWatt.md`. Entrega: 21 nov 2026, 17:30 (a partir das 14:00, só correções de erros).
 
 ## Estado do `main`
-- Tag `final` (ciclo 6) + commits da noite 2. Testes: 44 a passar, 4 xfail justificados. App: 'Diagnóstico' e 'Provas do utilizador' (só dados Bosch, rotulados, até haver `dados/inquerito_resumo.json`).
+- Tag `final-noite2`. Testes: 46 a passar, 4 xfail justificados. App: 'Diagnóstico' e 'Provas do utilizador' (só dados Bosch, rotulados, até haver `dados/inquerito_resumo.json`).
 - Noite 2: Fase 1 (Forms: `ferramentas/criar_formulario.gs`, `FORMS_INSTRUCOES.md`) feita; Fase 2 (retoma automática) bloqueada por permissões, ver `PERGUNTAS.md` n.º 7; Fase 3 (formato PT-PT em `formato.py`) feita.
 - Para a equipa humana: criar o Forms, ≥30 respostas, 3 entrevistas, `.venv/bin/python ferramentas/analisar_inquerito.py respostas.csv`.
 
 ## Ciclo atual
-- **Concluído.** `main` na tag `final` (ciclo 6 integrado). Falta o que depende de pessoas: dados reais (`PLANO_RECOLHA_PROVAS.md`), validações da Mecânica/Contabilidade/eletricista/Bosch, formato da entrega (`PERGUNTAS.md`). Para retomar: 'Lê PROGRESSO.md e continua'.
+- **Concluído (noite 2: assistente, relatório, UX; Júri 2,9 igual, facilidade 4/5).** `main` na tag `final` (ciclo 6 integrado). Falta o que depende de pessoas: dados reais (`PLANO_RECOLHA_PROVAS.md`), validações da Mecânica/Contabilidade/eletricista/Bosch, formato da entrega (`PERGUNTAS.md`). Para retomar: 'Lê PROGRESSO.md e continua'.
 
 ## Rubrica oficial (ver `CRITERIOS_AVALIACAO.md`; escala 1–5; pesos 20/20/15/15/10; a 6 é só a 25 nov)
 | Critério | Peso | Júri ciclo 4 (1–5) |
@@ -25,7 +25,7 @@ Prompt da missão: `PROMPT_Equipa_Autonoma_DuoWatt.md`. Fonte de verdade do proj
 A provas do utilizador (INQUERITO.md, ENTREVISTAS.md, `ferramentas/analisar_inquerito.py`, espaço na app só com dados da Bosch enquanto não houver dados reais) · B viabilidade (custos reais, VIABILIDADE.md) · C diferenciação (concorrentes, DIFERENCIACAO.md) · D impacto com pressupostos visíveis e citados · E UI com menos peso · DEMO_GUIAO.md depois.
 
 ## Próximo passo
-Noite 2: assistente (5 passos), resultado, relatório HTML e modo detalhado feitos (tags `estavel-n2-1b`, `estavel-n2-2`); `UX_PESQUISA.md` feito. A seguir: Júri do ciclo 2 (`equipa/juri_noite2_c2.md`), ciclo 3 se houver itens, depois fecho §8 (GUIA_EQUIPA .md/.docx, HANDOFF.md, RELATORIO_FINAL, DEMO_GUIAO, screenshots/final, tag `final-noite2`).
+Noite 2 concluída (tag `final-noite2`). Falta o que depende de pessoas: ver `HANDOFF.md` (próximos passos até às 17:30).
 
 ## Decisões pendentes
 Ver `PERGUNTAS.md`.

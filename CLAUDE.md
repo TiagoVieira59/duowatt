@@ -3,6 +3,7 @@
 Projeto DuoWatt, Hackathon@ShiftE 2026, desafio Bosch. Responde sempre em **português europeu (PT-PT)**.
 
 ## Começa por aqui
+0. Lê primeiro `HANDOFF.md`.
 1. Lê `PROGRESSO.md` (estado, notas do Júri, próximo passo).
 2. Lê `CONTEXTO_Projeto_DuoWatt.md` e `CRITERIOS_AVALIACAO.md`.
 3. Para retomar o trabalho: "Lê PROGRESSO.md e continua".

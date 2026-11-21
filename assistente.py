@@ -88,7 +88,7 @@ def _custo_texto(r):
     if v == "aguenta":
         return "0 €", "A potência atual chega: não paga mais pela potência contratada."
     if r["extra"] is None:
-        return "n/d", "Não temos tarifa para esta potência contratada."
+        return "Sem estimativa", "Não temos tarifa para esta potência contratada."
     num = f"{pt(r['extra'])}–{pt(r['extra_iva'])} €/ano"
     if r["sem"]["minutos_acima"] > 0 and r["com"]["minutos_acima"] == 0:
         lo, hi = r["duowatt"]
@@ -107,7 +107,7 @@ def numeros(r):
     elif r["garrafas"] == 0:
         co2 = ("Sem gás", "Sem gás de garrafa a substituir, não há CO₂ a evitar.")
     else:
-        co2 = ("n/d", "Só há CO₂ evitado depois de aumentar a potência.")
+        co2 = ("Ainda não", "Só há CO₂ evitado depois de aumentar a potência.")
     custo, custo_leg = _custo_texto(r)
     sem, com = r["sem"], r["com"]
     agua = (f"{com['minutos_sem_agua']} min", f"Minutos sem água quente ao serão (sem gestão: {sem['minutos_sem_agua']} min).")
@@ -158,6 +158,7 @@ td{{border:1px solid #bbb;padding:3px 6px;vertical-align:top}}.v{{border:2px sol
 CSS = """<style>
 .block-container{max-width:720px;padding-top:1.5rem}
 .stButton button,.stDownloadButton button{min-height:48px;font-size:18px;font-weight:600}
+.stButton button[kind="secondary"]{border:2px solid #222;color:#111}
 [data-testid="stRadio"] label p{font-size:18px}
 [data-testid="stRadio"] label{padding:6px 0}
 h1{font-size:1.7rem !important}
@@ -223,6 +224,9 @@ def render():
         st.write(f"Precisaria de pelo menos {pt(cabe, 2).rstrip('0').rstrip(',')} kVA." if cabe else "Nem a maior potência da lista chega.")
     for val, rot, leg in numeros(r):
         st.markdown(f'<div class="num"><span>{html.escape(rot)}</span><b>{html.escape(val)}</b><small>{html.escape(leg)}</small></div>', unsafe_allow_html=True)
+    if r["ev"]:
+        st.caption(f"Não confunda com a poupança de combustível: trocar o gás por elétrico muda a conta em {pt(r['ev']['poupanca_eur'])} €/ano "
+                   "(positivo é poupança), sem contar com o custo do aparelho novo nem com a potência. A mensagem é descarbonizar sem custar mais, não poupar dinheiro.")
     st.subheader("O que fazer a seguir")
     for t in PROXIMOS[r["veredicto"]]:
         st.markdown(f"- {t}")
@@ -233,6 +237,9 @@ def render():
         with st.expander("O que assumimos por si («Não sei»)"):
             for t, n in assumido:
                 st.markdown(f"- **{t}** {n}")
+    with st.expander("Palavras que pode encontrar"):
+        st.markdown("- **kVA:** quanto a casa pode usar ao mesmo tempo antes de o quadro disparar.\n- **kWh:** a unidade da energia que a fatura cobra.\n"
+                    "- **Termoacumulador:** depósito elétrico de água quente, que substitui o esquentador a gás.\n- **Placa de indução:** placa elétrica de cozinha.")
     with st.expander("Pressupostos e cenário adverso"):
         st.table({"Item": [a for a, _, _ in pressupostos(r)], "Valor": [b for _, b, _ in pressupostos(r)], "Fonte e classificação": [c for _, _, c in pressupostos(r)]})
     st.caption("Simulação ilustrativa, com valores por validar. O CO₂ evitado vem de trocar gás por elétrico, não do DuoWatt, que só retira o bloqueio da potência.")

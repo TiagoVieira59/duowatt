@@ -2,6 +2,12 @@
 
 Estado: 21 nov 2026, de madrugada. Entrega às 17:30. Este relatório descreve o que foi feito, o que a equipa tem de validar e o que ainda depende de pessoas.
 
+## 0. Noite 2 (assistente para a família)
+- **Júri antes → depois** (`equipa/juri_noite2_c2.md`): C1=1, C2=3, C3=4, C4=4, C5=3 → **igual**, ponderada **2,9 / 5**; facilidade para pessoa comum **4/5**. Só houve um júri (fim do ciclo 2); o ciclo 3 corrigiu os itens de impacto baixo (botão «Voltar» com contraste, «n/d» mais claro, glossário, nota sobre poupança contra custo de potência) e não foi reavaliado, para poupar o limite semanal. Dois ciclos sem subida: a nota só sobe com dados reais (C1), validação por eletricista/Bosch (C4) e verificação de anterioridade (C5).
+- **O que mudou:** ecrã principal passou a ser um assistente de 5 perguntas (barra de progresso, ajuda por pergunta, valores típicos, «Não sei» explicado), página de resultado (veredicto em linguagem simples, 3 números, o que fazer a seguir), relatório HTML de uma página para o instalador, e o modo detalhado (o que já existia) herda as respostas. Formato PT-PT numa função. `UX_PESQUISA.md` com as regras e fontes. Ver `DECISOES.md`.
+- **Não feito:** retoma automática (bloqueada por permissões, `PERGUNTAS.md` n.º 7); Forms não executado no Google (o Tiago executa o script); sem dados reais.
+- **O Tiago tem de validar:** valores por omissão do assistente (3,45 kVA, 200 kWh, 3 pessoas, 1,8 kW, 12 garrafas), o link do Forms no `GUIA_EQUIPA`, e rever o relatório descarregado.
+
 ## 1. Avaliação (Júri simulado, critérios oficiais)
 | Critério | Peso | Nota (1–5) |
 |---|---|---|
