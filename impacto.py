@@ -7,6 +7,12 @@ KG_GARRAFA = 13                    # butano T3
 KWH_POR_KG_GPL = 46 / 3.6          # PCI 46 MJ/kg -> ~12,8 kWh/kg
 KG_CO2_POR_KWH_GPL = 0.063 * 3.6   # 63 tCO2/TJ -> ~0,227 kg/kWh
 CASAS_GPL = 2_200_000              # enunciado Bosch
+# Termo de potência (€/dia, sem IVA): ERSE, Diretiva 4/2026, em vigor desde 1 out 2026,
+# comercializador de último recurso (PESQUISA.md, secção 4).
+TERMO_POTENCIA_EUR_DIA = {3.45: 0.1917, 6.9: 0.3659}
+# PROXY: <3,45 kVA = 44,1 % dos contratos BTN (E-REDES, perfis 2025, dados 2023);
+# inclui não domésticos e não é específico das casas a GPL.
+QUOTA_ATE_3_45_KVA = 0.44
 
 
 def impacto_casa(garrafas_ano, preco_garrafa=37.0, preco_kwh=0.21,
@@ -43,3 +49,11 @@ def impacto_casa(garrafas_ano, preco_garrafa=37.0, preco_kwh=0.21,
 def extrapolar(co2_evitado_kg_casa, adocao=0.01, casas=CASAS_GPL):
     """Toneladas de CO2/ano evitadas se 'adocao' (0-1) das casas a GPL trocar."""
     return co2_evitado_kg_casa * casas * adocao / 1000
+
+
+def custo_subir_potencia(de_kva, para_kva):
+    """Custo extra (€/ano, sem IVA) do termo de potência ao subir de 'de_kva' para 'para_kva'."""
+    try:
+        return (TERMO_POTENCIA_EUR_DIA[para_kva] - TERMO_POTENCIA_EUR_DIA[de_kva]) * 365
+    except KeyError as e:
+        raise ValueError(f"sem termo de potência para {e.args[0]} kVA (há {sorted(TERMO_POTENCIA_EUR_DIA)})") from None

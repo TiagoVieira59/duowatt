@@ -2,9 +2,10 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
-from duowatt import INDUCAO, simular, veredicto
-from impacto import extrapolar, impacto_casa
+from duowatt import INDUCAO, P_TERMO_W, simular, veredicto
+from impacto import CASAS_GPL, QUOTA_ATE_3_45_KVA, custo_subir_potencia, extrapolar, impacto_casa
 
+KVA = [2.3, 3.45, 6.9, 10.35]
 st.set_page_config(page_title="DuoWatt", layout="wide")
 # legibilidade em projetor: texto >= 16 px, cinzento só escuro, menos espaço no topo
 st.markdown(
@@ -13,8 +14,8 @@ st.markdown(
 h1 {font-size: 2rem !important; padding: 0 0 .25rem 0;}
 [data-testid="stMetricLabel"] p, [data-testid="stCaptionContainer"] p, [data-testid="stSidebar"] label p,
 [data-testid="stSidebar"] label, [data-testid="stExpander"] p {font-size: 16px !important; color: #222 !important;}
-[data-testid="stCaptionContainer"] p {color: #333 !important;}
-[data-testid="stMetricValue"] {font-size: 2rem;}
+[data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p {font-size: 16px !important; color: #222 !important; opacity: 1 !important;}
+[data-testid="stMetricValue"] {font-size: 1.6rem;}
 [data-testid="stAlert"] p {font-size: 16px;}
 [data-testid="stSidebar"] input, [data-testid="stSidebar"] [data-baseweb="select"] div,
 [data-testid="stSidebar"] [role="radiogroup"] p {font-size: 16px !important; color: #222 !important;}
@@ -26,7 +27,7 @@ st.title("DuoWatt: gás para elétrico, sem disparar")
 
 with st.sidebar:
     st.header("A sua casa")
-    kva = st.selectbox("Potência contratada (kVA)", [2.3, 3.45, 6.9, 10.35], index=1)
+    kva = st.selectbox("Potência contratada (kVA)", KVA, index=1)
     consumo = st.number_input("Consumo mensal (kWh)", 50, 1500, 200, step=10)
     inducao = st.radio("Uso da placa de indução", ["Moderado (1,8 kW)", "Intenso (3 kW)"])
     with st.expander("Avançado"):
@@ -52,15 +53,21 @@ cor = {
 cor(f"#### Veredicto: {v.capitalize()}")
 
 base_w = consumo / 720 * 1000
-margem = limite - base_w - ind_w
-if sem["minutos_acima"] == 0:
+pedido_w = base_w + ind_w + P_TERMO_W
+ev = None
+if v == "reserva de água insuficiente":
+    frase = "A potência chega, mas o depósito não dá para a água quente deste agregado: aumentar o depósito."
+elif sem["minutos_acima"] == 0:
     frase = "A gestão não é necessária: a casa aguenta sem ela."
 elif com["minutos_acima"] == 0:
     frase = f"Com gestão deixa de exceder o limite (sem ela passa {sem['minutos_acima']} min acima)."
 else:
     frase = f"Mesmo com gestão excede o limite durante {com['minutos_acima']} min."
-folga = f"Folga com a placa ligada: {margem:,.0f} W." if margem >= 0 else f"Faltam {-margem:,.0f} W para a placa ligada caber."
-st.markdown(f"**{frase}** {folga}".replace(",", " "))
+folga = f"Placa + termoacumulador juntos pedem {pedido_w:,.0f} W; o limite é {limite:,.0f} W.".replace(",", " ")
+if v == "precisa de mais potência":
+    cabe = next((f"{k:g}".replace(".", ",") for k in KVA if k * 1000 >= com["pico_w"]), None)
+    folga += f" Para caber, precisaria de pelo menos {cabe} kVA: contratar {cabe} kVA." if cabe else " Nem a maior potência da lista chega."
+st.markdown(f"**{frase}** {folga}")
 
 if v == "precisa de mais potência":
     co2 = "n/d"
@@ -70,10 +77,16 @@ elif garrafas == 0:
 else:
     ev = impacto_casa(garrafas, preco_kwh=preco_kwh, fator_elet_g_kwh=fator)
     co2, co2_ajuda = f"{ev['co2_evitado_kg']:.0f} kg/ano", f"Fator {fator} g/kWh"
-a, b, c = st.columns(3)
+a, b, c, d, e, f = st.columns(6)
 a.metric("Pico sem gestão", f"{sem['pico_w']:,.0f} W".replace(",", " "))
 b.metric("Pico com DuoWatt", f"{com['pico_w']:,.0f} W".replace(",", " "))
-c.metric(f"CO2 evitado por casa ({fator} g/kWh)", co2, help=co2_ajuda)
+c.metric("CO2 evitado", co2, help=co2_ajuda)
+if ev:
+    d.metric("Poupança" if ev["poupanca_eur"] >= 0 else "Custo extra", f"{abs(ev['poupanca_eur']):.0f} €/ano")
+else:
+    d.metric("Poupança", "n/d")
+e.metric("Min. acima", f"{sem['minutos_acima']} → {com['minutos_acima']}", help="Minutos acima do limite, sem → com DuoWatt")
+f.metric("Min. sem água", f"{sem['minutos_sem_agua']} → {com['minutos_sem_agua']}", help="Minutos sem água quente, sem → com DuoWatt")
 
 # gráfico só do serão (17:00-23:00); domínios explícitos evitam avisos "Infinite extent"
 ini, fim = 17 * 60, 23 * 60
@@ -97,25 +110,22 @@ rotulo = alt.Chart(pd.DataFrame({"Hora": [22.95], "W": [limite], "t": [f"Limite 
     align="right", baseline="bottom", dy=-6, fontSize=16, fontWeight="bold", color="#111").encode(x=alt.X("Hora:Q", scale=xs), y="W:Q", text="t:N")
 st.altair_chart(
     (serao + linha("Sem gestão", 8) + linha("Com DuoWatt", 4) + lim + rotulo)
-    .properties(height=300)
+    .properties(height=240)
     .configure_axis(labelFontSize=14, titleFontSize=16, labelColor="#222", titleColor="#222")
     .configure_legend(labelFontSize=16, labelColor="#222", symbolStrokeWidth=4, symbolSize=300),
     width="stretch",
 )
 
-st.subheader("Sem gestão vs. com DuoWatt")
-for col, (nome, r) in zip(st.columns(2), [("Sem gestão", sem), ("Com DuoWatt", com)]):
-    with col:
-        st.markdown(f"**{nome}**")
-        a, b = st.columns(2)
-        a.metric("Min. acima do limite", r["minutos_acima"])
-        b.metric("Min. sem água quente", r["minutos_sem_agua"])
 st.caption("Acima do limite = risco de disparo; o disjuntor real tolera pequenas sobrecargas por pouco tempo.")
 
 st.subheader("Impacto se a casa trocar o gás pela eletricidade")
 st.caption("O CO2 evitado vem da eletrificação (trocar o gás pela eletricidade), não só do DuoWatt; o DuoWatt desbloqueia a troca.")
 if v == "aguenta com gestão":
     st.info("Sem gestão esta casa teria de aumentar a potência; com o DuoWatt a troca é possível.")
+    if kva == 3.45:
+        extra = custo_subir_potencia(3.45, 6.9)
+        comp = f", mais do que a poupança do gás ({ev['poupanca_eur']:.0f} €/ano)" if ev and extra > ev["poupanca_eur"] else (f", menos do que a poupança do gás ({ev['poupanca_eur']:.0f} €/ano)" if ev else "")
+        st.caption(f"Sem gestão, a casa teria de subir para 6,9 kVA: +{extra:.0f} €/ano só no termo de potência (sem IVA, ERSE 2026){comp}.")
 elif v == "aguenta":
     st.info("Esta casa já aguenta sem gestão: aqui o DuoWatt não é necessário.")
 elif v == "reserva de água insuficiente":
@@ -126,13 +136,17 @@ elif garrafas == 0:
     st.info("Sem gás a substituir: sem impacto de CO2.")
 else:
     adverso = impacto_casa(garrafas, preco_kwh=preco_kwh, fator_elet_g_kwh=167)
-    a, b = st.columns(2)
-    a.metric("No pior cenário (167 g/kWh)", f"{adverso['co2_evitado_kg']:.0f} kg/ano")
-    b.metric("Poupança de custo" if ev["poupanca_eur"] >= 0 else "Custo extra", f"{abs(ev['poupanca_eur']):.0f} €/ano")
+    st.markdown(f"**CO2:** gás {ev['co2_gas_kg']:.0f} kg/ano → elétrico {ev['co2_eletrico_kg']:.0f} kg/ano → evitado {ev['co2_evitado_kg']:.0f} kg/ano. "
+                f"No pior cenário (167 g/kWh): {adverso['co2_evitado_kg']:.0f} kg/ano evitados.")
     nacional = extrapolar(ev["co2_evitado_kg"], adocao=adocao / 100)
     st.caption(
         f"Potencial da eletrificação (não atribuído ao DuoWatt), cenário ilustrativo: {adocao} % das 2,2 M de casas a GPL trocam: "
         f"{nacional:,.0f} t CO2/ano.".replace(",", " ")
+    )
+    teto = extrapolar(ev["co2_evitado_kg"], adocao=adocao / 100, casas=int(CASAS_GPL * QUOTA_ATE_3_45_KVA))
+    st.caption(
+        f"Limite superior do que depende de desbloquear a potência: casas com ≤3,45 kVA (~44 % dos contratos BTN, proxy): "
+        f"{teto:,.0f} t CO2/ano com {adocao} % de adoção.".replace(",", " ")
     )
     st.caption(
         "O CO2 só desce se o gás for mesmo substituído, e a troca pode acontecer sem o DuoWatt: "
@@ -147,5 +161,6 @@ with st.expander("Pressupostos e limites"):
     st.markdown(
         "- Cenário: indução 19:30-20:10 e duche às 19:45, com a base da casa estimada pelo consumo mensal.\n"
         "- Não inclui o termo de potência da fatura.\n"
+        "- No INE (2020), 67 % das casas têm esquentador a gás e só 17 % têm termoacumulador: a maioria teria de comprar um aparelho novo (custo não incluído).\n"
         "- Não encontrámos controlo externo documentado nos Tronic."
     )

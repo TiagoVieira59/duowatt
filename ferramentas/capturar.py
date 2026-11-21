@@ -28,7 +28,7 @@ CENARIOS = {
     "B2_precisa_mais_potencia": {"inducao": "Intenso (3 kW)", "consumo": 432},  # base de 600 W: o DuoWatt não chega
     "C_6_9kva": {"kva": "6.9"},
     "D1_minimo": {"kva": "2.3", "pessoas": 1, "garrafas": 0},
-    "D2_maximo": {"kva": "10.35", "pessoas": 8, "garrafas": 50},
+    "D2_maximo": {"kva": "10.35", "pessoas": 8, "garrafas": 20},
 }
 
 
@@ -65,6 +65,7 @@ def aplicar(page, cenario):
             campo = page.get_by_label(ROTULOS[chave])
             campo.fill(str(valor))
             campo.press("Enter")
+            campo.press("Tab")  # sai do campo: sem "Press Enter to apply" no screenshot
         page.wait_for_timeout(1200)
 
 

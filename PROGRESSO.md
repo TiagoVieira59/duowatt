@@ -9,19 +9,21 @@ Prompt da missão: `PROMPT_Equipa_Autonoma_DuoWatt.md`. Fonte de verdade do proj
 ## Ciclo atual
 - Ciclo 1 fechado. Júri do ciclo 1 a avaliar `screenshots/ciclo1c/` (resultado em `equipa/juri_ciclo1.md`). Próximo: ciclo 2 (backlog em `BACKLOG.md`), branch `ciclo-2` a partir do `main`.
 
-## Rubrica (0–5)
-| Critério | Ciclo 0 | Atual |
+## Rubrica oficial (ver `CRITERIOS_AVALIACAO.md`; escala 1–5; pesos 20/20/15/15/10; a 6 é só a 25 nov)
+| Critério | Peso | Última avaliação do Júri |
 |---|---|---|
-| R1 impacto CO₂ | 3 | 3 |
-| R2 viabilidade | 2 | 2 |
-| R3 clareza da demo | 3 | 3 |
-| R4 UI/UX | 2 | 2 |
-| R5 correção técnica | 3 | 3 |
-| R6 honestidade | 4 | 4 |
-| R7 robustez | 3 | 3 |
+| 1 Clareza do problema e provas do utilizador | 20 % | por avaliar com a nova rubrica (sem dados reais de utilizadores: 1–2 até a equipa recolher) |
+| 2 Impacto mensurável | 20 % | por avaliar |
+| 3 Solução e demonstração | 15 % | por avaliar |
+| 4 Viabilidade técnica, económica e de implementação | 15 % | por avaliar |
+| 5 Originalidade e diferenciação | 10 % | por avaliar |
+(Avaliações antigas R1–R7 em `equipa/juri_ciclo0.md` e `equipa/juri_ciclo1.md`: já não se usam.)
+
+## Prioridades novas (recebidas a 21 nov)
+A provas do utilizador (INQUERITO.md, ENTREVISTAS.md, `ferramentas/analisar_inquerito.py`, espaço na app só com dados da Bosch enquanto não houver dados reais) · B viabilidade (custos reais, VIABILIDADE.md) · C diferenciação (concorrentes, DIFERENCIACAO.md) · D impacto com pressupostos visíveis e citados · E UI com menos peso · DEMO_GUIAO.md depois.
 
 ## Próximo passo
-Ciclo 1: Auditor UX + Modelador em paralelo, depois triar `BACKLOG.md`. Júri do ciclo 0 em `equipa/juri_ciclo0.md` (objeção n.º 1: o CO₂ mostrado é da eletrificação, não do produto).
+Fechar o lote 2 do ciclo 2 (branch `ciclo-2`), integrar se verde e depois A, B, C, D, E (ver acima). Investigador (custos) a correr.
 
 ## Decisões pendentes
 Ver `PERGUNTAS.md`.
