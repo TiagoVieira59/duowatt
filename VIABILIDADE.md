@@ -17,7 +17,7 @@ Um medidor de corrente no quadro lê a potência total da casa; um controlador d
 | **Material, com contactor** | **221,65 €** | derivado | |
 | Mão de obra do eletricista | ~30 €/h | provável (plataformas, não tarifa oficial) | Habitissimo, Zaask |
 | Instalação (hipótese: 1 a 2 horas) | 30 a 60 € | hipótese | |
-| **Total instalado, quadro já adequado** | **~200 a 280 €** | derivado | |
+| **Total instalado, quadro já adequado** | **~202 a 282 €** | derivado | |
 | Se for preciso quadro novo | +150 a 400 € | provável | Zaask, expert-zoom |
 | **Total instalado, com quadro novo** | **~350 a 680 €** (soma do total anterior com o quadro) | derivado | |
 
@@ -35,17 +35,17 @@ Um produto industrial da Bosch, em escala, custaria menos do que montar peças d
 ## 4. Comparação a 10 anos (preços constantes, sem desconto)
 | | Subir a potência | DuoWatt |
 |---|---|---|
-| Custo único | ~0 € (se a instalação já suportar) | ~200 a 280 € (quadro adequado) ou ~350 a 680 € (quadro novo) |
+| Custo único | ~0 € (se a instalação já suportar) | ~202 a 282 € (quadro adequado) ou ~350 a 680 € (quadro novo) |
 | Custo anual | +64 a 78 €/ano | ~0 € (consumo do controlador não estimado) |
-| Total em 10 anos | **~640 a 780 €** | **~200 a 280 €** ou **~350 a 680 €** |
+| Total em 10 anos | **~640 a 780 €** | **~202 a 282 €** ou **~350 a 680 €** |
 | Equilíbrio | | o DuoWatt compensa ao fim de **~2,6 a 4,4 anos** (quadro adequado) ou **~4,5 a 10,7 anos** (quadro novo; no pior caso, mais de 10 anos) (derivado) |
 
-**Efeito na fatura da família** (valores por omissão da app, derivados): a troca de gás por elétrico poupa ~33 €/ano de combustível (sensível ao preço da garrafa: ~99 € com a garrafa a 43,55 €). Se subir a potência, isso passa a **~−30 €/ano** (custo extra). Com o DuoWatt, amortizado em 10 anos (~25 €/ano), fica **~+8 a +9 €/ano** (a app usa o ponto médio da faixa de custo: ~+9 €/ano). A mensagem honesta é **"descarboniza sem custar mais"**, e não "poupa dinheiro". Os custos do aparelho novo não estão incluídos em nenhum dos caminhos.
+**Efeito na fatura da família** (valores por omissão da app, derivados): a troca de gás por elétrico poupa ~40 €/ano de combustível (12 garrafas por ano) (sensível ao preço da garrafa: ~99 € com a garrafa a 43,55 €). Se subir a potência, isso passa a **~−24 €/ano** (custo extra). Com o DuoWatt, amortizado em 10 anos (~25 €/ano), fica **~+16 €/ano** (ponto médio da faixa de custo). A mensagem honesta é **"descarboniza sem custar mais"**, e não "poupa dinheiro". Os custos do aparelho novo não estão incluídos em nenhum dos caminhos.
 
 ## 5. Benefícios
 **Para a família:** evita pagar mais potência (64 a 78 €/ano) ou obras; mantém a água quente (0 min sem água no cenário típico); menos risco de disparo (25 → 0 min acima do limite no cenário típico). Só em casas em que a gestão chega: com indução intensa e base alta (cenário B2) a casa continua a precisar de mais potência.
 **Para a Bosch (hipóteses, por validar com a Bosch):** vender termoacumuladores Tronic a casas que hoje ficam no gás por receio da potência; ligar o diagnóstico ao momento da compra (instalador, loja); abrir um acessório ou serviço novo. Não está confirmado que os Tronic aceitem controlo externo (nada encontrado na documentação portuguesa); o corte seria por contactor no circuito.
-**Para o clima:** até ~205 kg de CO₂ por casa e ano evitados pela eletrificação (107 g/kWh; 109 kg com 167 g/kWh), dos quais só a parte das casas bloqueadas pela potência depende do DuoWatt: limite superior ~44 % das casas (proxy, ver app).
+**Para o clima:** até ~246 kg de CO₂ por casa e ano evitados pela eletrificação (107 g/kWh; 131 kg com 167 g/kWh; 12 garrafas), dos quais só a parte das casas bloqueadas pela potência depende do DuoWatt: limite superior ~44 % das casas (proxy, ver app).
 
 ## 6. Riscos e limites
 - Segurança elétrica: instalação por eletricista habilitado; normas, proteções, anti-legionela e temperatura sanitária a validar.
@@ -61,3 +61,23 @@ Um produto industrial da Bosch, em escala, custaria menos do que montar peças d
 4. **Piloto** com 20 a 30 casas de instaladores parceiros (por exemplo, na região de Aveiro) com o diagnóstico no momento da avaria: medir adesão, trocas feitas e minutos acima do limite.
 5. **Obter dados em falta:** percentagem de casas a GPL por potência contratada (E-REDES/ERSE), taxa de alteração de potência.
 6. **Análise de anterioridade** e de patentes antes de qualquer afirmação de novidade.
+
+## 8. Plano de implementação para a Bosch, por fases (prazos e custos por validar)
+| Fase | O que se faz | Custo | Indicadores de sucesso |
+|---|---|---|---|
+| 1. Piloto (~3 meses) | 20 a 30 casas de instaladores parceiros, com o diagnóstico e a gestão | Material ~202–282 € por casa (derivado, §2) + horas do instalador (hipótese) | Disparos evitados, minutos sem água quente, satisfação do instalador e da família |
+| 2. Certificação | Controlador/relé conforme as normas de baixa tensão; ensaio anti-legionela | Laboratório e engenharia: **sem estimativa fiável** | Parecer positivo do laboratório e de um eletricista habilitado |
+| 3. Parceiros | Instaladores e lojas Bosch fazem o diagnóstico à porta (~2 min) e entregam o relatório | Formação e material: por estimar | Diagnósticos por instalador; % que viram venda de Tronic |
+| 4. Oferta «Tronic + DuoWatt» | Pacote vendido com o termoacumulador; ligação ao Tronic só se a Bosch a permitir | Produto industrial: **custo desconhecido** | Casas desbloqueadas (IMPACTO.md); vendas Tronic atribuíveis |
+
+**O que falta validar por um eletricista habilitado:** proteções e calibres, contactor, estado do quadro, anti-legionela (temperatura mínima do depósito), responsabilidade da instalação e se a pausa do termoacumulador cumpre as normas. Nada disto foi validado.
+
+## 9. Riscos e mitigação
+| Risco | Mitigação |
+|---|---|
+| Segurança elétrica | Instalação por eletricista habilitado; certificação na fase 2 |
+| Aparelho novo e espaço (INE 2020: 67 % esquentador, 17 % termoacumulador; 60 % com restrições de espaço, Bosch) | O diagnóstico mostra à partida se há espaço e orçamento; o DuoWatt não resolve o espaço |
+| Tronic sem controlo externo (nada encontrado) | Pausar com relé na alimentação, ou pedir à Bosch uma interface na fase 4 |
+| Instaladores sem tempo (23 % das marcações não se concluem, enunciado) | Diagnóstico de ~2 min com relatório pronto, sem cálculo manual |
+| Custos não validados (IVA da potência, mão de obra, produto industrial) | Cotações reais no piloto; validação da Contabilidade |
+| Adoção desconhecida | Cenários 1/5/10 % em IMPACTO.md; medir no piloto |

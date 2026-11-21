@@ -3,7 +3,7 @@
 Prompt da missão: `PROMPT_Equipa_Autonoma_DuoWatt.md`. Fonte de verdade do projeto: `CONTEXTO_Projeto_DuoWatt.md`. Entrega: 21 nov 2026, 17:30 (a partir das 14:00, só correções de erros).
 
 ## Estado do `main`
-- Tag `final-noite2`. Testes: 46 a passar, 4 xfail justificados. App: 'Diagnóstico' e 'Provas do utilizador' (só dados Bosch, rotulados, até haver `dados/inquerito_resumo.json`).
+- Tag `final-noite2b`. Testes: 47 a passar, 4 xfail justificados. App: 'Diagnóstico' e 'Provas do utilizador' (só dados Bosch, rotulados, até haver `dados/inquerito_resumo.json`).
 - Noite 2: Fase 1 (Forms: `ferramentas/criar_formulario.gs`, `FORMS_INSTRUCOES.md`) feita; Fase 2 (retoma automática) bloqueada por permissões, ver `PERGUNTAS.md` n.º 7; Fase 3 (formato PT-PT em `formato.py`) feita.
 - Para a equipa humana: criar o Forms, ≥30 respostas, 3 entrevistas, `.venv/bin/python ferramentas/analisar_inquerito.py respostas.csv`.
 
@@ -25,7 +25,7 @@ Prompt da missão: `PROMPT_Equipa_Autonoma_DuoWatt.md`. Fonte de verdade do proj
 A provas do utilizador (INQUERITO.md, ENTREVISTAS.md, `ferramentas/analisar_inquerito.py`, espaço na app só com dados da Bosch enquanto não houver dados reais) · B viabilidade (custos reais, VIABILIDADE.md) · C diferenciação (concorrentes, DIFERENCIACAO.md) · D impacto com pressupostos visíveis e citados · E UI com menos peso · DEMO_GUIAO.md depois.
 
 ## Próximo passo
-Noite 2 concluída (tag `final-noite2`). Falta o que depende de pessoas: ver `HANDOFF.md` (próximos passos até às 17:30).
+Noite 2b concluída (tag `final-noite2b`; Júri 2,94). Falta o que depende de pessoas: ver `HANDOFF.md`.
 
 ## Decisões pendentes
 Ver `PERGUNTAS.md`.

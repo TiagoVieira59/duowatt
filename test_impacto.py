@@ -38,3 +38,13 @@ def test_ano_de_equilibrio():
     assert anos_equilibrio(*custo_duowatt()[1:], extra) == pytest.approx(4.43, abs=0.01)
     with pytest.raises(ValueError):
         anos_equilibrio(200, 0)
+
+
+def test_metrica_principal():
+    from impacto import metrica_principal
+    m = metrica_principal(200, 0.01)
+    assert round(m["casas"]) == 9680                       # 2,2 M x 44 % x 1 %
+    assert round(m["t_co2"]) == 1936                       # 200 kg x 9 680 casas
+    assert abs(m["pct_enunciado"] - 1936 / 870_000 * 100) < 1e-9
+    assert abs(m["mercado_meur"] - 0.264) < 1e-9           # 60 M€ x 0,44 % das casas
+    assert metrica_principal(200, 0.10)["casas"] == 10 * m["casas"]

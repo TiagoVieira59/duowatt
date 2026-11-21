@@ -5,7 +5,8 @@ import html
 from duowatt import P_TERMO_W, simular, veredicto
 from formato import pt
 from impacto import (FATOR_ELET_ADVERSO_G_KWH, FATOR_ELET_G_KWH, IVA_POTENCIA, PRECO_GARRAFA_EUR, PRECO_KWH_EUR,
-                     anos_equilibrio, custo_duowatt, custo_subir_potencia, impacto_casa)
+                     anos_equilibrio, custo_duowatt, custo_subir_potencia, impacto_casa, metrica_principal, ADOCOES,
+                     KTON_ENUNCIADO, MERCADO_MEUR_ENUNCIADO, QUOTA_ATE_3_45_KVA)
 
 LITROS = 100  # depósito por omissão (igual ao modo detalhado)
 N_PASSOS = 5
@@ -88,9 +89,10 @@ def _custo_texto(r):
     if v == "aguenta":
         return "0 €", "A potência atual chega: não paga mais pela potência contratada."
     if r["extra"] is None:
-        return "Sem estimativa", "Não temos tarifa para esta potência contratada."
+        return "Sem estimativa", "Não temos tarifa para esta potência: peça o valor à comercializadora."
     num = f"{pt(r['extra'])}–{pt(r['extra_iva'])} €/ano"
     if r["sem"]["minutos_acima"] > 0 and r["com"]["minutos_acima"] == 0:
+        num = "Evita " + num
         lo, hi = r["duowatt"]
         eq = f"{pt(anos_equilibrio(lo, r['extra_iva']), 1)}–{pt(anos_equilibrio(hi, r['extra']), 1)}"
         return num, (f"É o que custaria a mais subir de 3,45 para 6,9 kVA. Com a gestão do DuoWatt evita-se esse custo; "
@@ -110,8 +112,22 @@ def numeros(r):
         co2 = ("Ainda não", "Só há CO₂ evitado depois de aumentar a potência.")
     custo, custo_leg = _custo_texto(r)
     sem, com = r["sem"], r["com"]
-    agua = (f"{com['minutos_sem_agua']} min", f"Minutos sem água quente ao serão (sem gestão: {sem['minutos_sem_agua']} min).")
-    return [(co2[0], "CO₂ evitado por ano", co2[1]), (custo, "Custo a mais na potência", custo_leg), (agua[0], "Sem água quente", agua[1])]
+    extra_agua = " A gestão pausa o termoacumulador para não disparar, e aqui a potência não chega nem assim." if r["veredicto"] == "precisa de mais potência" else ""
+    agua = (f"{com['minutos_sem_agua']} min", f"Minutos sem água quente ao serão (sem gestão: {sem['minutos_sem_agua']} min).{extra_agua}")
+    return [(co2[0], "CO₂ evitado por ano", co2[1]), (custo, "Custo da potência", custo_leg), (agua[0], "Sem água quente", agua[1])]
+
+
+def tabela_adocao(r):
+    """Linhas da métrica principal (1/5/10 %) com o CO₂ desta casa, ou de uma casa típica (12 garrafas) se não houver."""
+    ev = r["ev"] or impacto_casa(12)
+    linhas = []
+    for a in ADOCOES:
+        m = metrica_principal(ev["co2_evitado_kg"], a)
+        linhas.append((f"{pt(a * 100)} %", pt(m["casas"], 0), pt(m["t_co2"], 0), f"{pt(m['pct_enunciado'], 1)} %", pt(m["mercado_meur"], 1)))
+    return linhas, ("desta casa" if r["ev"] else "de uma casa típica (12 garrafas por ano)")
+
+
+COLUNAS_ADOCAO = ["Adoção", "Casas", "t CO₂/ano", f"% de {KTON_ENUNCIADO} kton", "M€/ano"]
 
 
 def pressupostos(r):
@@ -124,6 +140,9 @@ def pressupostos(r):
         ("Garrafa de gás", f"{pt(PRECO_GARRAFA_EUR)} €, 13 kg", "ERSE, out 2026, confirmado"),
         ("Eletricidade", f"{pt(PRECO_KWH_EUR, 2)} €/kWh", "ERSE 2026 com IVA de 23 %, derivado"),
         ("Termo de potência", "3,45 → 6,9 kVA", "ERSE, Diretiva 4/2026, derivado; IVA por verificar"),
+        ("Casas onde a potência é o bloqueio", f"{pt(QUOTA_ATE_3_45_KVA * 100)} % das 2,2 M de casas a GPL (teto)", "E-REDES 2023, proxy de contratos ≤3,45 kVA: provável (proxy); inclui não domésticos"),
+        ("Adoção 1 / 5 / 10 %", "cenários ilustrativos", "Hipótese: sem dado de adoção"),
+        ("870 kton e mercado de 60 M€/ano", "totais do enunciado", "Enunciado Bosch, confirmado; a parte do mercado é proporcional ao nº de casas (hipótese)"),
         ("Custo do DuoWatt", f"{pt(r['duowatt'][0])}–{pt(r['duowatt'][1])} € instalado", "Preços de retalho em PT, derivado; mão de obra é hipótese"),
     ]
 
@@ -158,6 +177,7 @@ td{{border:1px solid #bbb;padding:3px 6px;vertical-align:top}}.v{{border:2px sol
 CSS = """<style>
 .block-container{max-width:720px;padding-top:1.5rem}
 .stButton button,.stDownloadButton button{min-height:48px;font-size:18px;font-weight:600}
+.stButton button p,.stDownloadButton button p{font-size:18px}
 .stButton button[kind="secondary"]{border:2px solid #222;color:#111}
 [data-testid="stRadio"] label p{font-size:18px}
 [data-testid="stRadio"] label{padding:6px 0}
@@ -227,6 +247,11 @@ def render():
     if r["ev"]:
         st.caption(f"Não confunda com a poupança de combustível: trocar o gás por elétrico muda a conta em {pt(r['ev']['poupanca_eur'])} €/ano "
                    "(positivo é poupança), sem contar com o custo do aparelho novo nem com a potência. A mensagem é descarbonizar sem custar mais, não poupar dinheiro.")
+    linhas, base = tabela_adocao(r)
+    with st.expander("Ver o impacto se muitas casas fizerem o mesmo (1 / 5 / 10 %)"):
+        st.write(f"Só em casas com o limite de potência como bloqueio (até {pt(QUOTA_ATE_3_45_KVA * 100)} % das 2,2 milhões a gás), com o CO₂ {base}:")
+        st.table([dict(zip(COLUNAS_ADOCAO, l)) for l in linhas])
+        st.caption("Cenários ilustrativos, não previsões. O mercado de 60 M€/ano do enunciado é repartido por casa (hipótese). O CO₂ vem de trocar gás por elétrico; o DuoWatt retira o bloqueio da potência.")
     st.subheader("O que fazer a seguir")
     for t in PROXIMOS[r["veredicto"]]:
         st.markdown(f"- {t}")

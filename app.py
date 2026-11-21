@@ -7,6 +7,7 @@ import pandas as pd
 import streamlit as st
 
 from formato import pt
+from assistente import COLUNAS_ADOCAO, tabela_adocao
 from duowatt import INDUCAO, P_INDUCAO_W, P_TERMO_W, simular, veredicto
 from impacto import (ANOS_COMPARACAO, CASAS_GPL, CUSTO_MATERIAL_DUOWATT_EUR, CUSTO_QUADRO_NOVO_EUR, EFIC_ELETRICA,
                      EFIC_GAS, FATOR_ELET_ADVERSO_G_KWH, FATOR_ELET_G_KWH, IVA_POTENCIA, KG_CO2_POR_KWH_GPL, KG_GARRAFA,
@@ -72,7 +73,7 @@ with st.sidebar:
     with st.expander("Avançado"):
         pessoas = st.number_input("Número de pessoas", 1, 8, R["pessoas"] if R else 3)
         litros = st.number_input("Depósito do termoacumulador (L)", 50, 200, 100, step=10)
-        garrafas = st.number_input("Garrafas de gás por ano", 0, 20, R["garrafas"] if R else 10)
+        garrafas = st.number_input("Garrafas de gás por ano", 0, 20, R["garrafas"] if R else 12)
         preco_kwh = st.number_input("Preço marginal da eletricidade (€/kWh)", 0.05, 0.60, 0.21, step=0.005, format="%.3f")
         fator = st.slider("Fator de CO2 da eletricidade (g/kWh)", 40, 167, 107)
         adocao = st.slider("Casas a GPL que trocam, em % (cenário)", 1, 20, 1)
@@ -189,6 +190,11 @@ with tab_diag:
             f"Limite superior do que depende de desbloquear a potência: casas com ≤3,45 kVA (~44 % dos contratos BTN, proxy): "
             f"{pt(teto)} t CO2/ano com {adocao} % de adoção."
         )
+        st.markdown("**Métrica principal: casas desbloqueadas e CO₂ atribuível (os mesmos números do assistente)**")
+        _linhas, _base = tabela_adocao({"ev": ev})
+        st.table(pd.DataFrame(_linhas, columns=COLUNAS_ADOCAO).set_index("Adoção"))
+        st.caption(f"CO₂ {_base}; só casas com o limite de potência como bloqueio (até 44 %, proxy). 870 kton e 60 M€/ano: enunciado Bosch (confirmado); "
+                   "a parte do mercado é proporcional ao nº de casas (hipótese). Adoção 1/5/10 %: cenários ilustrativos, sem dado. Sensibilidade completa em IMPACTO.md.")
         st.caption(
             "O CO2 só desce se o gás for mesmo substituído, e a troca pode acontecer sem o DuoWatt: "
             "o que o DuoWatt faz é tirar o bloqueio da potência. O fator é uma média anual, não marginal."
@@ -279,6 +285,21 @@ with tab_viab:
         "3. Ensaio em bancada para medir minutos acima do limite, comutações e água quente.\n"
         "4. Piloto com 20 a 30 casas de instaladores parceiros, com o diagnóstico no momento da avaria."
     )
+    st.markdown("**Plano por fases para a Bosch** (estimativas e prazos por validar; ver VIABILIDADE.md §8)")
+    st.table(pd.DataFrame([
+        ("1. Piloto", "20–30 casas com instaladores parceiros, 3 meses", "Relés e medidores de retalho (~200–280 € por casa) + horas de instalador", "Disparos evitados, minutos sem água, satisfação do instalador"),
+        ("2. Certificação", "Controlador/relé em conformidade com as normas de baixa tensão; ensaio anti-legionela", "Laboratório e engenharia: sem estimativa fiável", "Parecer positivo do laboratório e de um eletricista habilitado"),
+        ("3. Parceiros", "Instaladores e lojas Bosch usam o diagnóstico à porta (~2 min)", "Formação e material: por estimar", "Diagnósticos por instalador; % que viram venda Tronic"),
+        ("4. Oferta Tronic + DuoWatt", "Pacote vendido com o termoacumulador; ligação ao Tronic só se a Bosch a permitir", "Produto industrial: custo desconhecido", "Casas desbloqueadas; vendas Tronic atribuíveis"),
+    ], columns=["Fase", "O que se faz", "Custo", "Indicadores de sucesso"]).set_index("Fase"))
+    st.caption("**Falta validar por um eletricista habilitado:** proteções, contactor, quadro, anti-legionela e responsabilidade da instalação.")
+    st.table(pd.DataFrame([
+        ("Segurança elétrica", "Instalação por eletricista habilitado, certificação do controlador (fase 2)"),
+        ("Aparelho novo e espaço (67 % esquentador; 60 % com restrições)", "Diagnóstico mostra logo se há espaço e orçamento; o DuoWatt não resolve o espaço"),
+        ("Tronic sem controlo externo", "Pausar a alimentação com relé, ou pedir à Bosch uma interface (fase 4)"),
+        ("Instaladores sem tempo", "Diagnóstico de ~2 min e relatório pronto, sem cálculo manual"),
+        ("Custos não validados", "Cotações reais no piloto; validação da Contabilidade"),
+    ], columns=["Risco", "Mitigação"]).set_index("Risco"))
     st.markdown("**Riscos principais**")
     st.markdown(
         "- **Segurança elétrica:** instalação por eletricista habilitado; normas, proteções e anti-legionela por validar.\n"
@@ -298,6 +319,13 @@ with tab_dif:
         ("Simuladores de potência", "ERSE, EDP, Iberdrola", "Só potência e tarifa; não tratam a troca de gás por elétrico."),
         ("Relatório para o instalador", "Não encontrado", "Não encontrámos um relatório que a família leve ao instalador na avaria (pesquisa limitada, não prova que não exista)."),
     ], columns=["O que já existe", "Exemplos", "O que não faz para o nosso caso"]).set_index("O que já existe"))
+    st.markdown("**O que é diferente (hipótese a testar)**")
+    st.table(pd.DataFrame([
+        ("Diagnóstico gás → elétrico", "Não encontrado", "Sim, em 5 perguntas, com 4 veredictos"),
+        ("Momento da avaria, feito pelo instalador à porta (~2 min)", "Não encontrado", "Sim, com relatório para a família"),
+        ("Gestão que evita subir o contrato", "Legrand, Schneider, Shelly (já existe)", "Sim, ligada ao veredicto «aguenta com gestão»"),
+        ("Oferta «Tronic + DuoWatt»", "Bosch Energy Manager (só solar, sem Tronic encontrado)", "Proposta a validar com a Bosch"),
+    ], columns=["Capacidade", "O que já existe", "DuoWatt"]).set_index("Capacidade"))
     st.info(
         "**O que o DuoWatt acrescenta (hipótese)**\n\n"
         "1. Um diagnóstico gás → elétrico com quatro veredictos, em vez de só sugerir um escalão de potência.\n"

@@ -84,3 +84,22 @@ def anos_equilibrio(custo_unico_eur, extra_anual_eur):
     if extra_anual_eur <= 0:
         raise ValueError("extra_anual_eur tem de ser > 0")
     return custo_unico_eur / extra_anual_eur
+
+
+# Métrica principal (desafio Bosch): casas onde o bloqueio da potência é removido e o que isso vale.
+KTON_ENUNCIADO = 870        # confirmado: enunciado Bosch, emissões diretas do GPL (~870 kton/ano)
+MERCADO_MEUR_ENUNCIADO = 60  # confirmado: enunciado Bosch, mercado de 60 M€/ano nas 2,2 M de casas
+ADOCOES = (0.01, 0.05, 0.10)  # cenários ilustrativos, hipótese (sem dado de adoção)
+
+
+def metrica_principal(co2_evitado_kg_casa, adocao, casas_gpl=CASAS_GPL, quota=QUOTA_ATE_3_45_KVA):
+    """Casas desbloqueadas, t CO2/ano atribuíveis, % dos 870 kton e M€/ano proporcionais do mercado de 60 M€.
+
+    shortcut: a quota de 44 % (proxy de contratos <=3,45 kVA) vale como teto das casas a GPL em que a potência é o
+    bloqueio, e o mercado reparte-se por casa de forma proporcional (hipótese); trocar por dado real quando houver.
+    """
+    casas = casas_gpl * quota * adocao
+    t_co2 = co2_evitado_kg_casa * casas / 1000
+    return {"adocao": adocao, "casas": casas, "t_co2": t_co2,
+            "pct_enunciado": t_co2 / (KTON_ENUNCIADO * 1000) * 100,
+            "mercado_meur": MERCADO_MEUR_ENUNCIADO * casas / casas_gpl}

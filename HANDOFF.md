@@ -1,34 +1,27 @@
 # HANDOFF (começa aqui numa sessão nova)
 
-## Estado em 5 linhas
-- Projeto DuoWatt, Hackathon@ShiftE 2026, desafio Bosch. Entrega **21 nov 17:30**; congelamento às **14:00** (só correções de erros).
-- Tag `final-noite2`; testes: 46 a passar, 4 xfail justificados.
-- A app (Streamlit) abre num assistente de 5 perguntas → resultado → relatório HTML para o instalador; «Modo detalhado» tem gráficos, viabilidade, diferenciação e provas.
-- Júri simulado: 2,9/5 (C1=1, C2=3, C3=4, C4=4, C5=3); facilidade 4/5. O C1 só sobe com dados reais.
-- Responde sempre em PT-PT. Regras no `CLAUDE.md` (nunca inventar dados de utilizadores).
+## Estado
+- DuoWatt, Hackathon@ShiftE 2026, desafio Bosch. Entrega **21 nov 17:30**; congelamento às **14:00** (só correções de erros). PT-PT sempre; regras no `CLAUDE.md` (nunca inventar dados de utilizadores).
+- Tag `final-noite2b`. Testes: 47 a passar, 4 xfail justificados.
+- App Streamlit: assistente de 5 perguntas → resultado (veredicto, 3 números, tabela de impacto 1/5/10 %, relatório HTML para o instalador) → «Modo detalhado» (gráfico, viabilidade com plano por fases, diferenciação, provas).
+- Júri simulado: ver `equipa/juri_noite2b.md` e `RELATORIO_FINAL.md` §0. O C1 (provas) só sobe com dados reais.
 
-## Decisões tomadas
-Conceito fixo (diagnóstico gás→elétrico + gestão que pausa o termoacumulador); stack Python/Streamlit; push para o GitHub autorizado (sem `--force`); identidade visual neutra, sem imitar a Bosch; relatório do instalador é a única funcionalidade nova autorizada.
-## Decisões pendentes
-`PERGUNTAS.md` (formato da entrega, quem valida custos, retoma automática n.º 7).
-
-## O que mudou na noite 2 (resumo de `DECISOES.md`)
-Forms (`ferramentas/criar_formulario.gs`, `FORMS_INSTRUCOES.md`); formato PT-PT (`formato.py`); `UX_PESQUISA.md`; `assistente.py` (lógica pura testável + ecrãs); relatório HTML; modo detalhado herda as respostas; `GUIA_EQUIPA.md/.docx`.
+## Decisões
+Conceito fixo; push autorizado (sem `--force`); 12 garrafas por omissão em tudo; botões verde-petróleo (sem imitar a Bosch). Pendentes: `PERGUNTAS.md` (formato da entrega, quem valida custos, retoma automática n.º 7).
 
 ## Próximos passos até às 17:30
-1. Tiago executa o script do Forms (`FORMS_INSTRUCOES.md`), preenche o link no `GUIA_EQUIPA.md` e envia o guia pelo WhatsApp.
-2. Recolher ≥30 respostas e 3 entrevistas; correr o analisador; copiar `ferramentas/modelo_entrevistas.json` para `dados/entrevistas.json` com citações literais.
-3. Mecânica/Contabilidade confirmam os valores (lista em `RELATORIO_FINAL.md` §3).
-4. Rever a demo (`DEMO_GUIAO.md`) em telemóvel e projetor; preencher os campos `[entre colchetes]` só com dados reais.
-5. Às 14:00 congelar; às 17:30 entregar (formato por confirmar).
+1. Executar o script do Forms (`FORMS_INSTRUCOES.md`), pôr o link no `GUIA_EQUIPA.md` e enviar o guia (`.docx`) pelo WhatsApp.
+2. ≥30 respostas + 3 entrevistas; correr o analisador; `dados/entrevistas.json` com citações literais.
+3. Mecânica/Contabilidade/eletricista validam os valores (lista em `RELATORIO_FINAL.md` §3 e `VIABILIDADE.md` §8).
+4. Ensaiar a demo (`DEMO_GUIAO.md`) em telemóvel e projetor. 14:00 congelar; 17:30 entregar.
 
 ## Comandos
-- App: `.venv/bin/streamlit run app.py` (http://localhost:8501)
+- App: `.venv/bin/streamlit run app.py`
 - Testes: `python3 -I -m pytest -q test_formato.py test_assistente.py test_impacto.py test_duowatt.py test_modelo_ciclo1.py test_entrevistas.py ferramentas/teste_inquerito -p no:cacheprovider`
 - Inquérito: `.venv/bin/python ferramentas/analisar_inquerito.py respostas.csv`
-- Guia em Word: `.venv/bin/python ferramentas/md_para_docx.py GUIA_EQUIPA.md GUIA_EQUIPA.docx`
+- Guia Word: `.venv/bin/python ferramentas/md_para_docx.py GUIA_EQUIPA.md GUIA_EQUIPA.docx`
 
-## Mapa de ficheiros
-- **Ler:** `CLAUDE.md`, `PROGRESSO.md`, `CRITERIOS_AVALIACAO.md`, `CONTEXTO_Projeto_DuoWatt.md`, `RELATORIO_FINAL.md`, `DEMO_GUIAO.md`, `PERGUNTAS.md`.
+## Ficheiros
+- **Ler:** `CLAUDE.md`, `PROGRESSO.md`, `CRITERIOS_AVALIACAO.md`, `IMPACTO.md`, `VIABILIDADE.md`, `DIFERENCIACAO.md`, `DEMO_GUIAO.md`, `PERGUNTAS.md`, `DECISOES.md`.
 - **Código:** `app.py` (modo detalhado), `assistente.py`, `duowatt.py`, `impacto.py`, `formato.py`, `ferramentas/`.
-- **Ignorar:** `equipa/` (históricos de agentes), `screenshots/` antigos, `PROMPT_*.md`, `BACKLOG.md`, PDFs e .docx da equipa (não editar).
+- **Ignorar:** `equipa/`, `screenshots/` antigos, `PROMPT_*.md`, `BACKLOG.md`, PDFs e .docx da equipa (não editar).

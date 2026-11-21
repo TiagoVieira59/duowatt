@@ -2,6 +2,11 @@
 
 Estado: 21 nov 2026, de madrugada. Entrega às 17:30. Este relatório descreve o que foi feito, o que a equipa tem de validar e o que ainda depende de pessoas.
 
+## 0b. Noite 2b (C2, C4, C5)
+- **Júri independente** (`equipa/juri_noite2b.md`, só viu enunciado, screenshots e IMPACTO/VIABILIDADE/DIFERENCIACAO): C1=1, **C2=4** (era 3), C3=3 (era 4: leu screenshots tirados antes de a página carregar; repetidos com espera), **C4=4**, **C5=3**; ponderada **2,94 / 5** (era 2,9); facilidade 4/5. Sem segundo ciclo, como pedido; corrigidos os 5 pontos rápidos (tabela de impacto recolhida, explicação da água no caso extremo, texto de «sem estimativa», 202–282 € igual em ecrã e documentos, capturas com espera).
+- **O que mudou:** métrica principal (casas desbloqueadas, t CO₂, % das 870 kton, M€ proporcionais, adoção 1/5/10 %) no assistente e no modo detalhado, `IMPACTO.md` com sensibilidade; plano por fases e tabela de riscos em `VIABILIDADE.md` §8–9 e na app; diferenciação em tabela honesta; cartão «Evita 64–78 €/ano»; botões verde-petróleo; 12 garrafas em todo o lado (`DECISOES.md`).
+- **Tem de validar:** a quota de 44 % (proxy) e a adoção (hipótese); a proporcionalidade do mercado de 60 M€; o plano por fases (por um eletricista e pela Bosch). C5 continua em 3: falta verificar anterioridade e ouvir um instalador.
+
 ## 0. Noite 2 (assistente para a família)
 - **Júri antes → depois** (`equipa/juri_noite2_c2.md`): C1=1, C2=3, C3=4, C4=4, C5=3 → **igual**, ponderada **2,9 / 5**; facilidade para pessoa comum **4/5**. Só houve um júri (fim do ciclo 2); o ciclo 3 corrigiu os itens de impacto baixo (botão «Voltar» com contraste, «n/d» mais claro, glossário, nota sobre poupança contra custo de potência) e não foi reavaliado, para poupar o limite semanal. Dois ciclos sem subida: a nota só sobe com dados reais (C1), validação por eletricista/Bosch (C4) e verificação de anterioridade (C5).
 - **O que mudou:** ecrã principal passou a ser um assistente de 5 perguntas (barra de progresso, ajuda por pergunta, valores típicos, «Não sei» explicado), página de resultado (veredicto em linguagem simples, 3 números, o que fazer a seguir), relatório HTML de uma página para o instalador, e o modo detalhado (o que já existia) herda as respostas. Formato PT-PT numa função. `UX_PESQUISA.md` com as regras e fontes. Ver `DECISOES.md`.
@@ -44,7 +49,7 @@ Avaliação final (`equipa/juri_final.md`). O Júri é um modelo que só viu o e
 | 67 % esquentador / 17 % termoacumulador | confirmado (INE, ICESD 2020) | |
 | Custos do DuoWatt: material 172–222 €, mão de obra 30–60 €, quadro novo 150–400 € (total 200–280 € ou ~350–680 €) | preços de retalho e de plataformas, **não cotações** | Contabilidade, eletricista |
 | Equilíbrio 2,6–4,4 anos (quadro adequado) ou 4,5–10,7 anos (quadro novo) | derivado | Contabilidade |
-| Efeito na fatura: +33 €/ano trocando o gás; ~−30 €/ano subindo a potência; ~+9 €/ano com o DuoWatt amortizado a 10 anos | derivado; não inclui o aparelho novo | Contabilidade |
+| Efeito na fatura: +40 €/ano trocando o gás; ~−24 €/ano subindo a potência; ~+16 €/ano com o DuoWatt amortizado a 10 anos | derivado; não inclui o aparelho novo | Contabilidade |
 
 ## 4. As 5 objeções mais prováveis do júri (Júri simulado) e respostas honestas
 1. **"Sem provas próprias, o problema é assumido."** Verdade neste momento: só há os dados secundários da Bosch (68 %, 85 %, 60 %…). A equipa tem o plano pronto para recolher (inquérito + 3 entrevistas) e a app mostra os números assim que existirem. Se houver pouca amostra, dizer o n e que é indicativo.

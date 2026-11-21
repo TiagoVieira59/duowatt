@@ -13,7 +13,7 @@ Equipa de 5: Eng. Informática (o utilizador, Tiago), Eng. Mecânica, Contabilid
 - **Posicionamento:** complemento dos termoacumuladores Tronic da Bosch (não produto concorrente).
 - **Só software/simulação**, sem hardware e sem sensores. Entradas (da fatura): potência contratada, tarifa/preço e consumo mensal; mais nº de pessoas e garrafas de gás por ano.
 - **Stack:** Python + Streamlit.
-- **Mensagem honesta:** o benefício em € é pequeno (~33 €/ano nos valores atuais); o argumento principal é "descarboniza sem custar mais".
+- **Mensagem honesta:** o benefício em € é pequeno (~40 €/ano nos valores atuais); o argumento principal é "descarboniza sem custar mais".
 - O PRD_Rascunho antigo está desatualizado e vai ser apagado: ignorar.
 - Modo de trabalho pedido pelo Tiago: **o Claude escreve o código todo; o Tiago decide**. Sem perguntas de escolha múltipla; perguntas curtas em texto.
 
@@ -38,7 +38,7 @@ Foi usada uma equipa de 3 subagentes (interface, verificação de valores, revis
 - Limite: kVA tratado como kW. Termoacumulador 2 000 W (Tronic 4001 T, 80 L ou mais). Indução 1,8 kW (moderado) ou 3 kW (intenso). Base da casa = consumo mensal ÷ 720 h (plana).
 - CO₂: GPL ~0,227 kg/kWh (2,9 kg/kg); eletricidade 107 g/kWh (APA 2023, média anual), cenário adverso 167 g/kWh.
 - Preço da garrafa 13 kg: 37 €; eletricidade 0,21 €/kWh (marginal); eficiência esquentador 0,82; eficiência elétrica 0,85.
-- Resultado com 10 garrafas/ano: ~205 kg CO₂ evitados/casa (109 kg no cenário adverso), ~33 €/ano; cenário nacional com 1 % de adoção: ~4 500 t CO₂/ano.
+- Resultado com 12 garrafas/ano (por omissão desde a noite 2): ~246 kg CO₂ evitados/casa (131 kg no cenário adverso), ~40 €/ano; cenário nacional com 1 % de adoção: ~5 400 t CO₂/ano (só nas casas desbloqueadas pela potência, ver IMPACTO.md).
 
 ## 5. O que NÃO fazer / regras de honestidade
 - Não afirmar "somos os primeiros", "sem eletricista", "sem obras", nem que os Tronic se ligam a um gestor de energia (não encontrado na documentação).

@@ -22,20 +22,22 @@ Desafio: ajudar os portugueses a trocar o gás por elétrico (2,2 milhões de ca
 O critério 1 só sobe com **dados reais** que nós recolhermos. É a maior alavanca que temos.
 
 ## 3. O que está feito
-- App em Streamlit: assistente de 5 perguntas, página de resultado com veredicto e 3 números, relatório para o instalador, e um «modo detalhado» com gráficos, custos, diferenciação e provas.
+- App em Streamlit: assistente de 5 perguntas, página de resultado com veredicto, 3 números e tabela de impacto (casas desbloqueadas, CO₂, % das 870 kton), relatório para o instalador, e um «modo detalhado» com gráficos, custos, diferenciação e provas.
 - Inquérito pronto (Google Forms) e guiões de 3 entrevistas.
-- Documentos de custos (VIABILIDADE.md) e de concorrentes (DIFERENCIACAO.md), cada número com fonte.
+- Documentos de impacto (IMPACTO.md), custos e plano por fases (VIABILIDADE.md) e concorrentes (DIFERENCIACAO.md), cada número com fonte.
 - Screenshots: pasta `screenshots/final/` (resultado no telemóvel e no portátil).
 
 ## 4. Números principais e o que falta validar
 | Número | Valor | Estado |
 |---|---|---|
 | Casas a gás de garrafa | 2,2 milhões | Enunciado Bosch |
-| CO₂ evitado por casa | ~200 kg/ano (pior cenário ~110) | Derivado (APA 2023); vem da eletrificação, não só do DuoWatt |
+| CO₂ evitado por casa | ~246 kg/ano (pior cenário ~131; 12 garrafas por ano) | Derivado (APA 2023); vem da eletrificação, não só do DuoWatt |
 | Subir de 3,45 para 6,9 kVA | 64–78 €/ano | Derivado (ERSE); IVA por verificar |
-| DuoWatt instalado | ~200–280 € | Derivado; mão de obra é hipótese |
+| DuoWatt instalado | ~202–282 € | Derivado; mão de obra é hipótese |
 | Tempo até compensar | ~3–4 anos | Derivado |
 | Casas com ≤3,45 kVA | ~44 % | Proxy (E-REDES), inclui não domésticos |
+| Impacto atribuível com 1 / 5 / 10 % de adoção | ~2 400 / ~11 900 / ~23 800 t CO₂/ano (0,3 / 1,4 / 2,7 % das 870 kton) | Derivado; adoção é hipótese (ver IMPACTO.md) |
+| Mercado da Bosch | 60 M€/ano (enunciado); 0,3 / 1,3 / 2,6 M€ proporcionais | Hipótese de proporcionalidade |
 
 **Por validar:** segurança elétrica (eletricista habilitado), se algum Tronic aceita controlo externo (não encontrámos), preços de mão de obra, potência real da placa de indução, consumo de base da casa.
 
@@ -60,7 +62,7 @@ O critério 1 só sobe com **dados reais** que nós recolhermos. É a maior alav
 | Pergunta | Resposta honesta |
 |---|---|
 | Quanto CO₂ é do DuoWatt? | A redução vem de trocar gás por elétrico. O DuoWatt retira o bloqueio da potência, que afeta no máximo ~44 % das casas (limite superior). |
-| Quanto custa e quem instala? | ~200–280 €, instalado por eletricista habilitado. São preços de retalho, não uma cotação. |
+| Quanto custa e quem instala? | ~202–282 €, instalado por eletricista habilitado. São preços de retalho, não uma cotação. |
 | Isto já existe? | A gestão antidisparo existe (Legrand, Schneider). Não encontrámos um diagnóstico gás → elétrico no momento da avaria, mas não encontrar não prova que não exista. |
 | E o espaço e o esquentador? | 67 % das casas têm esquentador e só 17 % termoacumulador; muitas não têm espaço. O DuoWatt resolve a potência, não o espaço. |
 | Onde estão as provas? | [N] respostas e [N] entrevistas da equipa; os dados da Bosch são secundários. Se ainda não houver, dizê-lo. |

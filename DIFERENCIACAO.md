@@ -17,6 +17,16 @@ Estado: 21 nov 2026. Base: `PESQUISA.md`, secção "Concorrentes e alternativas 
 3. **O momento e o canal (a testar):** o diagnóstico feito **na hora da avaria**, por quem vende o aparelho (instalador ou loja), ligado à venda do termoacumulador Bosch. É a hipótese do bloqueio "só se muda na avaria" (85 % repetem gás). Nenhuma fonte encontrada tem esta ligação, mas **não verificámos o mercado de instaladores**, e as entrevistas do perfil B (`ENTREVISTAS.md`) servem para isto.
 4. **Honestidade sobre os limites:** mostra os casos em que a gestão não chega e quanto custaria subir a potência.
 
+## 2b. O que é diferente, em tabela honesta (hipótese a testar)
+| Capacidade | O que os concorrentes fazem | O que não fazem | DuoWatt |
+|---|---|---|---|
+| Diagnóstico gás → elétrico | Simuladores ERSE/EDP sugerem potência; Heatpump Advisor dimensiona bombas de calor | Não encontrámos nenhum que diga «a sua casa aguenta passar a elétrico?» | 5 perguntas, 4 veredictos |
+| Momento e canal | Ferramentas para o consumidor, em casa | Não encontrámos diagnóstico feito **pelo instalador à porta, na avaria, em ~2 min** (pesquisa limitada) | Diagnóstico + relatório para a família levar ao instalador |
+| Gestão que evita subir o contrato | Legrand, Schneider, Shelly (já existe) | Não vêm ligados ao veredicto de troca de gás | «Aguenta com gestão» |
+| Oferta Bosch | Bosch Energy Manager (solar) | Nenhuma ligação a Tronic encontrada | Proposta «Tronic + DuoWatt», a validar com a Bosch |
+
+Isto não prova que ninguém o faça: é onde pensamos que está o espaço, e é o que o piloto e as entrevistas ao perfil B testam.
+
 ## 3. O que NÃO podemos dizer
 - "Somos os primeiros", "ninguém faz isto", "não existe": não está provado.
 - Que inventámos a gestão de cargas ou o antidisparo: já existem (Legrand, Schneider, outros).
