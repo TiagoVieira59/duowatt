@@ -48,3 +48,9 @@ def test_ficheiro_inexistente(tmp_path):
 def test_modelo_nao_mostra_nada(tmp_path):
     o = correr(tmp_path, (AQUI / "ferramentas/modelo_entrevistas.json").read_text(encoding="utf-8"))
     assert "Entrevistas da equipa" not in o
+
+
+def test_citacao_com_asteriscos_e_sublinhados_fica_literal(tmp_path):
+    # SINTÉTICO: * e _ não podem virar formatação markdown numa citação literal
+    o = correr(tmp_path, json.dumps([{"perfil": "A", "citacao": "sintetico *caro* e a_b"}]))
+    assert r"«sintetico \*caro\* e a\_b»" in o

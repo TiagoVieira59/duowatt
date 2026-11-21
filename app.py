@@ -14,6 +14,14 @@ from impacto import (ANOS_COMPARACAO, CASAS_GPL, CUSTO_MATERIAL_DUOWATT_EUR, CUS
                      extrapolar, impacto_casa)
 
 DADOS = Path(os.environ.get("DUOWATT_DADOS", Path(__file__).parent / "dados"))  # a variável só serve para testar
+
+
+def _esc(s):
+    """Texto literal das entrevistas: impede que * ou _ sejam lidos como formatação markdown."""
+    import re
+    return re.sub(r"([\\`*_{}\[\]()#+!|~<>$])", r"\\\1", str(s))
+
+
 KVA = [2.3, 3.45, 6.9, 10.35]
 IND_INTENSO_W = 3000  # pressuposto da equipa (Parametros_Verificados.md)
 
@@ -357,6 +365,6 @@ with tab_provas:
                     with st.container(border=True):
                         st.markdown(f"**Perfil {e.get('perfil', '?')}: {nomes.get(e.get('perfil'), 'sem perfil')}**" + (f" · {e['data']}" if e.get("data") else ""))
                         if e.get("citacao"):
-                            st.markdown(f"«{e['citacao']}»")
+                            st.markdown("«" + _esc(e["citacao"]) + "»")
                         if e.get("facto"):
-                            st.markdown(f"Facto: {e['facto']}")
+                            st.markdown("Facto: " + _esc(e["facto"]))
