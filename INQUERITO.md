@@ -6,6 +6,8 @@
 **Tempo:** 2 minutos. **Anónimo:** sem nome, sem email (no Forms: não recolher endereços de email).
 
 ## Como criar o formulário
+**Mais rápido:** `FORMS_INSTRUCOES.md` (script que cria tudo em 2 minutos). O que se segue é o método manual.
+
 1. Google Forms → novo → título: **"Gás ou eletricidade em casa? (2 min, anónimo)"**.
 2. Descrição (colar): *"Estamos a fazer um estudo para o Hackathon@ShiftE (Universidade de Aveiro) sobre como as casas portuguesas aquecem a água e cozinham. É anónimo e demora 2 minutos. Obrigado!"*
 3. Criar as perguntas abaixo, **com o título exatamente igual** (os prefixos "P1.", "P2." são usados pelo script de análise).
@@ -33,7 +35,7 @@
 - Já pensei, mas não avancei
 - Já pensei e vou avançar / já avancei
 
-**P6. Se não trocou, qual é a razão principal?** (caixas de verificação, até 2)
+**P6. Se não trocou, qual é a razão principal? (escolha até 2)** (caixas de verificação, até 2)
 - Acho a eletricidade mais cara
 - Não vejo vantagem
 - Não tenho espaço para o equipamento
@@ -58,7 +60,7 @@
 **P10. Quanto estaria disposto a pagar, no máximo, por esse dispositivo instalado?** (escolha única)
 - Nada (não pagaria) · Até 50 € · 50 a 150 € · 150 a 300 € · Mais de 300 €
 
-(Opcional, resposta curta: **P11. Distrito onde vive.**)
+(Opcional, resposta curta: **P11. Distrito onde vive (opcional)**)
 
 ## O que o script faz com isto
 `ferramentas/analisar_inquerito.py` lê o CSV exportado e gera percentagens e gráficos por pergunta, para a entrega e para a app. Ver o ficheiro para o modo de uso.
