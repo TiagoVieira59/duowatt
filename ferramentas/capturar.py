@@ -101,6 +101,10 @@ def main(ciclo):
                     page.set_viewport_size({"width": largura, "height": ALTURA_PAGINA})
                     page.wait_for_timeout(600)
                     page.screenshot(path=saida / f"{base}_pagina.png")
+                    if nome == "A_tipica":  # separador das provas
+                        page.get_by_role("tab", name="Provas do utilizador").click()
+                        page.wait_for_timeout(800)
+                        page.screenshot(path=saida / f"{base}_provas.png")
                     ctx.close()
             navegador.close()
     finally:
