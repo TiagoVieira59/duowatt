@@ -1,5 +1,5 @@
 import pytest
-from impacto import impacto_casa, extrapolar, custo_subir_potencia
+from impacto import impacto_casa, extrapolar, custo_subir_potencia, custo_duowatt, anos_equilibrio
 
 
 def test_enunciado_400kg_corresponde_a_cerca_de_10_garrafas():
@@ -25,3 +25,16 @@ def test_subir_3_45_para_6_9():
     assert custo_subir_potencia(3.45, 6.9) == pytest.approx(63.6, abs=0.1)
     with pytest.raises(ValueError):
         custo_subir_potencia(3.45, 10.35)
+
+
+def test_custo_duowatt_instalado():
+    assert custo_duowatt() == pytest.approx((201.87, 281.65))
+    assert custo_duowatt(quadro_novo=True) == pytest.approx((351.87, 681.65))
+
+
+def test_ano_de_equilibrio():
+    extra = custo_subir_potencia(3.45, 6.9)
+    assert anos_equilibrio(200, extra * 1.23) == pytest.approx(2.56, abs=0.01)
+    assert anos_equilibrio(*custo_duowatt()[1:], extra) == pytest.approx(4.43, abs=0.01)
+    with pytest.raises(ValueError):
+        anos_equilibrio(200, 0)

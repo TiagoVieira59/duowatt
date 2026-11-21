@@ -19,7 +19,7 @@ Um medidor de corrente no quadro lê a potência total da casa; um controlador d
 | Instalação (hipótese: 1 a 2 horas) | 30 a 60 € | hipótese | |
 | **Total instalado, quadro já adequado** | **~200 a 280 €** | derivado | |
 | Se for preciso quadro novo | +150 a 400 € | provável | Zaask, expert-zoom |
-| **Total instalado, com quadro novo** | **~370 a 620 €** | derivado | |
+| **Total instalado, com quadro novo** | **~350 a 680 €** (soma do total anterior com o quadro) | derivado | |
 
 Fica de fora o termoacumulador (Tronic 4000 T de 80 L: 245 a 255 €, provável, lojas PT) porque é igual com ou sem DuoWatt.
 Um produto industrial da Bosch, em escala, custaria menos do que montar peças de retalho, mas **não temos dado para estimar** quanto.
@@ -35,12 +35,12 @@ Um produto industrial da Bosch, em escala, custaria menos do que montar peças d
 ## 4. Comparação a 10 anos (preços constantes, sem desconto)
 | | Subir a potência | DuoWatt |
 |---|---|---|
-| Custo único | ~0 € (se a instalação já suportar) | ~200 a 280 € (quadro adequado) ou ~370 a 620 € (quadro novo) |
+| Custo único | ~0 € (se a instalação já suportar) | ~200 a 280 € (quadro adequado) ou ~350 a 680 € (quadro novo) |
 | Custo anual | +64 a 78 €/ano | ~0 € (consumo do controlador não estimado) |
-| Total em 10 anos | **~640 a 780 €** | **~200 a 280 €** ou **~370 a 620 €** |
-| Equilíbrio | | o DuoWatt compensa ao fim de **~2,6 a 4,4 anos** (quadro adequado) ou **~4,8 a 9,8 anos** (quadro novo) (derivado) |
+| Total em 10 anos | **~640 a 780 €** | **~200 a 280 €** ou **~350 a 680 €** |
+| Equilíbrio | | o DuoWatt compensa ao fim de **~2,6 a 4,4 anos** (quadro adequado) ou **~4,5 a 10,7 anos** (quadro novo; no pior caso, mais de 10 anos) (derivado) |
 
-**Efeito na fatura da família** (valores por omissão da app, derivados): a troca de gás por elétrico poupa ~33 €/ano de combustível (sensível ao preço da garrafa: ~99 € com a garrafa a 43,55 €). Se subir a potência, isso passa a **−31 €/ano** (custo extra). Com o DuoWatt, amortizado em 10 anos (~25 €/ano), fica **~+8 €/ano**. A mensagem honesta é **"descarboniza sem custar mais"**, e não "poupa dinheiro". Os custos do aparelho novo não estão incluídos em nenhum dos caminhos.
+**Efeito na fatura da família** (valores por omissão da app, derivados): a troca de gás por elétrico poupa ~33 €/ano de combustível (sensível ao preço da garrafa: ~99 € com a garrafa a 43,55 €). Se subir a potência, isso passa a **~−30 €/ano** (custo extra). Com o DuoWatt, amortizado em 10 anos (~25 €/ano), fica **~+8 a +9 €/ano** (a app usa o ponto médio da faixa de custo: ~+9 €/ano). A mensagem honesta é **"descarboniza sem custar mais"**, e não "poupa dinheiro". Os custos do aparelho novo não estão incluídos em nenhum dos caminhos.
 
 ## 5. Benefícios
 **Para a família:** evita pagar mais potência (64 a 78 €/ano) ou obras; mantém a água quente (0 min sem água no cenário típico); menos risco de disparo (25 → 0 min acima do limite no cenário típico). Só em casas em que a gestão chega: com indução intensa e base alta (cenário B2) a casa continua a precisar de mais potência.
