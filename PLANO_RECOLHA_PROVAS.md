@@ -16,7 +16,7 @@
 2. Respostas → Ficheiro → Transferir → .csv.
 3. Na pasta do projeto: `.venv/bin/python ferramentas/analisar_inquerito.py respostas.csv` (escreve em `dados/`).
 4. Reiniciar a app: o separador "Provas do utilizador" passa a mostrar n, os números principais e os gráficos.
-5. Entrevistas: preencher uma ficha de `ENTREVISTAS.md` por entrevista (citações literais, sem editar). Guardar as fichas no repositório (pasta `dados/entrevistas/`).
+5. Entrevistas: preencher uma ficha de `ENTREVISTAS.md` por entrevista (citações literais, sem editar). Depois, copiar `ferramentas/modelo_entrevistas.json` para `dados/entrevistas.json`, preencher com as citações e factos reais e reiniciar a app.
 
 ## O que dizer no pitch (só com dados reais)
 - "Perguntámos a [N] pessoas com gás de garrafa: [X %] nunca pensaram em trocar, [Y %] já tiveram o quadro a disparar, [Z %] comprariam outro aparelho a gás se avariasse hoje."

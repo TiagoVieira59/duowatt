@@ -14,6 +14,14 @@ from impacto import (ANOS_COMPARACAO, CASAS_GPL, CUSTO_MATERIAL_DUOWATT_EUR, CUS
                      extrapolar, impacto_casa)
 
 DADOS = Path(os.environ.get("DUOWATT_DADOS", Path(__file__).parent / "dados"))  # a variável só serve para testar
+
+
+def _esc(s):
+    """Texto literal das entrevistas: impede que * ou _ sejam lidos como formatação markdown."""
+    import re
+    return re.sub(r"([\\`*_{}\[\]()#+!|~<>$])", r"\\\1", str(s))
+
+
 KVA = [2.3, 3.45, 6.9, 10.35]
 IND_INTENSO_W = 3000  # pressuposto da equipa (Parametros_Verificados.md)
 
@@ -337,3 +345,26 @@ with tab_provas:
         for par in range(0, len(graficos), 2):
             for col, img in zip(st.columns(2), graficos[par:par + 2]):
                 col.image(str(img))
+
+    ent = DADOS / "entrevistas.json"
+    if ent.is_file():
+        try:
+            lista = [e for e in json.loads(ent.read_text(encoding="utf-8")) if isinstance(e, dict)]
+        except (OSError, ValueError, TypeError):
+            lista = None
+        if lista is None:
+            st.warning("Ficheiro de entrevistas inválido: ver ferramentas/modelo_entrevistas.json")
+        else:
+            # ignora campos vazios ou por preencher (começam por "[")
+            lista = [{k: str(e[k]).strip() for k in ("perfil", "data", "citacao", "facto") if str(e.get(k, "")).strip() and not str(e[k]).strip().startswith("[")} for e in lista]
+            lista = [e for e in lista if e.get("citacao") or e.get("facto")]
+            if lista:
+                nomes = {"A": "morador com gás de garrafa", "B": "instalador ou loja de esquentadores", "C": "eletricista"}
+                st.subheader(f"Entrevistas da equipa ({len(lista)})")
+                for e in lista:
+                    with st.container(border=True):
+                        st.markdown(f"**Perfil {e.get('perfil', '?')}: {nomes.get(e.get('perfil'), 'sem perfil')}**" + (f" · {e['data']}" if e.get("data") else ""))
+                        if e.get("citacao"):
+                            st.markdown("«" + _esc(e["citacao"]) + "»")
+                        if e.get("facto"):
+                            st.markdown("Facto: " + _esc(e["facto"]))
