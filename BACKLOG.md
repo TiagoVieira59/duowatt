@@ -25,3 +25,11 @@ Fontes: `equipa/juri_ciclo0.md`, `equipa/ux_ciclo1.md`, `equipa/modelo_ciclo1.md
 
 ## Rejeitados
 - Mudar o preço para 0,18 €/kWh: o Modelador mostra que exagera a poupança 2,4× (0,21 €/kWh é o marginal certo acima de 200 kWh/mês). Mantém-se 0,21.
+
+## Ciclo 1, lote 3 (polimento da UI, depois do lote 2; fonte: `equipa/ux_ciclo1_revisao.md` + verificação minha do screenshot A 1366×768)
+| # | Item | Evidência | Rubrica | Imp. | Esf. |
+|---|---|---|---|---|---|
+| I6 | **Bug do eixo X:** as camadas `serao` e `rotulo` do gráfico usam `x` sem o domínio 17–23, e a escala partilhada volta a começar em 0 h; os dados ficam numa fatia de ~25 % do gráfico. Usar a mesma `alt.Scale(domain=[17,23], zero=False, nice=False)` em todas as camadas | `screenshots/ciclo1/A_tipica_1366x768_tela.png` (eixo a começar muito antes das 17:00) | R3, R4 | A | P |
+| I7 | Etiqueta "Limite 3,45 kW" colide com o pico tracejado: pô-la à direita; "Sem gestão" tracejado desenhado mais grosso por trás para ficar visível em C (curvas coincidem) | UX revisão, problemas novos 1 e 4 | R3, R4 | A | P |
+| I8 | Frases sem jargão: "Margem ao serão (limite menos base menos indução)" → "Folga com a placa ligada: X W" / "Faltam X W"; rótulos de CO₂ que reconciliam 205 kg (107 g/kWh) com 109 kg ("no pior cenário, 167 g/kWh"); peso menor para as toneladas nacionais | UX revisão, 3 e 4 | R3, R6 | M | P |
+| I9 | Legenda e eixos mais escuros (≥ #222) e maiores (≥16 px); texto dos campos da sidebar ≥16 px | UX revisão, parciais 1, 2, 5, 6, 12 | R4 | M | P |
