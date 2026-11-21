@@ -1,0 +1,6 @@
+Bloqueio								Ângulo de Informática
+- Não veem vantagem				Ferramentas que mostram custos reais e poupança (simuladores, dados de consumo)
+- Compram só na avaria				Sistemas que antecipam ou aceleram a decisão (alertas, orçamento imediato)
+- Falta de espaço				Menos relevante, é mais hardware e design de produto
+- Faltam instaladores / venda complexa		Plataformas que coordenam os profissionais e simplificam o processo
+- Potência contratada limitada			Software de gestão de carga, que impede o quadro de disparar sem aumentar a potência
