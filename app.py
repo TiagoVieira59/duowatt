@@ -35,6 +35,11 @@ def vir(x, casas=2):
 def faixa(par, unid="€"):
     return f"{par[0]:.0f}–{par[1]:.0f} {unid}".replace(".", ",")
 st.set_page_config(page_title="DuoWatt", layout="wide")
+st.session_state.setdefault("modo", "assistente")
+if st.session_state.modo == "assistente":
+    import assistente
+    assistente.render()
+    st.stop()
 # legibilidade em projetor: texto >= 16 px, cinzento só escuro, menos espaço no topo
 st.markdown(
     """<style>
@@ -54,17 +59,20 @@ h4 {margin: 0; padding: 0;}
 </style>""",
     unsafe_allow_html=True,
 )
-st.title("DuoWatt: gás para elétrico, sem disparar")
+st.button("← Voltar ao assistente", on_click=lambda: st.session_state.update(modo="assistente"))
+st.title("DuoWatt: modo detalhado")
+R = st.session_state.get("resultado")  # respostas do assistente: os dois modos partem dos mesmos valores
+
 
 with st.sidebar:
     st.header("A sua casa")
-    kva = st.selectbox("Potência contratada (kVA)", KVA, index=1)
-    consumo = st.number_input("Consumo mensal (kWh)", 50, 1500, 200, step=10)
-    inducao = st.radio("Uso da placa de indução", ["Moderado (1,8 kW)", "Intenso (3 kW)"])
+    kva = st.selectbox("Potência contratada (kVA)", KVA, index=KVA.index(R["kva"]) if R else 1)
+    consumo = st.number_input("Consumo mensal (kWh)", 50, 1500, R["consumo"] if R else 200, step=10)
+    inducao = st.radio("Uso da placa de indução", ["Moderado (1,8 kW)", "Intenso (3 kW)"], index=int(R["placa_w"] == 3000) if R else 0)
     with st.expander("Avançado"):
-        pessoas = st.number_input("Número de pessoas", 1, 8, 3)
+        pessoas = st.number_input("Número de pessoas", 1, 8, R["pessoas"] if R else 3)
         litros = st.number_input("Depósito do termoacumulador (L)", 50, 200, 100, step=10)
-        garrafas = st.number_input("Garrafas de gás por ano", 0, 20, 10)
+        garrafas = st.number_input("Garrafas de gás por ano", 0, 20, R["garrafas"] if R else 10)
         preco_kwh = st.number_input("Preço marginal da eletricidade (€/kWh)", 0.05, 0.60, 0.21, step=0.005, format="%.3f")
         fator = st.slider("Fator de CO2 da eletricidade (g/kWh)", 40, 167, 107)
         adocao = st.slider("Casas a GPL que trocam, em % (cenário)", 1, 20, 1)
