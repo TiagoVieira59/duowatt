@@ -3,11 +3,12 @@
 Prompt da missão: `PROMPT_Equipa_Autonoma_DuoWatt.md`. Fonte de verdade do projeto: `CONTEXTO_Projeto_DuoWatt.md`. Entrega: 21 nov 2026, 17:30 (a partir das 14:00, só correções de erros).
 
 ## Estado do `main`
-- Tag `estavel-1` (ciclo 1 integrado, 00:38 de 21 nov). Testes: 32 a passar, 4 xfail justificados (dependem de decisões: base ao serão de 600 W, pessoas vs garrafas, etc.). App vista em browser nos 6 cenários; `erros.txt` = sem erros nem avisos.
-- O que mudou no ciclo 1: layout para 1366×768 (veredicto, frase, 3 números e gráfico acima da dobra), gráfico Altair 17:00–23:00 com limite rotulado e serão sombreado, avisos honestos compactos, atribuição do impacto (o CO₂ vem da eletrificação; o DuoWatt desbloqueia a troca), extremos coerentes, higiene do modelo.
+- Tag `estavel-3` (21 nov, ~00:55). Testes: 36 a passar, 4 xfail justificados. Na app: separadores 'Diagnóstico' e 'Provas do utilizador' (só dados da Bosch rotulados como secundários; a parte da equipa mostra 'Ainda sem dados' até haver `dados/inquerito_resumo.json`).
+- Documentos na pasta: `CRITERIOS_AVALIACAO.md`, `INQUERITO.md`, `ENTREVISTAS.md`, `VIABILIDADE.md`, `DIFERENCIACAO.md`, `PESQUISA.md` (fontes e classificações), `ferramentas/analisar_inquerito.py` (+ testes com CSV sintético, claramente marcado).
+- Para a equipa humana (manhã): criar o Google Forms (`INQUERITO.md`), recolher ≥30 respostas, fazer 3 entrevistas (`ENTREVISTAS.md`), exportar o CSV e correr `.venv/bin/python ferramentas/analisar_inquerito.py respostas.csv` (escreve em `dados/`; a app passa a mostrar os números).
 
 ## Ciclo atual
-- Ciclo 1 fechado. Júri do ciclo 1 a avaliar `screenshots/ciclo1c/` (resultado em `equipa/juri_ciclo1.md`). Próximo: ciclo 2 (backlog em `BACKLOG.md`), branch `ciclo-2` a partir do `main`.
+- Ciclo 4 (branch `ciclo-4`): Programador a acrescentar os separadores 'Viabilidade' e 'Diferenciação' e a tabela de pressupostos citados (item B2/B3). Depois: Júri com a rubrica oficial, `DEMO_GUIAO.md`, `RELATORIO_FINAL.md`.
 
 ## Rubrica oficial (ver `CRITERIOS_AVALIACAO.md`; escala 1–5; pesos 20/20/15/15/10; a 6 é só a 25 nov)
 | Critério | Peso | Última avaliação do Júri |
