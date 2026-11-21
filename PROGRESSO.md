@@ -25,7 +25,7 @@ Prompt da missão: `PROMPT_Equipa_Autonoma_DuoWatt.md`. Fonte de verdade do proj
 A provas do utilizador (INQUERITO.md, ENTREVISTAS.md, `ferramentas/analisar_inquerito.py`, espaço na app só com dados da Bosch enquanto não houver dados reais) · B viabilidade (custos reais, VIABILIDADE.md) · C diferenciação (concorrentes, DIFERENCIACAO.md) · D impacto com pressupostos visíveis e citados · E UI com menos peso · DEMO_GUIAO.md depois.
 
 ## Próximo passo
-Noite 2, Fase 4 (`UX_PESQUISA.md`) e Fase 5 (assistente para a família, relatório, modo detalhado; máx. 3 ciclos), depois fecho §8 do `PROMPT_Noite_2_DuoWatt.md`.
+Noite 2: assistente (5 passos), resultado, relatório HTML e modo detalhado feitos (tags `estavel-n2-1b`, `estavel-n2-2`); `UX_PESQUISA.md` feito. A seguir: Júri do ciclo 2 (`equipa/juri_noite2_c2.md`), ciclo 3 se houver itens, depois fecho §8 (GUIA_EQUIPA .md/.docx, HANDOFF.md, RELATORIO_FINAL, DEMO_GUIAO, screenshots/final, tag `final-noite2`).
 
 ## Decisões pendentes
 Ver `PERGUNTAS.md`.

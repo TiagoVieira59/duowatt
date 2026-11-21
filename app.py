@@ -296,6 +296,7 @@ with tab_dif:
         ("Medidores programáveis", "Shelly, Sonoff", "Medem e comandam; a lógica de corte é do utilizador, não vêm prontos como antidisparo."),
         ("Gestores de energia", "SMA, my-PV, Bosch Energy Manager", "Pensados para quem tem solar; nenhuma ligação a Tronic encontrada."),
         ("Simuladores de potência", "ERSE, EDP, Iberdrola", "Só potência e tarifa; não tratam a troca de gás por elétrico."),
+        ("Relatório para o instalador", "Não encontrado", "Não encontrámos um relatório que a família leve ao instalador na avaria (pesquisa limitada, não prova que não exista)."),
     ], columns=["O que já existe", "Exemplos", "O que não faz para o nosso caso"]).set_index("O que já existe"))
     st.info(
         "**O que o DuoWatt acrescenta (hipótese)**\n\n"
@@ -335,6 +336,14 @@ with tab_provas:
             st.markdown(f"### {val}")
             st.markdown(rot)
     st.caption("Fonte: Bosch, enunciado Hackathon@ShiftE 2026.")
+    st.markdown("**Que funcionalidade cada dado justifica** (ligação lógica nossa, não prova de que funciona)")
+    st.table(pd.DataFrame([
+        ("60 % da procura é por avaria urgente", "Assistente de 5 perguntas, pensado para o momento da avaria, ao telemóvel"),
+        ("85 % das trocas urgentes ficam a gás", "Relatório de uma página para levar ao instalador: o elétrico passa a ser uma opção na hora da troca"),
+        ("68 % nunca ponderou trocar a água quente", "Veredicto em linguagem simples, com «Não sei» e valores típicos"),
+        ("Limite de potência (3,45 kVA em muitas casas)", "Gestão que pausa o termoacumulador: «aguenta com gestão» em vez de subir o contrato"),
+        ("60 % com restrições de espaço", "Ainda sem resposta no DuoWatt: fica como risco"),
+    ], columns=["Dado", "Funcionalidade"]).set_index("Dado"))
 
     st.subheader("Provas da nossa equipa")
     resumo = DADOS / "inquerito_resumo.json"
