@@ -82,7 +82,7 @@ x = alt.X("Hora:Q", scale=alt.Scale(domain=[17, 23]), title=None,
           axis=alt.Axis(values=list(range(17, 24)), labelExpr="datum.value + ':00'"))
 y = alt.Y("W:Q", scale=alt.Scale(domain=[0, topo]), title="Potência (W)")
 serie = alt.Color("Série:N", scale=alt.Scale(domain=["Sem gestão", "Com DuoWatt"], range=["#b3261e", "#0b57a4"]), legend=alt.Legend(title=None, orient="top"))
-traco = alt.StrokeDash("Série:N", scale=alt.Scale(domain=["Sem gestão", "Com DuoWatt"], range=[[8, 5], [1, 0]]), legend=None)
+traco = alt.StrokeDash("Série:N", scale=alt.Scale(domain=["Sem gestão", "Com DuoWatt"], range=[[8, 5], [1, 0]]), legend=alt.Legend(title=None, orient="top"))
 linha = lambda nome, larg: (alt.Chart(dados).transform_filter(alt.datum["Série"] == nome)
                             .mark_line(strokeWidth=larg, interpolate="step-after").encode(x=x, y=y, color=serie, strokeDash=traco))
 serao = alt.Chart(pd.DataFrame({"a": [INDUCAO[0] / 60], "b": [(INDUCAO[-1] + 1) / 60]})).mark_rect(color="#f5c542", opacity=0.3).encode(x="a:Q", x2="b:Q")
