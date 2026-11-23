@@ -34,6 +34,7 @@ export function AppShell(p: ShellProps) {
           <motion.div className={s.blackout} role="alert" initial={{ opacity: 0 }} animate={{ opacity: 0.98 }} transition={{ duration: reduce ? 0 : 0.6 }}>
             <h2>A luz foi abaixo.</h2>
             <p>Ilustrativo: o tempo até ao corte depende do contador E-REDES e do disjuntor (EN 60898).</p>
+            <button className={s.btn} style={{ width: 'auto', background: 'transparent', color: 'inherit', borderColor: 'currentColor' }} onClick={p.clock.restart}>Recomeçar</button>
           </motion.div>
         )}
       </AnimatePresence>
