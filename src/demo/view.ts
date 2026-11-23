@@ -26,7 +26,7 @@ export function derivar(r: Resultado, c: Clock, modo: Modo): View {
   const last = r.serie.length - 1
   let idx = Math.min(last, Math.max(0, Math.floor(c.t) - INICIO))
   const ev = c.evento
-  if (ev?.tipo === 'pausa' && Math.floor(c.t) === ev.t) idx = Math.min(last, idx + 1) // show the post-pause reading
+  if ((ev?.tipo === 'pausa' || ev?.tipo === 'retoma') && Math.floor(c.t) === ev.t) idx = Math.min(last, idx + 1) // show the post-pause reading
   const ponto = r.serie[idx]!
   const quando = (tipo: string) => r.eventos.find((e) => e.tipo === tipo)
   const p = quando('pausa'), rt = quando('retoma')

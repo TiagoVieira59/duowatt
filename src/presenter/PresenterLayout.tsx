@@ -39,7 +39,7 @@ export function PresenterLayout({ res, ghost, view, clock, modo, onModo, help, p
           </div>
           <span className={s.keys}>Espaço · R · D · 1–4 · ?</span>
         </div>
-        {view.apagao && <motion.div className={s.dark} initial={{ opacity: 0 }} animate={{ opacity: 0.93 }} transition={{ duration: reduce ? 0 : 0.6 }} />}
+        {view.apagao && <motion.div className={s.dark} initial={{ opacity: 0 }} animate={{ opacity: 0.97 }} transition={{ duration: reduce ? 0 : 0.6 }}><h2>A luz foi abaixo.</h2><p>Ilustrativo: o tempo até ao corte depende do contador E-REDES e do disjuntor (EN 60898).</p></motion.div>}
         {help && (
           <div className={s.help} role="dialog" aria-label="Atalhos">
             <div><kbd>Espaço</kbd>reproduzir / pausar</div><div><kbd>R</kbd>recomeçar</div>

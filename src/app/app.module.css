@@ -10,7 +10,7 @@
 .tab[aria-current=page] svg{stroke-width:2.6}
 .card{background:var(--surface);border-radius:var(--r-l);padding:16px;box-shadow:var(--shadow)}
 .card h2{margin:0 0 4px;font:700 16px var(--font-ui)}
-.muted{color:var(--ink-soft);font-size:13px;margin:0}
+.muted{color:var(--ink-soft);font-size:14px;margin:0}
 .badge{display:inline-block;font:700 11px var(--font-ui);padding:2px 8px;border-radius:99px;background:var(--ink);color:var(--surface);margin-bottom:6px}
 .meter{border-radius:var(--r-l);padding:18px 18px 16px;transition:background-color .3s var(--ease),color .3s var(--ease);position:relative}
 .folgada{background:var(--ok-bg);color:var(--ok-ink)}
@@ -23,7 +23,7 @@
 .row{display:flex;align-items:center;gap:12px}
 .pill{font:700 13px var(--font-ui);padding:4px 10px;border-radius:99px;background:var(--ok-bg);color:var(--ok-ink);white-space:nowrap}
 .pill.p{background:var(--warn-bg);color:var(--warn-ink)}
-.ev{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:14px}
+.ev{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:15px}
 .ev b{font-variant-numeric:tabular-nums;margin-right:6px}
 .bars{display:flex;align-items:flex-end;gap:8px;height:120px;margin:12px 0 4px}
 .bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;height:100%}
@@ -44,5 +44,5 @@
 .chartBox{height:150px}
 .blackout{position:absolute;inset:0;background:var(--dark);color:#EDE6D6;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:10px;z-index:5}
 .blackout h2{font:600 30px var(--font-num);margin:0}
-.blackout p{font-size:12px;opacity:.8;margin:0;max-width:280px}
+.blackout p{font-size:15px;opacity:.8;margin:0;max-width:280px}
 .react{background:var(--ink);color:var(--surface);border-radius:var(--r-s);padding:8px 12px;font:600 13px var(--font-ui)}

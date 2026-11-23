@@ -1,7 +1,8 @@
 import { INICIO, FIM, fmtHora } from '../data/serao'
 import type { Ponto, Evento } from '../domain/simulation'
 
-const W = 800, H = 340, L = 56, R = 16, T = 16, B = 34, YMAX = 130
+const W = 800, H = 340, R = 16, T = 16, B = 34, YMAX = 130
+let L = 56
 const x = (t: number) => L + ((t - INICIO) / (FIM - INICIO)) * (W - L - R)
 const y = (p: number) => T + (1 - p / YMAX) * (H - T - B)
 const path = (s: Ponto[]) => s.map((p, i) => `${i ? 'L' : 'M'}${x(p.t).toFixed(1)},${y(p.pct).toFixed(1)}`).join('')
@@ -9,9 +10,10 @@ const path = (s: Ponto[]) => s.map((p, i) => `${i ? 'L' : 'M'}${x(p.t).toFixed(1
 interface Props { serie: Ponto[]; upto: number; ghost?: Ponto[]; eventos: Evento[]; beat: number; compact?: boolean }
 
 export function SeraoChart({ serie, upto, ghost, eventos, beat, compact }: Props) {
+  L = compact ? 84 : 56
   const ticks: number[] = []
   for (let t = INICIO; t <= FIM; t += 30) ticks.push(t)
-  const fs = compact ? 20 : 15
+  const fs = compact ? 26 : 15
   const marks = eventos.slice(0, beat + 1).filter((e) => e.tipo === 'pausa' || e.tipo === 'retoma' || e.tipo === 'apagao')
   const ref = (v: number, label: string, dash?: string, strong?: boolean) => (
     <g key={v}>
