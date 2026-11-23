@@ -17,6 +17,7 @@ export function Historico() {
         <p className={s.muted}>Total: {total} min em pausa. Os picos da tua casa são entre as 19h e as 21h.</p>
       </section>
       <section className={s.card} style={{ background: 'var(--ok-bg)', color: 'var(--ok-ink)' }}>
+        <span className={s.badge}>Dados de exemplo</span>
         <h2>Esta semana, o cilindro nunca fez ir a luz abaixo.</h2>
       </section>
       <section className={s.card}>

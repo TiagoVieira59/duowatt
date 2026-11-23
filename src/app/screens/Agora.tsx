@@ -30,8 +30,8 @@ export function Agora({ view, clock, res, ghost, compact }: ShellProps) {
   const dur = reduce ? 0 : 0.2
   return (
     <>
-      <section className={`${s.meter} ${s[est]} ${v.pct > 100 ? s.over100 : ''}`} aria-live="polite">
-        <div className={s.meterTop}><span>Casa agora</span><span>{ROTULO[est]}{v.pct > 100 ? ' · acima de 100 %' : ''}</span></div>
+      <section className={`${s.meter} ${s[est]} ${v.pct > 100 ? s.over100 : ''}`}>
+        <div className={s.meterTop}><span>Casa agora</span><span aria-live="polite">{ROTULO[est]}{v.pct > 100 ? ' · acima de 100 %' : ''}</span></div>
         <Meter value={v.pct} delay={pausa ? 0.35 : 0} />
         <div>≈ {kw(v.amps)} kW de {num(FACTS.potencia.valor, 2)} kVA</div>
       </section>

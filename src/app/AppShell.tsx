@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { FACTS } from '../data/facts'
 import { num } from '../format'
 import type { View } from '../demo/view'
@@ -14,6 +14,7 @@ import s from './app.module.css'
 export interface ShellProps { tab: TabId; onTab: (t: TabId) => void; view: View; clock: Clock; res: Resultado; ghost?: Resultado['serie']; compact: boolean }
 
 export function AppShell(p: ShellProps) {
+  const reduce = useReducedMotion()
   return (
     <div className={s.shell}>
       <header className={s.head}>
@@ -30,7 +31,7 @@ export function AppShell(p: ShellProps) {
       <TabBar tab={p.tab} onTab={p.onTab} />
       <AnimatePresence>
         {p.view.apagao && (
-          <motion.div className={s.blackout} role="alert" initial={{ opacity: 0 }} animate={{ opacity: 0.98 }} transition={{ duration: 0.6 }}>
+          <motion.div className={s.blackout} role="alert" initial={{ opacity: 0 }} animate={{ opacity: 0.98 }} transition={{ duration: reduce ? 0 : 0.6 }}>
             <h2>A luz foi abaixo.</h2>
             <p>Ilustrativo: o tempo até ao corte depende do contador E-REDES e do disjuntor (EN 60898).</p>
           </motion.div>
