@@ -4,7 +4,7 @@ import { ControllerState, decide, initialState } from './controller'
 
 export type Modo = 'com' | 'sem'
 export type Cilindro = 'aquecer' | 'pausa' | 'parado'
-export interface Ponto { t: number; amps: number; pct: number; cilindro: Cilindro; apagao: boolean }
+export interface Ponto { t: number; amps: number; pct: number; potencial: number; cilindro: Cilindro; apagao: boolean }
 export type EventoTipo = 'inicio' | 'cilindro' | 'pico' | 'acima' | 'pausa' | 'retoma' | 'fim-aquecer' | 'apagao' | 'fim'
 export interface Evento { t: number; tipo: EventoTipo; texto: string }
 export interface Resultado { serie: Ponto[]; eventos: Evento[]; fimT: number }
@@ -41,7 +41,7 @@ export function simular(modo: Modo): Resultado {
     } else {
       acima = pct > 100 ? acima + 1 : 0
       if (acima > APAGAO_APOS_MIN) {
-        serie.push({ t, amps, pct, cilindro, apagao: true })
+        serie.push({ t, amps, pct, potencial: pct, cilindro, apagao: true })
         eventos.push({ t, tipo: 'apagao', texto: 'A luz foi abaixo' })
         fimT = t
         return { serie, eventos, fimT }
@@ -49,7 +49,9 @@ export function simular(modo: Modo): Resultado {
     }
     if (t === CILINDRO_FIM && quer === false) eventos.push({ t, tipo: 'fim-aquecer', texto: 'O cilindro terminou de aquecer' })
     if (cilindro === 'pausa' && !quer) cilindro = 'parado'
-    serie.push({ t, amps, pct, cilindro, apagao: false })
+    // while paused, what the house would draw if the cylinder were on (explains the wait)
+    const potencial = ((amps + (quer && !permitido ? CILINDRO_A : 0)) / LIMITE_A) * 100
+    serie.push({ t, amps, pct, potencial, cilindro, apagao: false })
   }
   eventos.push({ t: FIM, tipo: 'fim', texto: 'Fim do serão' })
   return { serie, eventos, fimT }
