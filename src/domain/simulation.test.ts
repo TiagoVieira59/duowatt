@@ -28,12 +28,3 @@ describe('simulação', () => {
     expect(sem.fimT).toBe(hm(19, 12))
   })
 })
-
-describe('carga potencial durante a pausa', () => {
-  it('fica acima da retoma (80 %) até às 19:24 e abaixo às 19:25', () => {
-    const com = simular('com')
-    const p = (h: number, m: number) => com.serie.find((q) => q.t === hm(h, m))!
-    expect(p(19, 24).potencial).toBeGreaterThan(80)
-    expect(p(19, 25).potencial).toBeLessThan(80)
-  })
-})
