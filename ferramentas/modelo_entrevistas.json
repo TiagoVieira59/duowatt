@@ -1,6 +1,0 @@
-[
-  {"_instrucoes": "Copiar este ficheiro para dados/entrevistas.json, apagar esta entrada e preencher as outras com citações literais reais (sem editar). Entradas com '[' ou vazias são ignoradas. Reiniciar a app."},
-  {"perfil": "A", "data": "[preencher]", "citacao": "[preencher]", "facto": "[preencher]"},
-  {"perfil": "B", "data": "[preencher]", "citacao": "[preencher]", "facto": "[preencher]"},
-  {"perfil": "C", "data": "[preencher]", "citacao": "[preencher]", "facto": "[preencher]"}
-]
