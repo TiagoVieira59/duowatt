@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { INICIO } from '../data/serao'
 import type { Evento, Resultado } from '../domain/simulation'
 
-const SPEED = 6 // simulated minutes per real second
+const SPEED = 9 // simulated minutes per real second
 export const HOLD_MS = 2600 // every caption stays visible ≥ 2.5 s (clock freezes on each event)
 
 export function buildTimeline(r: Resultado) {
