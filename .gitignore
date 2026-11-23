@@ -7,3 +7,5 @@ screenshots/*/*.tmp
 ferramentas/retomar.log
 .agents/
 .claude/
+deploy_hf/
+para_revisao/
