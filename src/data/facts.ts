@@ -12,6 +12,7 @@ export const FACTS = {
   pausaMaxMin: f(30, '30 min', 'Regra do produto', 'Equipa DuoWatt'),
   reacaoS: f(1, '< 1 s', 'Meta', 'Equipa DuoWatt'),
   cilindroA: f(6.75, '≈ 1,55 kW (6,75 A)', 'Exemplo', 'Cenário do pitch'),
+  reacaoSimS: f(0.4, '0,4 s (simulado)', 'Exemplo', 'Valor simulado do cenário'),
   garrafas: f(1, '≈ 1 por mês (12 por ano)', 'Estimativa', 'Pressuposto da equipa'),
   co2: f(20, '≈ 20 kg/mês (prudente ≈ 11 kg/mês)', 'Estimativa', '246 kg/ano e 131 kg/ano, cálculo da equipa'),
   co2Prudente: f(11, '≈ 11 kg/mês', 'Estimativa', '131 kg/ano, cálculo da equipa'),

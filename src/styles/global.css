@@ -1,0 +1,10 @@
+@import '@fontsource-variable/manrope';
+@import '@fontsource-variable/fraunces';
+@import './tokens.css';
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body,#root{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.45 var(--font-ui);font-variant-numeric:tabular-nums;overscroll-behavior:none;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit;cursor:pointer;min-height:44px;touch-action:manipulation;user-select:none}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.num{font-family:var(--font-num);font-variation-settings:'opsz' 72;font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}

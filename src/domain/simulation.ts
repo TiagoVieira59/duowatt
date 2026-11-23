@@ -5,7 +5,7 @@ import { ControllerState, decide, initialState } from './controller'
 export type Modo = 'com' | 'sem'
 export type Cilindro = 'aquecer' | 'pausa' | 'parado'
 export interface Ponto { t: number; amps: number; pct: number; cilindro: Cilindro; apagao: boolean }
-export type EventoTipo = 'inicio' | 'cilindro' | 'pico' | 'pausa' | 'retoma' | 'fim-aquecer' | 'apagao' | 'fim'
+export type EventoTipo = 'inicio' | 'cilindro' | 'pico' | 'acima' | 'pausa' | 'retoma' | 'fim-aquecer' | 'apagao' | 'fim'
 export interface Evento { t: number; tipo: EventoTipo; texto: string }
 export interface Resultado { serie: Ponto[]; eventos: Evento[]; fimT: number }
 
@@ -26,6 +26,7 @@ export function simular(modo: Modo): Resultado {
     if (t === CILINDRO_INICIO) eventos.push({ t, tipo: 'cilindro', texto: 'O cilindro começou a aquecer' })
     if (t === APARELHO_INICIO) eventos.push({ t, tipo: 'pico', texto: 'Um aparelho grande ligou' })
 
+    if (modo === 'sem' && t === APARELHO_INICIO) eventos.push({ t, tipo: 'acima', texto: 'A casa ficou acima do limite' })
     if (modo === 'com') {
       if (quer) {
         const d = decide(st, amps, t)
