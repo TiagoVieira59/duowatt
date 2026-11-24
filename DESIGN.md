@@ -1,23 +1,11 @@
 # DESIGN.md — direção visual
 
-**Ideia:** «luz de casa ao serão». Papel quente, tinta verde-escura, uma luz âmbar. Calma e confiança; legível ao fundo da sala.
+Fonte: ecrãs do Figma «Hackaton_Simulador (Tiago)» (PNG exportados). Neutro, limpo, cartões brancos grandes.
 
-## Paleta (tokens em `src/styles/tokens.css`)
-- Fundo `#F6F1E7` · superfície `#FFFDF8` · tinta `#1D2B26` · tinta suave `#4B5B54` (≥ 4,5:1 sobre o fundo).
-- Marca: verde-floresta `#1F5E46`.
-- **Estados do medidor, distintos em luminosidade (não só em tom):**
-  - Folgada: fundo claro `#DCEFE3`, texto `#123D2B`.
-  - Perto do limite: fundo médio `#F2C94C`, texto `#3B2A00`.
-  - Acima do limite: fundo escuro `#5A1230`, texto `#FFF6F0`. Acima de 100 %: anel pulsante + «Acima do limite».
-  - Apagão: `#0B0B0C`.
-- Sem o vermelho nem o azul da Bosch.
-
-## Tipografia (self-hosted, 2 famílias)
-- **Manrope** (UI e texto), **Fraunces** (números grandes e legenda do apresentador). `font-variant-numeric: tabular-nums` nos números.
-- Painel ≥ 22 px a 1280×720; números-chave ≥ 48 px.
-
-## Forma
-Raios 14/22 px; espaçamento base 4 px; sombras suaves e quentes; sem cartões aninhados.
-
-## Movimento
-150–300 ms nas transições; spring suave no medidor; 19:05 coreografado: pico → indicador de reação → cartão «Em pausa» → medidor desce → legenda. `prefers-reduced-motion`: sem movimento grande, apagão = corte para escuro.
+- **Fundo** `#F5F5F5`; cartões brancos, raio 28 px, sombra suave; tinta `#111`, texto secundário `#6B6B6B`.
+- **Tipografia:** Inter (única família, self-hosted); títulos 800 com tracking −0,035em; números tabulares.
+- **Estados do medidor (luminosidade distinta):** Folgada = cartão branco + pílula verde; Perto do limite = cartão âmbar claro `#FFEFC2` + pílula âmbar; Acima do limite = cartão escuro `#131313` + pílula vermelha. Sempre com texto.
+- **Pílulas:** verde (A aquecer, Folgada), âmbar (Em pausa), vermelha (Parado, Acima), cinzenta (contadores). Cores de texto escurecidas face ao Figma para cumprir 4,5:1.
+- **Barra de separadores:** painel flutuante com ícones em quadrados arredondados; ativo preto com ícone branco.
+- **Logótipo:** wordmark «duo ⧓ watt» da equipa (SVG inline). Nota: o laço é vermelho `#E00000`, como no Figma; ver DECISOES.md.
+- **Movimento:** 150–300 ms; spring no medidor; `prefers-reduced-motion` respeitado.

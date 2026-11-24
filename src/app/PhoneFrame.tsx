@@ -9,7 +9,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
   }, [])
   return (
     <div style={{ width: (W + 24) * k, height: (H + 24) * k, flex: 'none' }}>
-      <div style={{ width: W + 24, height: H + 24, transform: `scale(${k})`, transformOrigin: 'top left', background: '#1D2B26', borderRadius: 54, padding: 12, boxShadow: '0 24px 60px rgba(40,30,10,.28)' }}>
+      <div style={{ width: W + 24, height: H + 24, transform: `scale(${k})`, transformOrigin: 'top left', background: '#111', borderRadius: 54, padding: 12, boxShadow: '0 24px 60px rgba(40,30,10,.28)' }}>
         <div style={{ width: W, height: H, borderRadius: 42, overflow: 'hidden', position: 'relative', background: 'var(--bg)' }}>{children}</div>
       </div>
     </div>

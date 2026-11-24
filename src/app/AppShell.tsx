@@ -8,7 +8,7 @@ import { Agora } from './screens/Agora'
 import { Historico } from './screens/Historico'
 import { Poupanca } from './screens/Poupanca'
 import { Definicoes } from './screens/Definicoes'
-import { TabBar, type TabId } from './TabBar'
+import { TabBar, TABS, type TabId } from './TabBar'
 import s from './app.module.css'
 
 export interface ShellProps { tab: TabId; onTab: (t: TabId) => void; view: View; clock: Clock; res: Resultado; ghost?: Resultado['serie']; compact: boolean }
@@ -18,10 +18,10 @@ export function AppShell(p: ShellProps) {
   return (
     <div className={s.shell}>
       <header className={s.head}>
-        <span className={s.brand}>DuoWatt</span>
-        <span className={s.tag}>Simulação</span>
+        <h1 className={s.title}>{TABS.find((t) => t.id === p.tab)!.label}</h1>
+        <span className={s.logo} role="img" aria-label="DuoWatt">duo<svg width="22" height="18" viewBox="0 0 24 20" aria-hidden><path d="M0 0 12 10 0 20ZM24 0 12 10 24 20Z" fill="#E00000" /></svg>watt</span>
       </header>
-      <div className={s.sub}>Casa · {num(FACTS.potencia.valor, 2)} kVA</div>
+      <div className={s.sub}><span className={s.tag}>Simulação</span>Casa · {num(FACTS.potencia.valor, 2)} kVA</div>
       <main className={s.main}>
         {p.tab === 'agora' && <Agora {...p} />}
         {p.tab === 'historico' && <Historico />}

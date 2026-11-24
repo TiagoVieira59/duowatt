@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion } from 'motion/react'
-import { Flame, PauseCircle, Power, Radio, Wifi } from 'lucide-react'
+import { BellDot, GitBranch, House, Power, Radio, Wifi } from 'lucide-react'
 import { FACTS, LIMITE_A } from '../../data/facts'
 import { estadoDe } from '../../demo/view'
 import { kw, num, pct } from '../../format'
@@ -28,12 +28,16 @@ export function Agora({ view, clock, res, ghost, compact }: ShellProps) {
   const reduce = useReducedMotion()
   const pausa = v.cilindro === 'pausa'
   const dur = reduce ? 0 : 0.2
+  const pillEst = est === 'folgada' ? '' : est === 'perto' ? s.warn : s.bad
   return (
     <>
       <section className={`${s.meter} ${s[est]} ${v.pct > 100 ? s.over100 : ''}`}>
-        <div className={s.meterTop}><span>Casa agora</span><span aria-live="polite">{ROTULO[est]}{v.pct > 100 ? ' · acima de 100 %' : ''}</span></div>
+        <div className={s.hrow}>
+          <div><House size={26} aria-hidden /><h2>Casa agora</h2></div>
+          <span className={`${s.pill} ${pillEst}`} aria-live="polite">{ROTULO[est]}</span>
+        </div>
         <Meter value={v.pct} delay={pausa ? 0.35 : 0} />
-        <div>≈ {kw(v.amps)} kW de {num(FACTS.potencia.valor, 2)} kVA</div>
+        <div className={s.kw}>≈ {kw(v.amps)} kW de {num(FACTS.potencia.valor, 2)} kVA</div>
       </section>
 
       <AnimatePresence>
@@ -45,16 +49,14 @@ export function Agora({ view, clock, res, ghost, compact }: ShellProps) {
       </AnimatePresence>
 
       <section className={s.card} aria-label="Cilindro">
-        <div className={s.row}>
-          {v.cilindro === 'aquecer' ? <Flame aria-hidden /> : pausa ? <PauseCircle aria-hidden /> : <Power aria-hidden />}
-          <div style={{ flex: 1 }}>
-            <h2>Cilindro</h2>
-            <motion.div key={v.cilindro} initial={reduce ? false : { opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: dur, delay: pausa && !reduce ? 0.15 : 0 }}>
-              <strong>{v.cilindro === 'aquecer' ? 'A aquecer' : pausa ? `Em pausa há ${view.pausaMin ?? 0} min` : 'Parado'}</strong>
-            </motion.div>
-          </div>
+        <div className={s.hrow}>
+          <div><Power size={26} aria-hidden /><h2>Cilindro</h2></div>
+          <motion.span key={v.cilindro} className={`${s.pill} ${v.cilindro === 'aquecer' ? '' : pausa ? s.warn : s.bad}`}
+            initial={reduce ? false : { opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: dur, delay: pausa && !reduce ? 0.15 : 0 }}>
+            {v.cilindro === 'aquecer' ? 'A aquecer' : pausa ? `Em pausa há ${view.pausaMin ?? 0} min` : 'Parado'}
+          </motion.span>
         </div>
-        {pausa && <p className={s.muted} style={{ marginTop: 8 }}>Pausámos o cilindro para a luz não ir abaixo. Volta a ligar quando houver margem. Tens água quente guardada.</p>}
+        {pausa && <p className={s.muted} style={{ marginTop: 12 }}>Pausámos o cilindro para a luz não ir abaixo. Volta a ligar quando houver margem. Tens água quente guardada.</p>}
       </section>
 
       {compact && (
@@ -62,25 +64,27 @@ export function Agora({ view, clock, res, ghost, compact }: ShellProps) {
           <h2>Serão (simulação)</h2>
           <div className={s.chartBox}><SeraoChart serie={res.serie} upto={view.idx} ghost={ghost} eventos={res.eventos} beat={clock.beat} compact /></div>
           <p className={s.muted}>{view.hora} · {view.legenda}</p>
-          <button className={`${s.btn} ${s.primary}`} style={{ marginTop: 10 }} onClick={clock.done || !clock.playing ? clock.restart : clock.toggle}>
+          <button className={`${s.btn} ${s.primary}`} style={{ marginTop: 12 }} onClick={clock.done || !clock.playing ? clock.restart : clock.toggle}>
             {clock.playing ? 'Pausar' : clock.done || clock.beat > 0 ? 'Recomeçar' : 'Ver o serão (simulação)'}
           </button>
         </section>
       )}
 
       <section className={s.card}>
-        <h2>Eventos de hoje</h2>
-        <ul className={s.ev}>
-          {view.eventos.length === 0 && <li className={s.muted}>Ainda sem eventos.</li>}
-          {view.eventos.map((e) => <li key={e.t + e.texto}><b>{e.hora}</b>· {e.texto}</li>)}
-        </ul>
+        <div className={s.hrow}>
+          <div><BellDot size={26} aria-hidden /><h2>Eventos de hoje</h2></div>
+          <span className={`${s.pill} ${s.neutral}`}>{view.eventos.length === 0 ? 'Nenhum' : view.eventos.length}</span>
+        </div>
+        {view.eventos.length > 0 && (
+          <ul className={s.ev}>{view.eventos.map((e) => <li key={e.t + e.texto}><b>{e.hora}</b>· {e.texto}</li>)}</ul>
+        )}
       </section>
 
       <section className={s.card}>
-        <h2>Ligação</h2>
-        <div className={s.row}><Radio size={18} aria-hidden /> Rádio local · ligado</div>
-        <div className={s.row} style={{ marginTop: 6 }}><Wifi size={18} aria-hidden /> Wi-Fi · ligado (opcional)</div>
-        <p className={s.muted} style={{ marginTop: 8 }}>Limite da casa: {LIMITE_A} A</p>
+        <div className={s.hrow}><div><GitBranch size={26} aria-hidden /><h2>Ligação</h2></div></div>
+        <div className={s.lrow}><Radio size={24} aria-hidden /> Rádio local <em>Ligado</em></div>
+        <div className={s.lrow}><Wifi size={24} aria-hidden /> Wi-Fi <em>Ligado</em><span className={s.right}>Opcional</span></div>
+        <p className={s.muted} style={{ marginTop: 18 }}>Limite da casa: {LIMITE_A} A</p>
       </section>
     </>
   )

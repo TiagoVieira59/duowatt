@@ -33,8 +33,8 @@ export function SeraoChart({ serie, upto, ghost, eventos, beat, compact }: Props
       {ref(100, 'Limite contratado', undefined, true)}
       {ref(90, 'Pausa', '7 5')}
       {ref(80, 'Retoma', '3 5')}
-      {ghost && <path d={path(ghost)} fill="none" stroke="var(--over-bg)" strokeWidth={2.5} strokeDasharray="2 5" opacity={0.7} />}
-      <path d={path(serie.slice(0, upto + 1))} fill="none" stroke="var(--brand)" strokeWidth={compact ? 4 : 4} strokeLinejoin="round" strokeLinecap="round" />
+      {ghost && <path d={path(ghost)} fill="none" stroke="var(--over-ink)" strokeWidth={2.5} strokeDasharray="2 5" opacity={0.7} />}
+      <path d={path(serie.slice(0, upto + 1))} fill="none" stroke="var(--chart)" strokeWidth={compact ? 4 : 4} strokeLinejoin="round" strokeLinecap="round" />
       {marks.map((e) => {
         const p = serie.find((q) => q.t === e.t); if (!p) return null
         const yy = e.tipo === 'pausa' ? serie[serie.indexOf(p)]!.pct : p.pct
