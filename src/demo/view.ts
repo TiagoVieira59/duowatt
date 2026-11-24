@@ -6,7 +6,7 @@ export type Estado = 'folgada' | 'perto' | 'acima'
 export const estadoDe = (pct: number): Estado => (pct > 90 ? 'acima' : pct >= 80 ? 'perto' : 'folgada')
 
 const LEGENDAS: Record<string, (m: Modo) => string> = {
-  inicio: () => 'Serão normal. A casa está tranquila.',
+  inicio: () => 'Numa noite normal, a casa está tranquila.',
   cilindro: () => 'O cilindro começa a aquecer água.',
   pico: () => 'Liga um aparelho grande. A casa passa o limite: 119 %.',
   pausa: () => 'O DuoWatt pausa o cilindro em menos de 1 s. A casa desce para 74 %.',
