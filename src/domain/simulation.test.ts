@@ -28,3 +28,16 @@ describe('simulação', () => {
     expect(sem.fimT).toBe(hm(19, 12))
   })
 })
+
+describe('retoma às 19:25 e sem quedas indevidas', () => {
+  const com = simular('com')
+  it('às 19:25 o cilindro já está a aquecer, a 68 %, e o pico de 119 % às 19:05 mantém-se', () => {
+    const p = com.serie.find((q) => q.t === hm(19, 25))!
+    expect(p.cilindro).toBe('aquecer')
+    expect(Math.round(p.pct)).toBe(68)
+    expect(Math.round(com.serie.find((q) => q.t === hm(19, 5))!.pct)).toBe(119)
+  })
+  it('nenhum ponto depois das 19:06 abaixo de 60 % antes das 20:15', () => {
+    expect(com.serie.filter((q) => q.t > hm(19, 6) && q.t < hm(20, 15)).every((q) => q.pct >= 60)).toBe(true)
+  })
+})

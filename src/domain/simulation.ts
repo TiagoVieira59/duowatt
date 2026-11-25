@@ -19,9 +19,9 @@ export function simular(modo: Modo): Resultado {
 
   for (let t = INICIO; t <= FIM; t++) {
     const quer = aquecer(t)
-    const cil = quer && permitido ? CILINDRO_A : 0
-    const amps = BASE_A + aparelhoA(t) + cil
-    const pct = (amps / LIMITE_A) * 100
+    let cil = quer && permitido ? CILINDRO_A : 0
+    let amps = BASE_A + aparelhoA(t) + cil
+    let pct = (amps / LIMITE_A) * 100
     let cilindro: Cilindro = !quer ? 'parado' : permitido ? 'aquecer' : 'pausa'
     if (t === CILINDRO_INICIO) eventos.push({ t, tipo: 'cilindro', texto: 'O cilindro começou a aquecer' })
     if (t === APARELHO_INICIO) eventos.push({ t, tipo: 'pico', texto: 'Um aparelho grande ligou' })
@@ -33,6 +33,9 @@ export function simular(modo: Modo): Resultado {
         st = d.state
         if (d.cylinderOn !== permitido) {
           permitido = d.cylinderOn
+          if (permitido) { // resume: this minute's point already includes the cylinder
+            cil = CILINDRO_A; amps += cil; pct = (amps / LIMITE_A) * 100; cilindro = 'aquecer'
+          }
           eventos.push(permitido
             ? { t, tipo: 'retoma', texto: 'O cilindro voltou a ligar' }
             : { t, tipo: 'pausa', texto: 'Pausa: um aparelho grande ligou' })

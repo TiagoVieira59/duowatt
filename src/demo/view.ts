@@ -3,7 +3,7 @@ import type { Clock } from './useDemoClock'
 import type { Modo, Ponto, Resultado } from '../domain/simulation'
 
 export type Estado = 'folgada' | 'perto' | 'acima'
-export const estadoDe = (pct: number): Estado => (pct > 90 ? 'acima' : pct >= 80 ? 'perto' : 'folgada')
+export const estadoDe = (pct: number): Estado => (pct > 100 ? 'acima' : pct >= 80 ? 'perto' : 'folgada')
 
 const LEGENDAS: Record<string, (m: Modo) => string> = {
   inicio: () => 'Numa noite normal, a casa está tranquila.',
@@ -11,7 +11,7 @@ const LEGENDAS: Record<string, (m: Modo) => string> = {
   pico: () => 'Liga um aparelho grande. A casa passa o limite: 119 %.',
   pausa: () => 'O DuoWatt pausa o cilindro em menos de 1 s. A casa desce para 74 %.',
   acima: () => 'Sem DuoWatt, a casa fica acima do limite.',
-  retoma: () => 'Há margem: o cilindro volta a ligar. Ninguém ficou sem água quente.',
+  retoma: () => 'Há margem: o cilindro volta a ligar e continua a aquecer.',
   'fim-aquecer': () => 'O cilindro terminou de aquecer.',
   apagao: () => 'A luz foi abaixo.',
   fim: (m) => (m === 'com' ? 'Resultado: a luz nunca foi abaixo por causa do cilindro.' : ''),
@@ -26,7 +26,7 @@ export function derivar(r: Resultado, c: Clock, modo: Modo): View {
   const last = r.serie.length - 1
   let idx = Math.min(last, Math.max(0, Math.floor(c.t) - INICIO))
   const ev = c.evento
-  if ((ev?.tipo === 'pausa' || ev?.tipo === 'retoma') && Math.floor(c.t) === ev.t) idx = Math.min(last, idx + 1) // show the post-pause reading
+  if (ev?.tipo === 'pausa' && Math.floor(c.t) === ev.t) idx = Math.min(last, idx + 1) // show the post-pause reading
   const ponto = r.serie[idx]!
   const quando = (tipo: string) => r.eventos.find((e) => e.tipo === tipo)
   const p = quando('pausa'), rt = quando('retoma')

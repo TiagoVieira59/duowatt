@@ -51,12 +51,12 @@ export function Agora({ view, clock, res, ghost, compact }: ShellProps) {
       <section className={s.card} aria-label="Cilindro">
         <div className={s.hrow}>
           <div><Power size={26} aria-hidden /><h2>Cilindro</h2></div>
-          <motion.span key={v.cilindro} className={`${s.pill} ${v.cilindro === 'aquecer' ? '' : pausa ? s.warn : s.bad}`}
+          <motion.span key={v.cilindro} className={`${s.pill} ${v.cilindro === 'aquecer' ? '' : pausa ? s.warn : s.neutral}`}
             initial={reduce ? false : { opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: dur, delay: pausa && !reduce ? 0.15 : 0 }}>
-            {v.cilindro === 'aquecer' ? 'A aquecer' : pausa ? `Em pausa há ${view.pausaMin ?? 0} min` : 'Parado'}
+            {v.cilindro === 'aquecer' ? 'A aquecer' : pausa ? `Em pausa há ${view.pausaMin ?? 0} min` : 'Não está a aquecer'}
           </motion.span>
         </div>
-        {pausa && <p className={s.muted} style={{ marginTop: 12 }}>Pausámos o cilindro para a luz não ir abaixo. Volta a ligar quando houver margem. Tens água quente guardada.</p>}
+        {pausa && <p className={s.muted} style={{ marginTop: 12 }}>Pausámos o cilindro para a luz não ir abaixo. Volta a ligar quando houver margem. A água que já aqueceu fica guardada no cilindro.</p>}
       </section>
 
       {compact && (

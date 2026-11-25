@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import s from '../app.module.css'
 
-const MODOS = ['Automático', 'Horas de vazio (ex.: 22h–8h)', 'Com sol (ex.: 11h–16h)']
+const MODOS = ['Automático', 'Horas de vazio (ex.: 22h–8h)']
 
 export function Definicoes() {
   const [modo, setModo] = useState(0)
@@ -18,7 +18,7 @@ export function Definicoes() {
       </section>
       <section className={s.card}>
         <div className={s.switch}><h2 style={{ margin: 0 }}>Modo férias</h2><button role="switch" aria-checked={ferias} aria-label="Modo férias" onClick={() => setFerias(!ferias)} /></div>
-        <p className={s.muted} style={{ marginTop: 6 }}>Não aquece enquanto estás fora. Antes de voltares, aquece com o ciclo de higiene (anti-legionela).</p>
+        <p className={s.muted} style={{ marginTop: 6 }}>Não aquece enquanto estás fora. Volta a ligar o cilindro antes de chegares, para teres água quente.</p>
       </section>
       <section className={s.card}>
         <div className={s.switch}><h2 style={{ margin: 0 }}>Ajudar a rede (em breve) <span className={s.badge} style={{ marginLeft: 6, marginBottom: 0 }}>Futuro</span></h2><button role="switch" aria-checked={false} disabled aria-label="Ajudar a rede" /></div>
